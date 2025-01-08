@@ -9,7 +9,13 @@ class AddressRepository {
 
   createAddress = async ({ address, addressName }) => {
     return await this.#orm.address.create({
-      data: { address, addressName },
+      data: {
+        address,
+        addressName,
+        // // user: {
+        // //   connect: { userId },
+        // },
+      },
     });
   };
 
@@ -17,19 +23,20 @@ class AddressRepository {
     return await this.#orm.address.findMany();
   };
 
-  updateAddress = async (addressId, address, addressName) => {
-    return await this.#orm.address.findUnique({
+  updateAddress = async ({ addressId, address, addressName }) => {
+    console.log(addressId);
+    return await this.#orm.address.update({
       where: {
-        addressId: +addressId,
+        addressId,
       },
       data: {
-        address,
-        addressName,
+        address: address,
+        addressName: addressName,
       },
     });
   };
 
-  deleteAddress = async (addressId) => {
+  deleteAddress = async ({ addressId }) => {
     return await this.#orm.address.delete({
       where: { addressId: +addressId },
     });

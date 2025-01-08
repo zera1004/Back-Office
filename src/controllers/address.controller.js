@@ -20,7 +20,7 @@ class AddressController {
     }
   };
 
-  getAddress = async (res, next) => {
+  getAddress = async (req, res, next) => {
     try {
       const addres = await this.#service.getAddress();
       return res.status(200).json({ data: addres });
@@ -29,13 +29,14 @@ class AddressController {
     }
   };
 
-  updateAddress = async (req, res) => {
+  updateAddress = async (req, res, next) => {
     try {
-      const { postId } = req.params;
+      const { addressId } = req.params;
       const { address, addressName } = req.body;
+      console.log('controller', addressId);
 
       const addres = await this.#service.updateAddress({
-        postId: +postId,
+        addressId: +addressId,
         address: address,
         addressName: addressName,
       });
@@ -45,7 +46,7 @@ class AddressController {
     }
   };
 
-  deleteAddress = async (req, res) => {
+  deleteAddress = async (req, res, next) => {
     try {
       const { postId } = req.params;
 
@@ -57,3 +58,5 @@ class AddressController {
     }
   };
 }
+
+export default new AddressController(addressService);
