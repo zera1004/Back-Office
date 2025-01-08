@@ -277,3 +277,5 @@ enum RestaurantType {
     return returnInfo;
   };
 }
+
+export default new GetRestaurantsRepository(prisma);
