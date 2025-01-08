@@ -7,14 +7,12 @@ class AddressRepository {
     this.#orm = orm;
   }
 
-  createAddress = async ({ address, addressName }) => {
+  createAddress = async ({ address, addressName, userId }) => {
     return await this.#orm.address.create({
       data: {
+        userId,
         address,
         addressName,
-        // // user: {
-        // //   connect: { userId },
-        // },
       },
     });
   };
@@ -40,6 +38,10 @@ class AddressRepository {
     return await this.#orm.address.delete({
       where: { addressId: +addressId },
     });
+  };
+
+  findUnique = async (addressId) => {
+    return await this.#orm.address.findUnique({ where: { addressId } });
   };
 }
 

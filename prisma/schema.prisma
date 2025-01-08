@@ -22,7 +22,7 @@ model User {
   point         Int
 
   cart Cart[]
-  // address Address[]
+  address Address[]
   order Order[]
   payment Payment[]
   review Review[]
@@ -51,11 +51,11 @@ model Cart {
 
 model Address {
   addressId Int @id @default(autoincrement())
-  // userId Int
+  userId Int
   address String
   addressName String
 
-  // user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Order {

@@ -7,8 +7,12 @@ class AddressService {
     this.#repository = repository;
   }
 
-  createAddress = async (addressData) => {
-    return await this.#repository.createAddress(addressData);
+  createAddress = async ({ userId, address, addressName }) => {
+    return await this.#repository.createAddress({
+      userId,
+      address,
+      addressName,
+    });
   };
 
   getAddress = async () => {
@@ -16,10 +20,8 @@ class AddressService {
   };
 
   updateAddress = async ({ addressId, address, addressName }) => {
-    // const existAddress = await this.#repository.findUnique({
-    //   where: { addressId },
-    // });
-    // if (!existAddress) throw new Error('존재하지 않는 주소입니다.');
+    const existAddress = await this.#repository.findUnique(addressId);
+    if (!existAddress) throw new Error('존재하지 않는 주소입니다.');
 
     return await this.#repository.updateAddress({
       addressId,
@@ -29,13 +31,11 @@ class AddressService {
   };
 
   deleteAddress = async (addressId) => {
-    const existAddress = await this.#repository.deleteAddress({
-      where: { addressId: +addressId },
-    });
+    const existAddress = await this.#repository.findUnique(addressId);
     if (!existAddress) throw new Error('존재하지 않는 주소입니다.');
 
     return await this.#repository.deleteAddress({
-      where: { addressId: +addressId },
+      addressId,
     });
   };
 }
