@@ -51,7 +51,7 @@ class ReviewsRepository {
   // 음식점별 리뷰 통계 조회 메서드
 
   createReview = async (restaurantId, paymentId, userId, content, star) => {
-    // 필수 필드 검증
+    // 필수 필드 검증(컨트롤러)
     if (
       !restaurantId ||
       !paymentId ||
@@ -64,6 +64,7 @@ class ReviewsRepository {
 
     // 별점 유효성 검증 >> 클라이언트에서 정해진 값만 넘어올수 있도록 하면 꼭 필요한 검증일까?
     // 데이터 변조를 방지하여 포함해야 하는가?
+    // (컨트롤러)
     if (star < 1 || star > 5) {
       throw new Error('별점은 1에서 5 사이여야 합니다.');
     }
