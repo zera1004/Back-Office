@@ -83,8 +83,8 @@ enum RestaurantType {
   // 매장 조회(영역별) <- 별점순 정렬하고 필요하면 거리순 추가
 
   // 지역
-  RestaurantByaddress = async (localKeyword) => {
-    console.log('Repository RestaurantByaddress');
+  restaurantByAddress = async (localKeyword) => {
+    console.log('Repository restaurantByAddress');
     return await this.#orn.Restaurant.findMany({
       // Where: { address: `%${localKeyword}%` },
       where: {
@@ -111,8 +111,8 @@ enum RestaurantType {
   };
 
   // 식당 타입별
-  RestaurantByType = async (type) => {
-    console.log('Repository ');
+  restaurantByType = async (type) => {
+    console.log('repository ');
     return await this.#orn.Restaurant.findMany({
       Where: { RestaurantType: type },
       orderBy: {
@@ -215,8 +215,57 @@ enum RestaurantType {
     });
   };
 
+  // 추가하기 - 메뉴검색 : 가게 이름, 메뉴이름, 메뉴 소개
+  searchRestaurantsByNameMenu = async (keyword) => {
+    console.log('Repository searchRestaurantsByMenu');
+    return await this.#orn.Restaurant.findMany({
+      // Restaurant와 연결된 Menu테이블의 menuName, content컬럼의 값이 하나라도 `%${keyword}%`인 데이터를 가져오기
+      //  Where: { menu: { Where: { menuName: `%${menuKeyword}%` } } },
+      where: {
+        OR: [
+          {
+            name: {
+              contains: Keyword, // 식당 이름에 검색어 포함
+              mode: 'insensitive', // 대소문자 구분하지 않음
+            },
+          },
+          {
+            menu: {
+              some: {
+                OR: [
+                  {
+                    menuName: {
+                      contains: keyword, // 메뉴 이름에 검색어 포함
+                      mode: 'insensitive', // 대소문자 구분하지 않음
+                    },
+                  },
+                  {
+                    content: {
+                      contains: keyword, // 메뉴 소개에 검색어 포함
+                      mode: 'insensitive', // 대소문자 구분하지 않음
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
+      orderBy: {
+        averageStar: 'desc',
+      },
+      Selection: {
+        address: true,
+        phoneNumber: true,
+        restaurantName: true,
+        restaurantType: true,
+        averageStar: true,
+      },
+    });
+  };
+
   // 매장 상세조회 : 가게 정보, 메뉴, 후기
-  restaurantDetails = async (restaurantId) => {
+  restaurantDetail = async (restaurantId) => {
     console.log('Repository restaurantDetails');
     const info = await this.#orn.Restaurant.findUnique({
       Where: { restaurantId },
