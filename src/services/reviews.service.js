@@ -1,14 +1,17 @@
-import { ReviewsRepository } from '../repositories/reviews.repository';
+import { ReviewsRepository } from '../repositories/reviews.repository.js';
 
-export class ReviewsService {
-  ReviewsRepository = new ReviewsRepository();
-  // ReviewsRepository의 findAllPosts, createPost 메서드를 호출
+class ReviewsService {
+  #repository;
 
-  findAllPosts = async () => {
+  constructor(repository) {
+    this.#repository = repository;
+  }
+  // 음식점별 리뷰
+  findReviewByResId = async () => {
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const reviews = await this.ReviewsRepository.findAllPosts();
+    const reviews = await this.#repository.findReviewByResId();
 
-    // 호출한 Post들을 가장 최신 게시글 부터 정렬합니다.
+    // 호출한 reviews를 가장 최신 게시글 부터 정렬합니다.
     reviews.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
@@ -27,9 +30,14 @@ export class ReviewsService {
     });
   };
 
-  findPostById = async (postId) => {
+  findMyReviews = async (userId) => {
+    // 저장소(Repository)에게 데이터를 요청합니다.
+    const reviews = await this.#repository.findMyReviews(userId);
+  };
+
+  findMyReviews = async (postId) => {
     // 저장소(Repository)에게 특정 게시글 하나를 요청합니다.
-    const post = await this.postsRepository.findPostById(postId);
+    const post = await this.#repository.findPostById(postId);
 
     return {
       postId: post.postId,
@@ -41,9 +49,9 @@ export class ReviewsService {
     };
   };
 
-  createPost = async (nickname, password, title, content) => {
+  createReview = async (nickname, password, title, content) => {
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const createdPost = await this.postsRepository.createPost(
+    const createdReview = await this.#repository.createPost(
       nickname,
       password,
       title,
@@ -63,14 +71,14 @@ export class ReviewsService {
 
   updatePost = async (postId, password, title, content) => {
     // 저장소(Repository)에게 특정 게시글 하나를 요청합니다.
-    const post = await this.postsRepository.findPostById(postId);
+    const post = await this.#repository.findPostById(postId);
     if (!post) throw new Error('존재하지 않는 게시글입니다.');
 
     // 저장소(Repository)에게 데이터 수정을 요청합니다.
-    await this.postsRepository.updatePost(postId, password, title, content);
+    await this.#repository.updatePost(postId, password, title, content);
 
     // 변경된 데이터를 조회합니다.
-    const updatedPost = await this.postsRepository.findPostById(postId);
+    const updatedPost = await this.#repository.findPostById(postId);
 
     return {
       postId: updatedPost.postId,
@@ -84,11 +92,11 @@ export class ReviewsService {
 
   deletePost = async (postId, password) => {
     // 저장소(Repository)에게 특정 게시글 하나를 요청합니다.
-    const post = await this.postsRepository.findPostById(postId);
+    const post = await this.#repository.findPostById(postId);
     if (!post) throw new Error('존재하지 않는 게시글입니다.');
 
     // 저장소(Repository)에게 데이터 삭제를 요청합니다.
-    await this.postsRepository.deletePost(postId, password);
+    await this.#repository.deletePost(postId, password);
 
     return {
       postId: post.postId,
@@ -100,3 +108,5 @@ export class ReviewsService {
     };
   };
 }
+
+export default new ReviewsService(ReviewsRepository);
