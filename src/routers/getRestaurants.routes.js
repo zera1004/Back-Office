@@ -17,8 +17,7 @@ router.get('/address', GetRestaurantsController.restaurantByAddress);
 router.get('/all', GetRestaurantsController.allRestaurant);
 
 // 매장 검색 (이름, 메뉴 포함)
-
-// (쿼리 파라미터 타입 search(종하검색), name(상호명), menu(메뉴,설명명) 사용)
+// (쿼리 파라미터 타입 search(종합검색), name(상호명), menu(메뉴,설명명) 사용)
 // GET http://localhost:3000/api/restaurants/search?search=맛있는&type=name
 // GET http://localhost:3000/api/restaurants/search?search=짜장&type=menu
 // GET http://localhost:3000/api/restaurants/search?search=중국집
