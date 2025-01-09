@@ -7,7 +7,7 @@ class OrderControllers{
         this.#services = services
     }
 
-
+    // 주문 생성 
     async createOrder(req ,res){
         const {userId,restaurantId,cartId,status,total_price} = req.body
         try{
@@ -20,7 +20,7 @@ class OrderControllers{
         }
     }
 
-
+    // 주문 취소
     async deleteOrder(req ,res){
         const {id: orderId} = req.params
         try{
@@ -33,7 +33,7 @@ class OrderControllers{
         }
         }
     
-    
+    // 주문 확인
     async checkOrder(req ,res){
         const {id: orderId} = req.params
         try{
