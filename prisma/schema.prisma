@@ -38,13 +38,24 @@ model Owner {
 }
 
 model Cart {
-  cartId Int     @id @default(autoincrement())
+  cartId Int @id @default(autoincrement())
   userId Int
-  menuId Int
-  count  Int
-  Order  Order[]
-  user   User    @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-  menu   Menu    @relation(fields: [menuId], references: [menuId], onDelete: Cascade, onUpdate: Cascade)
+
+  order      Order[]
+  cartDetail CartDetail[]
+  user       User         @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model CartDetail {
+  cartDetailId Int  @id @default(autoincrement())
+  cartId       Int
+  menuId       Int
+  restaurantId Int
+  count        Int?
+
+  Cart       Cart       @relation(fields: [cartId], references: [cartId], onDelete: Cascade, onUpdate: Cascade)
+  Menu       Menu       @relation(fields: [menuId], references: [menuId], onDelete: Cascade, onUpdate: Cascade)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Address {
@@ -89,6 +100,7 @@ model Restaurant {
   review         Review[]
   order          Order[]
   owner          Owner          @relation(fields: [ownerId], references: [ownerId], onDelete: Cascade, onUpdate: Cascade)
+  CartDetail     CartDetail[]
 }
 
 enum RestaurantType {
@@ -116,13 +128,13 @@ model Payment {
 }
 
 model Menu {
-  menuId       Int        @id @default(autoincrement())
+  menuId       Int          @id @default(autoincrement())
   restaurantId Int
   menuName     String
   price        Int
   content      String
-  cart         Cart[]
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
+  cartDetail   CartDetail[]
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Review {
