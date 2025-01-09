@@ -139,8 +139,8 @@ model Menu {
 
 model Review {
   reviewId     Int        @id @default(autoincrement())
+  paymentId    Int        @unique
   restaurantId Int
-  paymentId    Int
   userId       Int
   content      String
   star         String
