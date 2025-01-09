@@ -7,54 +7,6 @@ class GetRestaurantsRepository {
     this.#orn = orn;
   }
 
-  // Restaurant 테이블
-  /**
-   * model Restaurant {
-  restaurantId Int @id @default(autoincrement())
-  ownerId Int
-  address String
-  phoneNumber String
-  restaurantName String
-  restaurantType RestaurantType
-  totalPoint Int
-  createdAt DateTime @default(now()) @map("created_at")
-
-  menu Menu[]
-  review Review[]
-  order Order[]  
-  paynemt Payment[]
-
-  owner Owner @relation(fields: [ownerId], references: [ownerId], onDelete: Cascade, onUpdate: Cascade)
-}
-
-enum RestaurantType {
-  chinese 
-  western 
-  korean 
-  japanese 
-  franchise
-  snack
-  cafe
-}*/
-
-  // Payment 테이블
-  /*
-  model Payment {
-  paymentId Int @id @default(autoincrement())
-  orderId Int
-  userId Int
-  tatal_price Int
-  order_time DateTime @default(now())
-  createdAt DateTime @default(now()) @map("created_at")
-
-  review Review[]
-  order Order[]
-
-  restaurant Restaurant @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-}
-   */
-
   ///////////////
   // 랭킹조회 : 매출별 <-
   /**
@@ -69,7 +21,7 @@ enum RestaurantType {
         totalPoint: 'desc',
       },
       take: 20,
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -100,7 +52,7 @@ enum RestaurantType {
       orderBy: {
         averageStar: 'desc',
       },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -118,7 +70,7 @@ enum RestaurantType {
       orderBy: {
         averageStar: 'desc',
       },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -135,7 +87,7 @@ enum RestaurantType {
       orderBy: {
         averageStar: 'desc',
       },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -166,7 +118,7 @@ enum RestaurantType {
       orderBy: {
         averageStar: 'desc',
       },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -205,7 +157,7 @@ enum RestaurantType {
       orderBy: {
         averageStar: 'desc',
       },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -254,7 +206,7 @@ enum RestaurantType {
       orderBy: {
         averageStar: 'desc',
       },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,
@@ -269,7 +221,7 @@ enum RestaurantType {
     console.log('Repository restaurantDetails');
     const info = await this.#orn.Restaurant.findUnique({
       Where: { restaurantId },
-      Selection: {
+      select: {
         address: true,
         phoneNumber: true,
         restaurantName: true,

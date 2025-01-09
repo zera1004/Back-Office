@@ -46,9 +46,9 @@ class GetRestaurantsController {
     }
   };
 */
+  //////////////////////////////////////////////////////
 
   // 식당 타입별
-  /*
   // restaurantByType = async (type) => {console.log("Controller
   restaurantByType = async (req, res) => {
     try {
@@ -68,10 +68,8 @@ class GetRestaurantsController {
       return res.status(500).json({ message: '서버에 문제가 발생했습니다.' });
     }
   };
-*/
 
   // 지역
-  /*
   // restaurantByAddress = async (localKeyword) => {console.log("Controller
   restaurantByAddress = async (req, res) => {
     try {
@@ -91,9 +89,10 @@ class GetRestaurantsController {
       return res.status(500).json({ message: '서버에 문제가 발생했습니다.' });
     }
   };
-*/
+
+  ///////////////////////////////////////////
+
   // 매장 전체 조회
-  /*
   //allRestaurant = async () => {console.log("Controller
   allRestaurant = async (req, res) => {
     try {
@@ -113,7 +112,6 @@ class GetRestaurantsController {
     }
   };
 
-  */
   ////////////////////////
 
   // 매장검색
@@ -238,4 +236,4 @@ class GetRestaurantsController {
   };
 }
 
-export default GetRestaurantsController(GetRestaurantsService);
+export default new GetRestaurantsController(GetRestaurantsService);

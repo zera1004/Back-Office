@@ -18,7 +18,7 @@ model User {
   name        String
   email       String @unique
   password    String
-  phoneNumber Int
+  phoneNumber String
   point       Int
 
   cart    Cart[]
@@ -33,7 +33,7 @@ model Owner {
   name        String
   email       String
   password    String
-  phoneNumber Int
+  phoneNumber String
   point       Int
 
   restaurant Restaurant[]
@@ -60,7 +60,7 @@ model Address {
 
 model Order {
   orderId      Int       @id @default(autoincrement())
-  paymentId    Int
+  paymentId    Int // 이건 필요
   restaurantId Int
   cartId       Int
   userId       Int
@@ -107,10 +107,11 @@ enum RestaurantType {
   cafe
 }
 
+// // 결제내역 다음에 주문데이터 추가
 model Payment {
   paymentId    Int      @id @default(autoincrement())
   restaurantId Int
-  orderId      Int
+  // orderId      Int
   userId       Int
   tatal_price  Int
   order_time   DateTime @default(now())
