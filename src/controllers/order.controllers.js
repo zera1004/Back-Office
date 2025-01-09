@@ -9,11 +9,11 @@ class OrderControllers{
 
 
     async createOrder(req ,res){
-        const {userId,restaurantId,cartId,status} = req.body
+        const {userId,restaurantId,cartId,status,total_price} = req.body
         try{
-        await this.#services.createOrder({userId,restaurantId,cartId,status})
+        const result = await this.#services.createOrder({userId,restaurantId,cartId,status,total_price})
         return res.status(201).json({
-            message: "주문이 완료되었습니다"})
+            message: `주문이 완료되었습니다(남은금액:${result}원)`})
         }
         catch(error){
             return res.json({message:error.message})
@@ -22,11 +22,11 @@ class OrderControllers{
 
 
     async deleteOrder(req ,res){
-        const {orderId} = req.params
+        const {id: orderId} = req.params
         try{
-        await this.#services.deleteOrder({orderId})
+        const result = await this.#services.deleteOrder({orderId})
         return res.status(200).json({
-            message:"주문이 취소되었습니다"
+            message:`주문이 취소되었습니다(환불금액:${result}원)`
         })}
         catch(error){
             return res.json({message:error.message})
@@ -35,7 +35,7 @@ class OrderControllers{
     
     
     async checkOrder(req ,res){
-        const {orderId} = req.params
+        const {id: orderId} = req.params
         try{
         const result = await this.#services.checkOrder({orderId})
         return res.status(200).json({

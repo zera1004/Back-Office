@@ -8,9 +8,9 @@ class OrderServices{
         this.#repository = repository
     }
 
-    async createOrder({userId,restaurantId,cartId,status}) {
+    async createOrder({userId,restaurantId,cartId,status,total_price}) {
         try{
-        return await this.#repository.createOrder({userId,restaurantId,cartId,status})
+        return await this.#repository.createOrder({userId,restaurantId,cartId,status,total_price})
         }
         catch(error){
             throw new Error(error.message)
