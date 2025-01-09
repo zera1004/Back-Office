@@ -19,6 +19,11 @@ class AddressService {
       throw new Error(MESSAGES.ADDRESS.COMMON.ADDRESSNAME.REQUIRED);
     }
 
+    const user = await this.#repository.findUser(userId);
+    if (!user) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND_USER);
+    }
+
     return await this.#repository.createAddress({
       userId,
       address,

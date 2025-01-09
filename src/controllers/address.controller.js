@@ -13,7 +13,7 @@ class AddressController {
     try {
       const { address, addressName } = req.body;
       const userId = 1;
-      // const {userId} = req.user
+      // const { userId } = req.user
       const _address = await this.#service.createAddress({
         userId: +userId,
         address,

@@ -36,12 +36,18 @@ class AddressRepository {
 
   deleteAddress = async ({ addressId }) => {
     return await this.#orm.address.delete({
-      where: { addressId: +addressId },
+      where: { addressId },
     });
   };
 
   findUnique = async (addressId) => {
     return await this.#orm.address.findUnique({ where: { addressId } });
+  };
+
+  findUser = async (userId) => {
+    return await this.#orm.user.findUnique({
+      where: { userId },
+    });
   };
 }
 
