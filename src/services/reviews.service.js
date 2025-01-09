@@ -1,5 +1,5 @@
 // src/services/reviews.service.js
-import { ReviewsRepository } from '../repositories/reviews.repository.js';
+import ReviewsRepository from '../repositories/reviews.repository.js';
 
 class ReviewsService {
   #repository;
@@ -119,14 +119,11 @@ class ReviewsService {
     )
       throw new Error('필수 필드가 누락되었습니다.');
 
-    const existingReview = await this.#repository.findReviewByPayId({
-      where: { paymentId: data.paymentId },
-    });
+    const existingReview = await this.#repository.findReviewByPayId(
+      data.paymentId,
+    );
     if (existingReview)
       throw new Error('결제별로 하나의 리뷰만 작성할 수 있습니다.');
-
-    if (typeof data.star !== 'number')
-      throw new Error('별점은 숫자여야 합니다.');
 
     if (data.star < 1 || data.star > 5)
       throw new Error('별점은 1에서 5 사이여야 합니다.');
@@ -166,9 +163,6 @@ class ReviewsService {
 
     if (review.userId !== data.userId)
       throw new Error('본인의 리뷰만 수정할 수 있습니다.');
-
-    if (typeof data.star !== 'number')
-      throw new Error('별점은 숫자여야 합니다.');
 
     if (data.star < 1 || data.star > 5)
       throw new Error('별점은 1에서 5 사이여야 합니다.');
