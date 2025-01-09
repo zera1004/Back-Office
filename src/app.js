@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { Router } from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import menuRouter from './routers/menu.router.js';
 
 dotenv.config();
 
@@ -10,7 +11,7 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.use('/api');
+app.use('/api', menuRouter);
 
 app.listen(PORT, () => {
   console.log(PORT, '포트로 서버가 열렸어요!');
