@@ -2,7 +2,6 @@
 import express from 'express';
 import GetRestaurantsController from '../controllers/getRestaurants.controller.js';
 
-console.log('여기', GetRestaurantsController); // 이 부분에서 undefined가 출력된다면 문제가 있음
 const router = express.Router();
 
 // 랭킹 조회: 매출순

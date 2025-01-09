@@ -178,8 +178,8 @@ class GetRestaurantsRepository {
         OR: [
           {
             restaurantName: {
-              contains: Keyword, // 식당 이름에 검색어 포함
-              //   mode: 'insensitive', // 대소문자 구분하지 않음
+              contains: keyword, // 검색어
+              //  mode: 'insensitive', // 대소문자 구분하지 않음
             },
           },
           {
@@ -189,7 +189,7 @@ class GetRestaurantsRepository {
                   {
                     menuName: {
                       contains: keyword, // 메뉴 이름에 검색어 포함
-                      //    mode: 'insensitive', // 대소문자 구분하지 않음
+                      //  mode: 'insensitive', // 대소문자 구분하지 않음
                     },
                   },
                   {
@@ -215,6 +215,7 @@ class GetRestaurantsRepository {
         averageStar: true,
       },
     });
+    console.log('종합검색 : ', restaurantsNM);
     return restaurantsNM;
   };
 
@@ -222,7 +223,7 @@ class GetRestaurantsRepository {
   restaurantDetail = async (restaurantId) => {
     console.log('Repository restaurantDetails');
     const info = await this.#orn.Restaurant.findUnique({
-      Where: { restaurantId },
+      where: { restaurantId },
       select: {
         address: true,
         phoneNumber: true,
@@ -231,7 +232,7 @@ class GetRestaurantsRepository {
         createdAt: true,
 
         menu: {
-          some: {
+          select: {
             menuName: true,
             price: true,
             content: true,
@@ -239,45 +240,26 @@ class GetRestaurantsRepository {
         },
 
         review: {
-          some: {
+          select: {
             content: true,
             star: true,
             createdAt: true,
             updatedAt: true,
 
             user: {
-              some: { name: true },
+              select: { name: true },
             },
           },
         },
 
         owner: {
-          some: { name: true },
+          select: { name: true },
         },
       },
     });
-    // 데이터 구조화
-    const returnInfo = {
-      data: {
-        restaurantInfo: {
-          address: info.address,
-          phoneNumber: info.phoneNumber,
-          restaurantName: info.restaurantName,
-          totalPoint: info.totalPoint,
-          createdAt: info.createdAt,
-          ownerName: info.owner?.name,
-        },
-        menu: info.menu,
-        reviews: info.review.map((review) => ({
-          content: review.content,
-          star: review.star,
-          createdAt: review.createdAt,
-          updatedAt: review.updatedAt,
-          userName: review.user?.name,
-        })),
-      },
-    };
-    return returnInfo;
+
+    console.log('상세 조회 : ', info);
+    return info;
   };
 }
 
