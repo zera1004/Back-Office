@@ -1,3 +1,5 @@
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
+import { MESSAGES } from '../constants/message.constant.js';
 import addressService from '../services/address.service.js';
 
 class AddressController {
@@ -17,24 +19,32 @@ class AddressController {
         address,
         addressName,
       });
-      return res
-        .status(201)
-        .json({ message: '주소가 생성되었습니다.', data: _address });
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.ADDRESS.CREATE.SUCCEED,
+        data: _address,
+      });
     } catch (error) {
       console.error('주소 생성 중 오류 발생:', error);
-      res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.ADDRESS.CREATE.NO_BODY_DATA });
     }
   };
 
   getAddress = async (req, res, next) => {
     try {
       const _address = await this.#service.getAddress();
-      return res
-        .status(200)
-        .json({ message: '주소가 조회되었습니다.', data: _address });
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.READ_LIST.SUCCEED,
+        data: _address,
+      });
     } catch (error) {
       console.error('주소 조회 중 오류 발생:', error);
-      res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.ADDRESS.READ_LIST.NO_BODY_DATA });
     }
   };
 
@@ -48,12 +58,16 @@ class AddressController {
         address: address,
         addressName: addressName,
       });
-      return res
-        .status(200)
-        .json({ message: '주소가 수정되었습니다.', data: _address });
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.UPDATE.SUCCEED,
+        data: _address,
+      });
     } catch (error) {
       console.error('주소 수정 중 오류 발생:', error);
-      res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.ADDRESS.UPDATE.NO_BODY_DATA });
     }
   };
 
@@ -63,12 +77,16 @@ class AddressController {
 
       const _address = await this.#service.deleteAddress(+addressId);
 
-      return res
-        .status(200)
-        .json({ message: '주소가 삭제되었습니다.', data: _address });
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.DELETE.SUCCEED,
+        data: _address,
+      });
     } catch (error) {
       console.error('주소 삭제 중 오류 발생:', error);
-      res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.ADDRESS.DELETE.NO_BODY_DATA });
     }
   };
 }

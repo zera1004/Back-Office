@@ -1,3 +1,4 @@
+import { MESSAGES } from '../constants/message.constant.js';
 import addressRepository from '../repositories/address.repository.js';
 
 class AddressService {
@@ -21,7 +22,7 @@ class AddressService {
 
   updateAddress = async ({ addressId, address, addressName }) => {
     const existAddress = await this.#repository.findUnique(addressId);
-    if (!existAddress) throw new Error('존재하지 않는 주소입니다.');
+    if (!existAddress) throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
 
     return await this.#repository.updateAddress({
       addressId,
@@ -32,7 +33,7 @@ class AddressService {
 
   deleteAddress = async (addressId) => {
     const existAddress = await this.#repository.findUnique(addressId);
-    if (!existAddress) throw new Error('존재하지 않는 주소입니다.');
+    if (!existAddress) throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
 
     return await this.#repository.deleteAddress({
       addressId,
