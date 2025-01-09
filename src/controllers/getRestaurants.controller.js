@@ -1,5 +1,5 @@
 // getRestaurants.controller.js
-
+// 간단하게 서비스 호출만
 import GetRestaurantsService from '../services/getRestaurants.service.js';
 
 class GetRestaurantsController {
@@ -29,28 +29,10 @@ class GetRestaurantsController {
     }
   };
 
-  ////////////////
-
-  // 타입별 조회
-  /*
-  restaurantBytype = async (req, res) => {
-    const { type } = req.query; // 쿼리
-    const typeR = [chinese, western, korean, japanese, franchise, snack, cafe];
-
-    if (typeR.includes(type)) {
-      // 식당 타입별
-      // restaurantByType = async (type) => {console.log("Controller
-    } else {
-      // 지역
-      // restaurantByAddress = async (localKeyword) => {console.log("Controller
-    }
-  };
-*/
-  //////////////////////////////////////////////////////
-
   // 식당 타입별
   // restaurantByType = async (type) => {console.log("Controller
   restaurantByType = async (req, res) => {
+    console.log('컨트롤러 type');
     try {
       const { type } = req.query; // 쿼리
       console.log('Controller restaurantByType');
@@ -78,6 +60,7 @@ class GetRestaurantsController {
 
       const restaurantsByA = await this.#service.restaurantByAddress(address);
       if (!restaurantsByA || restaurantsByA.length === 0) {
+        // 서비스에서
         return res
           .status(404)
           .json({ message: '선택한 지역의 매장 정보가 존재하지 않습니다' });
@@ -134,6 +117,7 @@ class GetRestaurantsController {
         restaurants = await this.#service.searchRestaurantsByNameMenu(search);
       }
 
+      // 서비스로
       if (!restaurants || restaurants.length === 0) {
         return res
           .status(404)

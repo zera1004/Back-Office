@@ -21,8 +21,10 @@ class GetRestaurantsService {
     console.log('Service restaurantByAddress');
     return await this.#repository.restaurantByAddress(localKeyword);
   };
+
   // 식당 타입별
   restaurantByType = async (type) => {
+    console.log('서비스 type');
     console.log('Service restaurantByType');
     return await this.#repository.restaurantByType(type);
   };
@@ -46,7 +48,6 @@ class GetRestaurantsService {
   };
 
   // 추가하기 - 메뉴검색 : 가게 이름, 메뉴이름, 메뉴 소개
-  // searchRestaurantsByNameMenu = async (menuKeyword) => {
   searchRestaurantsByNameMenu = async (Keyword) => {
     console.log('Service searchRestaurantsByMenu');
     return await this.#repository.searchRestaurantsByNameMenu(Keyword);

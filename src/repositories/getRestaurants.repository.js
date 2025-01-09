@@ -37,16 +37,13 @@ class GetRestaurantsRepository {
   // 지역
   restaurantByAddress = async (localKeyword) => {
     console.log('Repository restaurantByAddress');
-    return await this.#orn.Restaurant.findMany({
+
+    const restaurantsA = await this.#orn.restaurant.findMany({
       // Where: { address: `%${localKeyword}%` },
       where: {
-        menu: {
-          some: {
-            menuName: {
-              contains: localKeyword, // 검색어
-              mode: 'insensitive', // 대소문자 구분하지 않음
-            },
-          },
+        address: {
+          contains: localKeyword, // 검색어
+          // mode: 'insensitive', // 대소문자 구분하지 않음,// 최신버전이지만 안됨
         },
       },
       orderBy: {
@@ -60,13 +57,16 @@ class GetRestaurantsRepository {
         averageStar: true,
       },
     });
+
+    console.log('주소 : ', restaurantsA);
+    return restaurantsA;
   };
 
   // 식당 타입별
   restaurantByType = async (type) => {
-    console.log('repository ');
-    return await this.#orn.Restaurant.findMany({
-      Where: { RestaurantType: type },
+    console.log('repository type');
+    const data = await this.#orn.Restaurant.findMany({
+      where: { restaurantType: type },
       orderBy: {
         averageStar: 'desc',
       },
@@ -78,6 +78,9 @@ class GetRestaurantsRepository {
         averageStar: true,
       },
     });
+
+    console.log('repository type : ', data.length);
+    return data;
   };
 
   // 매장 전체 조회
@@ -106,13 +109,9 @@ class GetRestaurantsRepository {
     return await this.#orn.Restaurant.findMany({
       // Where: { restaurantName: `%${nameKeyword}%` },
       where: {
-        menu: {
-          some: {
-            menuName: {
-              contains: nameKeyword, // 검색어
-              mode: 'insensitive', // 대소문자 구분하지 않음
-            },
-          },
+        restaurantName: {
+          contains: nameKeyword, // 검색어
+          //  mode: 'insensitive', // 대소문자 구분하지 않음
         },
       },
       orderBy: {
@@ -131,7 +130,7 @@ class GetRestaurantsRepository {
   // 메뉴검색 : 메뉴이름, 메뉴 소개
   searchRestaurantsByMenu = async (menuKeyword) => {
     console.log('Repository searchRestaurantsByMenu');
-    return await this.#orn.Restaurant.findMany({
+    const restaurantsM = await this.#orn.Restaurant.findMany({
       // Restaurant와 연결된 Menu테이블의 menuName, content컬럼의 값이 하나라도 `%${menuKeyword}%`인 데이터를 가져오기
       //  Where: { menu: { Where: { menuName: `%${menuKeyword}%` } } },
       where: {
@@ -141,13 +140,13 @@ class GetRestaurantsRepository {
               {
                 menuName: {
                   contains: menuKeyword, // 메뉴 이름에 검색어 포함
-                  mode: 'insensitive', // 대소문자 구분하지 않음
+                  //  mode: 'insensitive', // 대소문자 구분하지 않음
                 },
               },
               {
                 content: {
                   contains: menuKeyword, // 메뉴 소개에 검색어 포함
-                  mode: 'insensitive', // 대소문자 구분하지 않음
+                  //  mode: 'insensitive', // 대소문자 구분하지 않음
                 },
               },
             ],
@@ -165,20 +164,22 @@ class GetRestaurantsRepository {
         averageStar: true,
       },
     });
+    console.log('메뉴 : ', restaurantsM);
+    return restaurantsM;
   };
 
-  // 추가하기 - 메뉴검색 : 가게 이름, 메뉴이름, 메뉴 소개
+  // 종합 검색 : 가게 이름, 메뉴이름, 메뉴 소개
   searchRestaurantsByNameMenu = async (keyword) => {
     console.log('Repository searchRestaurantsByMenu');
-    return await this.#orn.Restaurant.findMany({
+    const restaurantsNM = await this.#orn.Restaurant.findMany({
       // Restaurant와 연결된 Menu테이블의 menuName, content컬럼의 값이 하나라도 `%${keyword}%`인 데이터를 가져오기
       //  Where: { menu: { Where: { menuName: `%${menuKeyword}%` } } },
       where: {
         OR: [
           {
-            name: {
+            restaurantName: {
               contains: Keyword, // 식당 이름에 검색어 포함
-              mode: 'insensitive', // 대소문자 구분하지 않음
+              //   mode: 'insensitive', // 대소문자 구분하지 않음
             },
           },
           {
@@ -188,13 +189,13 @@ class GetRestaurantsRepository {
                   {
                     menuName: {
                       contains: keyword, // 메뉴 이름에 검색어 포함
-                      mode: 'insensitive', // 대소문자 구분하지 않음
+                      //    mode: 'insensitive', // 대소문자 구분하지 않음
                     },
                   },
                   {
                     content: {
                       contains: keyword, // 메뉴 소개에 검색어 포함
-                      mode: 'insensitive', // 대소문자 구분하지 않음
+                      //  mode: 'insensitive', // 대소문자 구분하지 않음
                     },
                   },
                 ],
@@ -214,6 +215,7 @@ class GetRestaurantsRepository {
         averageStar: true,
       },
     });
+    return restaurantsNM;
   };
 
   // 매장 상세조회 : 가게 정보, 메뉴, 후기
