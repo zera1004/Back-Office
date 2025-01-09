@@ -9,6 +9,16 @@ class AddressService {
   }
 
   createAddress = async ({ userId, address, addressName }) => {
+    if (!userId) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND_USER);
+    }
+    if (!address) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.ADDRESS.REQUIRED);
+    }
+    if (!addressName) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.ADDRESSNAME.REQUIRED);
+    }
+
     return await this.#repository.createAddress({
       userId,
       address,
@@ -21,6 +31,16 @@ class AddressService {
   };
 
   updateAddress = async ({ addressId, address, addressName }) => {
+    if (!addressId) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
+    }
+    if (!address) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.ADDRESS.REQUIRED);
+    }
+    if (!addressName) {
+      throw new Error(MESSAGES.ADDRESS.COMMON.ADDRESSNAME.REQUIRED);
+    }
+
     const existAddress = await this.#repository.findUnique(addressId);
     if (!existAddress) throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
 

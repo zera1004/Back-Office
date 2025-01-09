@@ -9,6 +9,7 @@ export const MESSAGES = {
         REQUIRED: '주소지 이름을 정해주세요',
       },
       NOT_FOUND: '주소가 존재하지 않습니다.',
+      NOT_FOUND_USER: '유저가 존재하지 않습니다.',
     },
     CREATE: {
       SUCCEED: '주소 생성에 성공했습니다.',
