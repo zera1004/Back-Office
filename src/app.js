@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import menuRouter from './routers/menu.router.js';
 import paymentRouter from './routers/payment.router.js';
+import restaurantRouter from './routers/restaurants.router.js';
 import { errorHandler } from './middlewares/error-handler.middleware.js';
 import { authRouter } from './routers/auth.router.js';
 
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use('/api', [menuRouter, paymentRouter]);
 app.use('/api/auth', authRouter);
 
+app.use('/api', [restaurantRouter]);
+app.use('/api/auth', authRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
