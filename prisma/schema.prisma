@@ -48,7 +48,10 @@ model Cart {
 }
 
 model CartDetail {
-  cartDetailId Int        @id @default(autoincrement())
+
+  cartDetailId Int  @id @default(autoincrement())
+
+
   cartId       Int
   menuId       Int
   restaurantId Int
