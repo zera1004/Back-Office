@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 현황 (고객)</title>
+</head>
+
+<body>
+    <h1>주문 현황 (고객)</h1>
+    <p id="status">잠시 기다려주세요...</p>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const userId = 2 /* 테스트용 코드 */
+        const socket = io();
+
+        // 유저 역할 등록
+        socket.emit('register', { role: 'user', userId: userId });
+
+        // 상태 업데이트 수신
+        socket.on('status_update', (data) => {
+            document.getElementById('status').innerText = `배달 상태: ${data.status}`;
+        });
+
+    </script>
+</body>
+
+</html>
