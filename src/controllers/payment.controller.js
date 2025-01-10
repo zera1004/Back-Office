@@ -1,5 +1,5 @@
 import paymentService from '../services/payment.service.js';
-
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 class paymentController {
   #service;
 
@@ -14,8 +14,8 @@ class paymentController {
       const userId = parseInt(req.user.userId);
 
       const data = await this.#service.getPayment(userId);
-      return res.status(200).json({
-        status: 200,
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
         message: '결제 내역 조회 완료',
         data,
       });
@@ -30,8 +30,8 @@ class paymentController {
 
       const data = await this.#service.getRestaurantPoint(ownerId);
 
-      return res.status(200).json({
-        status: 200,
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
         data: {
           restaurantName: data.restaurantName,
           totalPoint: data.totalPoint,
@@ -40,8 +40,8 @@ class paymentController {
       });
     } catch (error) {
       if (error.message === 'RESTAURANT_NOT_FOUND') {
-        return res.status(404).json({
-          status: 404,
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          status: HTTP_STATUS.NOT_FOUND,
           message: '레스토랑을 찾을 수 없습니다.',
         });
       }
