@@ -18,7 +18,13 @@ class AuthRepository {
   };
 
   // 손님 회원가입
-  signUpCustomer = async ({ email, password, name, phoneNumber, verificationCode }) => {
+  signUpCustomer = async ({
+    email,
+    password,
+    name,
+    phoneNumber,
+    verificationCode,
+  }) => {
     return await this.#orm.user.create({
       data: {
         email,
@@ -27,7 +33,7 @@ class AuthRepository {
         phoneNumber,
         point: 1000000,
         isVerified: false,
-        verificationCode
+        verificationCode,
       },
     });
   };
@@ -43,7 +49,13 @@ class AuthRepository {
   };
 
   // 사장님 회원가입
-  signUpOwner = async ({ email, password, name, phoneNumber, verificationCode }) => {
+  signUpOwner = async ({
+    email,
+    password,
+    name,
+    phoneNumber,
+    verificationCode,
+  }) => {
     return await this.#orm.owner.create({
       data: {
         email,
@@ -52,7 +64,7 @@ class AuthRepository {
         phoneNumber,
         point: 0,
         isVerified: false,
-        verificationCode
+        verificationCode,
       },
     });
   };
@@ -63,9 +75,9 @@ class AuthRepository {
       where: { email },
       data: {
         isVerified: true,
-      }
-    })
-  }
+      },
+    });
+  };
 
   // 사장님 이메일 인증 성공
   emailVerifyOwner = async (email) => {
@@ -73,9 +85,9 @@ class AuthRepository {
       where: { email },
       data: {
         isVerified: true,
-      }
-    })
-  }
+      },
+    });
+  };
 }
 
 export default new AuthRepository(prisma);
