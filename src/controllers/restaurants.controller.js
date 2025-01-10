@@ -7,14 +7,9 @@ class RestaurantController {
   }
 
   postRestaurant = async (req, res) => {
-    const {
-      ownerId,
-      address,
-      phoneNumber,
-      restaurantName,
-      restaurantType,
-      totalPoint,
-    } = req.body;
+    const ownerId = parseInt(req.user.ownerId);
+    const { address, phoneNumber, restaurantName, restaurantType, totalPoint } =
+      req.body;
     try {
       const data = await this.#service.postRestaurant({
         ownerId,
@@ -40,7 +35,7 @@ class RestaurantController {
   };
 
   getOwnerRestaurant = async (req, res) => {
-    const { ownerId } = req.params;
+    const ownerId = parseInt(req.user.ownerId);
     try {
       const data = await this.#service.getOwnerRestaurant({ ownerId });
       return res
@@ -56,9 +51,11 @@ class RestaurantController {
   };
 
   updateRestaurant = async (req, res) => {
-    const { ownerId, restaurantId } = req.params;
+    const ownerId = parseInt(req.user.ownerId);
     const { address, phoneNumber, restaurantName, restaurantType } = req.body;
     try {
+      const getRestaurant = await this.#service.getOwnerRestaurant({ ownerId });
+      const { restaurantId } = getRestaurant;
       const data = await this.#service.updateRestaurant({
         ownerId,
         restaurantId,
@@ -83,8 +80,10 @@ class RestaurantController {
   };
 
   deleteRestaurant = async (req, res) => {
-    const { ownerId, restaurantId } = req.params;
+    const ownerId = parseInt(req.user.ownerId);
     try {
+      const getRestaurant = await this.#service.getOwnerRestaurant({ ownerId });
+      const { restaurantId } = getRestaurant;
       const data = await this.#service.deleteRestaurant({
         ownerId,
         restaurantId,
