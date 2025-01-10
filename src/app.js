@@ -7,7 +7,7 @@ import reviewRouter from './routers/reviews.router.js';
 import restaurantRouter from './routers/restaurants.router.js';
 import { errorHandler } from './middlewares/error-handler.middleware.js';
 import { authRouter } from './routers/auth.router.js';
-import addressRouter from './routers/address.router';
+import addressRouter from './routers/address.router.js';
 
 dotenv.config();
 
