@@ -1,5 +1,7 @@
 // src/services/reviews.service.js
+import { MESSAGES } from '../constants/message.constant.js';
 import ReviewsService from '../services/reviews.service.js';
+
 // 데이터 타입 확인, 필수 필드확인은 보통 컨트롤러
 class ReviewsController {
   #service;
@@ -18,7 +20,9 @@ class ReviewsController {
 
       return res.status(201).json({ data: AllReviewsByRestaurant });
     } catch (error) {
-      return res.status(400).json({ message: '잘못된 요청 입니다.' });
+      return res
+        .status(400)
+        .json({ message: MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR });
     }
   };
 
@@ -32,7 +36,9 @@ class ReviewsController {
 
       return res.status(201).json({ data: AllMyReviews });
     } catch (error) {
-      return res.status(400).json({ message: '잘못된 요청 입니다.' });
+      return res
+        .status(400)
+        .json({ message: MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR });
     }
   };
 
@@ -48,7 +54,9 @@ class ReviewsController {
 
       return res.status(201).json({ data: ReviewByPayId });
     } catch (error) {
-      return res.status(400).json({ message: '잘못된 요청 입니다.' });
+      return res
+        .status(400)
+        .json({ message: MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR });
     }
   };
 
@@ -74,10 +82,12 @@ class ReviewsController {
         content,
         star,
       });
-      return res.status(201).json({ message: '리뷰가 생성되었습니다.' });
+      return res.status(201).json({ message: MESSAGES.REVIEW.CREATE.SUCCEED });
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ message: '리뷰 생성에 실패했습니다.' });
+      return res
+        .status(400)
+        .json({ message: MESSAGES.REVIEW.CREATE.NOT_FOUND_REVIEW });
     }
   };
 
@@ -103,10 +113,12 @@ class ReviewsController {
         content,
         star,
       });
-      return res.status(201).json({ message: '리뷰가 수정되었습니다.' });
+      return res.status(201).json({ message: MESSAGES.REVIEW.UPDATE.SUCCEED });
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ message: '리뷰 수정에 실패했습니다.' });
+      return res
+        .status(400)
+        .json({ message: MESSAGES.REVIEW.UPDATE.NOT_FOUND_REVIEW });
     }
   };
 
@@ -130,10 +142,12 @@ class ReviewsController {
       });
 
       // PostService가 반환한 결과를 Client에게 전달
-      return res.status(201).json({ message: '리뷰가 삭제되었습니다.' });
+      return res.status(201).json({ message: MESSAGES.REVIEW.DELETE.SUCCEED });
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ message: '리뷰 삭제에 실패했습니다.' });
+      return res
+        .status(400)
+        .json({ message: MESSAGES.REVIEW.DELETE.NOT_FOUND_REVIEW });
     }
   };
 }
