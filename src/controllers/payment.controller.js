@@ -11,7 +11,7 @@ class paymentController {
 
   async getPayment(req, res, next) {
     try {
-      const userId = 10; //parseInt(req.user.id);
+      const userId = parseInt(req.user.userId);
 
       const data = await this.#service.getPayment(userId);
       return res.status(200).json({
@@ -26,7 +26,7 @@ class paymentController {
 
   async getRestaurantPoint(req, res, next) {
     try {
-      const ownerId = 1; //parseInt(req.user.id);
+      const ownerId = parseInt(req.user.ownerId);
 
       const data = await this.#service.getRestaurantPoint(ownerId);
 

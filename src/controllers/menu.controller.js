@@ -13,7 +13,7 @@ class menuController {
 
   async createMenu(req, res, next) {
     try {
-      const ownerId = 1; //parseInt(req.user.id);
+      const ownerId = parseInt(req.user.ownerId);
       const { menuName, content, price } = req.body;
 
       const data = await this.#service.createMenu(
@@ -64,7 +64,7 @@ class menuController {
 
   async updateMenu(req, res, next) {
     try {
-      const ownerId = 1; //parseInt(req.user.id);
+      const ownerId = parseInt(req.user.ownerId);
       const menuId = parseInt(req.params.menuId);
       const { menuName, content, price } = req.body;
 
@@ -95,7 +95,7 @@ class menuController {
 
   async deleteMenu(req, res, next) {
     try {
-      const ownerId = 1; //parseInt(req.user.id);
+      const ownerId = parseInt(req.user.ownerId);
       const menuId = parseInt(req.params.menuId);
 
       const data = await this.#service.deleteMenu(ownerId, menuId);
