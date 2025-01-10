@@ -18,8 +18,10 @@ model User {
   name          String
   email         String @unique
   password      String
-  phoneNumber  Int
+  phoneNumber  String
   point         Int
+  isVerified  Boolean @default(false)
+  verificationCode String
 
   cart Cart[]
   address Address[]
@@ -31,10 +33,12 @@ model User {
 model Owner {
   ownerId Int @id @default(autoincrement())
   name String
-  email String
+  email String  @unique
   password String
-  phoneNumber  Int
+  phoneNumber  String
   point         Int
+  isVerified  Boolean @default(false)
+  verificationCode String
 
   restaurant Restaurant[]
 }
