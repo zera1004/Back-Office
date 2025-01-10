@@ -21,6 +21,7 @@ restaurantRouter.patch(
   updateRestaurantValidator,
   restaurantsController.updateRestaurant,
 );
+
 restaurantRouter.delete(
   '/owners/:ownerId/me/restaurants/:restaurantId',
   restaurantsController.deleteRestaurant,
