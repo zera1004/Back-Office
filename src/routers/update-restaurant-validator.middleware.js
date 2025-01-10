@@ -26,6 +26,6 @@ export const updateRestaurantValidator = async (req, res, next) => {
     next();
   } catch (err) {
     const errorMessage = err.details[0].message;
-    res.status(400).json(errorMessage);
+    res.status(HTTP_STATUS.UNAUTHORIZED).json(errorMessage);
   }
 };
