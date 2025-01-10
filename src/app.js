@@ -15,11 +15,9 @@ const PORT = 3000;
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/api', [menuRouter, paymentRouter]);
+app.use('/api', [menuRouter, paymentRouter, restaurantRouter]);
 app.use('/api/auth', authRouter);
 
-app.use('/api', [restaurantRouter]);
-app.use('/api/auth', authRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
