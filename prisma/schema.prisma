@@ -48,9 +48,7 @@ model Cart {
 }
 
 model CartDetail {
-
-  cartDetailId Int  @id @default(autoincrement())
-
+  cartDetailId Int @id @default(autoincrement())
 
   cartId       Int
   menuId       Int
@@ -101,7 +99,6 @@ model Payment {
   order        Order[]
   user         User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
-
 
 model Restaurant {
   restaurantId   Int            @id @default(autoincrement())
