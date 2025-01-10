@@ -9,7 +9,8 @@ class OrderControllers{
 
     // 주문 생성 
     async createOrder(req ,res){
-        const {userId,restaurantId,cartId,status,total_price} = req.body
+        const {restaurantId,cartId,status,total_price} = req.body
+        const {userId} = req.user;
         try{
         const result = await this.#services.createOrder({userId,restaurantId,cartId,status,total_price})
         return res.status(201).json({
