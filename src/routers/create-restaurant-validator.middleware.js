@@ -39,6 +39,6 @@ export const createRestaurantValidator = async (req, res, next) => {
     const errorMessage = err.details[0].message;
 
     // 단일 에러 메시지만 응답
-    res.status(400).json(errorMessage);
+    res.status(HTTP_STATUS.BAD_REQUEST).json(errorMessage);
   }
 };
