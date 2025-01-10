@@ -8,7 +8,7 @@ class OrderControllers{
     }
 
     // 주문 생성 
-    async createOrder(req ,res){
+    createOrder = async (req ,res) => {
         const {restaurantId,cartId,status,total_price} = req.body
         const {userId} = req.user;
         try{
@@ -22,23 +22,23 @@ class OrderControllers{
     }
 
     // 주문 취소
-    async deleteOrder(req ,res){
-        const {id: orderId} = req.params
+    deleteOrder = async (req ,res) => {
+        const {id} = req.params
         try{
-        const result = await this.#services.deleteOrder({orderId})
+        const result = await this.#services.deleteOrder({id})
         return res.status(200).json({
             message:`주문이 취소되었습니다(환불금액:${result}원)`
         })}
         catch(error){
             return res.json({message:error.message})
         }
-        }
+    }
     
     // 주문 확인
-    async checkOrder(req ,res){
-        const {id: orderId} = req.params
+    checkOrder = async (req ,res) => {
+        const {id} = req.params
         try{
-        const result = await this.#services.checkOrder({orderId})
+        const result = await this.#services.checkOrder({id})
         return res.status(200).json({
             message:`현재 배달상황은: ${result}`})
         }

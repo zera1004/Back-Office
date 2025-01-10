@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import OrderRouter from './routers/order.routers.js'
@@ -13,7 +13,7 @@ import addressRouter from './routers/address.router.js';
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3000 ;
 
 app.use(cookieParser());
 app.use(express.json());

@@ -8,7 +8,7 @@ class OrderServices {
     }
 
     // 주문 생성
-    async createOrder({ userId, restaurantId, cartId, status, total_price }) {
+    createOrder = async ({ userId, restaurantId, cartId, status, total_price }) => {
         try {
             // 1. 사용자 포인트 확인 및 계산
             const user = await this.#repository.getUserById(userId);
@@ -44,7 +44,7 @@ class OrderServices {
     }
 
     // 주문 삭제
-    async deleteOrder({ orderId }) {
+    deleteOrder = async ({ orderId }) => {
         try {
             // 1. 주문 정보 조회
             const order = await this.#repository.getOrderById(orderId);
@@ -74,7 +74,7 @@ class OrderServices {
     }
 
     // 주문 상태 확인
-    async checkOrder({ orderId }) {
+    checkOrder = async ({ orderId }) => {
         try {
             const status = await this.#repository.getOrderStatus(orderId);
             const statusMapping = {

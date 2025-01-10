@@ -8,14 +8,14 @@ class OrderRepository {
     }
 
     // 사용자 조회
-    async getUserById(userId) {
+    getUserById = async (userId) => {
         return await this.#orm.User.findFirst({
             where: { userId }
         });
     }
 
     // 결제 생성
-    async createPayment({ userId, restaurantId, total_price }) {
+    createPayment = async ({  userId, restaurantId, total_price }) => {
         return await this.#orm.Payment.create({
             data: {
                 userId,
@@ -26,7 +26,7 @@ class OrderRepository {
     }
 
     // 주문 생성
-    async createOrder({ userId, restaurantId, cartId, status, paymentId }) {
+    createOrder = async ({  userId, restaurantId, cartId, status, paymentId }) => {
         return await this.#orm.Order.create({
             data: {
                 userId,
@@ -39,7 +39,7 @@ class OrderRepository {
     }
 
     // 포인트 업데이트
-    async updateUserPoints({ userId, points }) {
+    updateUserPoints = async ({  userId, points }) => {
         return await this.#orm.User.update({
             where: { userId },
             data: { point: points }
@@ -47,21 +47,21 @@ class OrderRepository {
     }
 
     // 주문 조회
-    async getOrderById(orderId) {
+    getOrderById = async (orderId) => {
         return await this.#orm.Order.findFirst({
             where: { orderId }
         });
     }
 
     // 결제 조회
-    async getPaymentById(paymentId) {
+    getPaymentById = async (paymentId) =>  {
         return await this.#orm.Payment.findFirst({
             where: { paymentId }
         });
     }
 
     // 포인트 복원
-    async restoreUserPoints({ userId, refundedAmount }) {
+    restoreUserPoints = async ({  userId, refundedAmount }) => {
         return await this.#orm.User.update({
             where: { userId },
             data: {
@@ -73,21 +73,21 @@ class OrderRepository {
     }
 
     // 주문 삭제
-    async deleteOrder(orderId) {
+    deleteOrder = async (orderId) =>  {
         return await this.#orm.Order.delete({
             where: { orderId }
         });
     }
 
     // 결제 삭제
-    async deletePayment(paymentId) {
+    deletePayment = async (paymentId) =>  {
         return await this.#orm.Payment.delete({
             where: { paymentId }
         });
     }
 
     // 주문 상태 조회
-    async getOrderStatus(orderId) {
+    getOrderStatus = async (orderId) =>  {
         const order = await this.#orm.Order.findFirst({
             where: { orderId },
             select: { status: true }
