@@ -119,7 +119,7 @@ model Payment {
   restaurantId Int
   // orderId      Int
   userId       Int
-  tatal_price  Int
+  total_price  Int
   order_time   DateTime @default(now())
   createdAt    DateTime @default(now()) @map("created_at")
   review       Review[]
