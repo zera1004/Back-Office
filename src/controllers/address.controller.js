@@ -9,6 +9,7 @@ class AddressController {
     this.#service = service;
   }
 
+  // 주소 생성
   createAddress = async (req, res, next) => {
     try {
       const { address, addressName } = req.body;
@@ -32,6 +33,7 @@ class AddressController {
     }
   };
 
+  // 주소 조회
   getAddress = async (req, res, next) => {
     try {
       const _address = await this.#service.getAddress();
@@ -48,6 +50,7 @@ class AddressController {
     }
   };
 
+  // 주소 수정
   updateAddress = async (req, res, next) => {
     try {
       const { addressId } = req.params;
@@ -71,6 +74,7 @@ class AddressController {
     }
   };
 
+  // 주소 삭제
   deleteAddress = async (req, res, next) => {
     try {
       const { addressId } = req.params;

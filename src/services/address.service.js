@@ -8,6 +8,7 @@ class AddressService {
     this.#repository = repository;
   }
 
+  // 주소 생성
   createAddress = async ({ userId, address, addressName }) => {
     if (!userId) {
       throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND_USER);
@@ -31,10 +32,12 @@ class AddressService {
     });
   };
 
+  // 주소 찾기
   getAddress = async () => {
     return await this.#repository.getAllAddress();
   };
 
+  // 주소 수정
   updateAddress = async ({ addressId, address, addressName }) => {
     if (!addressId) {
       throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
@@ -56,6 +59,7 @@ class AddressService {
     });
   };
 
+  // 주소 삭제
   deleteAddress = async (addressId) => {
     const existAddress = await this.#repository.findUnique(addressId);
     if (!existAddress) throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
