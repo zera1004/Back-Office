@@ -55,6 +55,9 @@ export const MESSAGES = {
     LOG_IN: {
       SUCCEED: '로그인에 성공했습니다.',
     },
+    DELETE_ID: {
+      SUCCEED: '회원 탈퇴가 완료되었습니다.',
+    },
   },
   ADDRESS: {
     COMMON: {

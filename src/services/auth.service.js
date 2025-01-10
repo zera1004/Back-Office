@@ -74,7 +74,7 @@ class AuthService {
       password: hashedPassword,
       name,
       phoneNumber,
-      verificationCode
+      verificationCode,
     });
 
     data.password = undefined;
@@ -184,6 +184,44 @@ class AuthService {
     });
 
     return accessToken;
+  };
+
+  // 회원 탈퇴
+  deleteId = async (authData) => {
+    const { email, password, memberType } = authData;
+
+    let user;
+
+    if (memberType === 'customer') {
+      user = await this.#repository.findCustomer(email);
+    } else if (memberType === 'owner') {
+      user = await this.#repository.findOwner(email);
+    }
+
+    if (!password) {
+      const error = new Error(MESSAGES.AUTH.COMMON.PASSWORD.REQUIRED);
+      error.status = HTTP_STATUS.BAD_REQUEST;
+      error.name = 'noInput';
+      throw error;
+    }
+
+    const isPasswordMatched =
+      user && bcrypt.compareSync(password, user.password);
+
+    if (!isPasswordMatched) {
+      const error = new Error(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
+      error.status = HTTP_STATUS.UNAUTHORIZED;
+      error.name = 'isPasswordMatched';
+      throw error;
+    }
+
+    if (memberType === 'customer') {
+      user = await this.#repository.deleteCustomerId(email);
+    } else if (memberType === 'owner') {
+      user = await this.#repository.deleteOwnerId(email);
+    }
+
+    return user.email;
   };
 }
 

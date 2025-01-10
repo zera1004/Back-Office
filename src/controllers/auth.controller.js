@@ -116,6 +116,25 @@ class AuthController {
       next(error);
     }
   };
+
+  // 회원 탈퇴
+  deleteId = async (req, res, next) => {
+    try {
+      const { email, memberType } = req.user;
+      const { password } = req.body;
+
+      const data = await this.#service.deleteId({email, password, memberType});
+
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.AUTH.DELETE_ID.SUCCEED,
+        data,
+      });
+    } catch (error) {
+      if (error.name === 'isPasswordMatched' || error.name === 'noInput')
+        errorForm(error, res);
+      else next(error);
+    }
+  };
 }
 
 export default new AuthController(AuthService);

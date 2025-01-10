@@ -58,8 +58,6 @@ export const requireAccessToken = async (req, res, next) => {
     user.password = undefined;
     user.memberType = memberType;
 
-    console.log(user);
-
     req.user = user;
     next();
   } catch (error) {
