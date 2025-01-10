@@ -4,7 +4,7 @@ class menuController {
   #service;
 
   constructor(service) {
-    this.#service = service; //바인드 오류 알아보기
+    this.#service = service;
     this.createMenu = this.createMenu.bind(this);
     this.getMenus = this.getMenus.bind(this);
     this.updateMenu = this.updateMenu.bind(this);
