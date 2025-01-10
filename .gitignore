@@ -1,8 +1,4 @@
 # Keep environment variables out of version control
 /node_modules
-/prisma
 .env
-package.json
-package-lock.json
-README.md
-.prettierrc
+memo.txt
