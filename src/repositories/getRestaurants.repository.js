@@ -1,10 +1,10 @@
 //getRestaurants.repository.js
-import prisma from '../utils/prisma/index.js';
+import { prisma } from '../utils/prisma/index.js';
 
 class GetRestaurantsRepository {
-  #orn;
-  constructor(orn) {
-    this.#orn = orn;
+  #orm;
+  constructor(orm) {
+    this.#orm = orm;
   }
 
   ///////////////
@@ -16,7 +16,7 @@ class GetRestaurantsRepository {
    */
   sortTotalPoint = async () => {
     console.log('Repository sortTotalPoint');
-    return await this.#orn.Restaurant.findMany({
+    return await this.#orm.Restaurant.findMany({
       orderBy: {
         totalPoint: 'desc',
       },
@@ -38,7 +38,7 @@ class GetRestaurantsRepository {
   restaurantByAddress = async (localKeyword) => {
     console.log('Repository restaurantByAddress');
 
-    const restaurantsA = await this.#orn.restaurant.findMany({
+    const restaurantsA = await this.#orm.restaurant.findMany({
       // Where: { address: `%${localKeyword}%` },
       where: {
         address: {
@@ -65,7 +65,7 @@ class GetRestaurantsRepository {
   // 식당 타입별
   restaurantByType = async (type) => {
     console.log('repository type');
-    const data = await this.#orn.Restaurant.findMany({
+    const data = await this.#orm.Restaurant.findMany({
       where: { restaurantType: type },
       orderBy: {
         averageStar: 'desc',
@@ -86,7 +86,7 @@ class GetRestaurantsRepository {
   // 매장 전체 조회
   allRestaurant = async () => {
     console.log('Repository RestaurantByType');
-    return await this.#orn.Restaurant.findMany({
+    return await this.#orm.Restaurant.findMany({
       orderBy: {
         averageStar: 'desc',
       },
@@ -106,7 +106,7 @@ class GetRestaurantsRepository {
   // 매장 이름
   searchRestaurantsByName = async (nameKeyword) => {
     console.log('Repository searchRestaurantsByName');
-    return await this.#orn.Restaurant.findMany({
+    return await this.#orm.Restaurant.findMany({
       // Where: { restaurantName: `%${nameKeyword}%` },
       where: {
         restaurantName: {
@@ -130,7 +130,7 @@ class GetRestaurantsRepository {
   // 메뉴검색 : 메뉴이름, 메뉴 소개
   searchRestaurantsByMenu = async (menuKeyword) => {
     console.log('Repository searchRestaurantsByMenu');
-    const restaurantsM = await this.#orn.Restaurant.findMany({
+    const restaurantsM = await this.#orm.Restaurant.findMany({
       // Restaurant와 연결된 Menu테이블의 menuName, content컬럼의 값이 하나라도 `%${menuKeyword}%`인 데이터를 가져오기
       //  Where: { menu: { Where: { menuName: `%${menuKeyword}%` } } },
       where: {
@@ -171,7 +171,7 @@ class GetRestaurantsRepository {
   // 종합 검색 : 가게 이름, 메뉴이름, 메뉴 소개
   searchRestaurantsByNameMenu = async (keyword) => {
     console.log('Repository searchRestaurantsByMenu');
-    const restaurantsNM = await this.#orn.Restaurant.findMany({
+    const restaurantsNM = await this.#orm.Restaurant.findMany({
       // Restaurant와 연결된 Menu테이블의 menuName, content컬럼의 값이 하나라도 `%${keyword}%`인 데이터를 가져오기
       //  Where: { menu: { Where: { menuName: `%${menuKeyword}%` } } },
       where: {
@@ -222,7 +222,7 @@ class GetRestaurantsRepository {
   // 매장 상세조회 : 가게 정보, 메뉴, 후기
   restaurantDetail = async (restaurantId) => {
     console.log('Repository restaurantDetails');
-    const info = await this.#orn.Restaurant.findUnique({
+    const info = await this.#orm.Restaurant.findUnique({
       where: { restaurantId },
       select: {
         address: true,
