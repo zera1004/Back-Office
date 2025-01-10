@@ -4,20 +4,28 @@ import menuController from '../controllers/menu.controller.js';
 
 const router = express.Router();
 
-router.post('/owners/me/menus', requireAccessToken, menuController.createMenu);
+router.post('/owners/me/menus', requireAccessToken, (req, res, next) => {
+  menuController.createMenu(req, res, next);
+});
 
-router.get('/restaurnts/:restaurantId/menus', menuController.getMenus);
+router.get('/restaurnts/:restaurantId/menus', (req, res, next) => {
+  menuController.getMenus(req, res, next);
+});
 
 router.patch(
   '/owners/me/menus/:menuId',
   requireAccessToken,
-  menuController.updateMenu,
+  (req, res, next) => {
+    menuController.updateMenu(req, res, next);
+  },
 );
 
 router.delete(
   '/owners/me/menus/:menuId',
   requireAccessToken,
-  menuController.deleteMenu,
+  (req, res, next) => {
+    menuController.deleteMenu(req, res, next);
+  },
 );
 
 export default router;

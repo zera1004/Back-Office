@@ -5,10 +5,6 @@ class menuController {
 
   constructor(service) {
     this.#service = service;
-    this.createMenu = this.createMenu.bind(this);
-    this.getMenus = this.getMenus.bind(this);
-    this.updateMenu = this.updateMenu.bind(this);
-    this.deleteMenu = this.deleteMenu.bind(this);
   }
 
   async createMenu(req, res, next) {

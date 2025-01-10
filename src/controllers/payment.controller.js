@@ -5,8 +5,6 @@ class paymentController {
 
   constructor(service) {
     this.#service = service;
-    this.getPayment = this.getPayment.bind(this);
-    this.getRestaurantPoint = this.getRestaurantPoint.bind(this);
   }
 
   async getPayment(req, res, next) {
