@@ -1,9 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,48 +12,53 @@ datasource db {
 }
 
 model User {
-  userId      Int       @id @default(autoincrement())
-  name        String
-  email       String    @unique
-  password    String
-  phoneNumber String
-  point       Int
-  cart        Cart[]
-  address     Address[]
-  order       Order[]
-  payment     Payment[]
-  review      Review[]
+  userId           Int       @id @default(autoincrement())
+  name             String
+  email            String    @unique
+  password         String
+  phoneNumber      String
+  point            Int
+  isVerified       Boolean   @default(false)
+  verificationCode String?
+  cart             Cart[]
+  address          Address[]
+  order            Order[]
+  payment          Payment[]
+  review           Review[]
 }
 
 model Owner {
-  ownerId     Int          @id @default(autoincrement())
-  name        String
-  email       String
-  password    String
-  phoneNumber String
-  point       Int
-  restaurant  Restaurant[]
+  ownerId          Int          @id @default(autoincrement())
+  name             String
+  email            String       @unique
+  password         String
+  phoneNumber      String
+  point            Int
+  isVerified       Boolean      @default(false)
+  verificationCode String?
+  restaurant       Restaurant[]
 }
 
 model Cart {
-  cartId Int @id @default(autoincrement())
-  userId Int
-
+  cartId     Int          @id @default(autoincrement())
+  userId     Int
   order      Order[]
   cartDetail CartDetail[]
   user       User         @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model CartDetail {
+
   cartDetailId Int  @id @default(autoincrement())
+
+
   cartId       Int
   menuId       Int
   restaurantId Int
   count        Int?
-
-  Cart       Cart       @relation(fields: [cartId], references: [cartId], onDelete: Cascade, onUpdate: Cascade)
-  Menu       Menu       @relation(fields: [menuId], references: [menuId], onDelete: Cascade, onUpdate: Cascade)
-  restaurant Restaurant @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
+  Cart         Cart       @relation(fields: [cartId], references: [cartId], onDelete: Cascade, onUpdate: Cascade)
+  Menu         Menu       @relation(fields: [menuId], references: [menuId], onDelete: Cascade, onUpdate: Cascade)
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Address {
@@ -126,8 +129,6 @@ enum RestaurantType {
   snack
   cafe
 }
-
-// // 결제내역 다음에 주문데이터 추가
 
 model Menu {
   menuId       Int          @id @default(autoincrement())
