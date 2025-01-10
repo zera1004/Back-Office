@@ -7,6 +7,7 @@ import reviewRouter from './routers/reviews.router.js';
 import restaurantRouter from './routers/restaurants.router.js';
 import { errorHandler } from './middlewares/error-handler.middleware.js';
 import { authRouter } from './routers/auth.router.js';
+import addressRouter from './routers/address.router.js';
 
 dotenv.config();
 
@@ -16,7 +17,13 @@ const PORT = 3000;
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/api', [menuRouter, paymentRouter, restaurantRouter, reviewRouter]);
+app.use('/api', [
+  menuRouter,
+  paymentRouter,
+  restaurantRouter,
+  reviewRouter,
+  addressRouter,
+]);
 app.use('/api/auth', authRouter);
 
 app.use(errorHandler);
