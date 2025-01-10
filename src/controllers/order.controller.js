@@ -1,6 +1,6 @@
-import OrderService from "../service/order.service.js"
+import orderService from "../service/order.service.js"
 
-class OrderController{
+class orderController{
 
     #services
     constructor(services){
@@ -49,4 +49,4 @@ class OrderController{
 }
 
 
-export default new OrderController(OrderService)
+export default new orderController(orderService)

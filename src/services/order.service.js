@@ -1,6 +1,6 @@
-import OrderRepository from "../repositories/order.repository.js"
+import orderRepository from "../repositories/order.repository.js"
 
-class OrderService {
+class orderService {
     #repository;
 
     constructor(repository) {
@@ -89,4 +89,4 @@ class OrderService {
     }
 }
 
-export default new OrderService(OrderRepository);
+export default new orderService(orderRepository);

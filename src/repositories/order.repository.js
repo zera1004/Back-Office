@@ -1,6 +1,6 @@
 import { prisma } from '../utils/prisma/index.js';
 
-class OrderRepository {
+class orderRepository {
     #orm;
 
     constructor(orm) {
@@ -96,4 +96,4 @@ class OrderRepository {
     }
 }
 
-export default new OrderRepository(prisma);
+export default new orderRepository(prisma);
