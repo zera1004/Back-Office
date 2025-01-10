@@ -1,6 +1,7 @@
 {
   "name": "back-office",
   "version": "1.0.0",
+  "type": "module",
   "description": "\"# Back-Office\"",
   "main": "index.js",
   "scripts": {
@@ -9,7 +10,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",

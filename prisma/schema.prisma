@@ -89,6 +89,20 @@ enum OrderType {
   DELIVERED
 }
 
+model Payment {
+  paymentId    Int      @id @default(autoincrement())
+  restaurantId Int
+  // orderId      Int
+  userId       Int
+  total_price  Int
+  order_time   DateTime @default(now())
+  createdAt    DateTime @default(now()) @map("created_at")
+  review       Review[]
+  order        Order[]
+  user         User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+}
+
+
 model Restaurant {
   restaurantId   Int            @id @default(autoincrement())
   ownerId        Int
@@ -114,20 +128,6 @@ enum RestaurantType {
   franchise
   snack
   cafe
-}
-
-// // 결제내역 다음에 주문데이터 추가
-model Payment {
-  paymentId    Int      @id @default(autoincrement())
-  restaurantId Int
-  // orderId      Int
-  userId       Int
-  tatal_price  Int
-  order_time   DateTime @default(now())
-  createdAt    DateTime @default(now()) @map("created_at")
-  review       Review[]
-  order        Order[]
-  user         User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Menu {
