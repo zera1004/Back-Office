@@ -14,15 +14,15 @@ export const MESSAGES = {
         NONEXISTENT: '존재하지 않는 사용자입니다.',
       },
       PASSWORD: {
-        REQURIED: '비밀번호를 입력해 주세요.',
+        REQUIRED: '비밀번호를 입력해 주세요.',
         MIN_LENGTH: `비밀번호는 ${MIN_PASSWORD_LENGTH}자리 이상이어야 합니다.`,
       },
       PASSWORD_CONFIRM: {
-        REQURIED: '비밀번호 확인을 입력해 주세요.',
+        REQUIRED: '비밀번호 확인을 입력해 주세요.',
         NOT_MACHTED_WITH_PASSWORD: '입력 한 두 비밀번호가 일치하지 않습니다.',
       },
       NAME: {
-        REQURIED: '이름을 입력해 주세요.',
+        REQUIRED: '이름을 입력해 주세요.',
       },
       PHONE: {
         REQUIRED: '전화번호를 입력해 주세요',
