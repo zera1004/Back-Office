@@ -1,4 +1,3 @@
-// 상태관리를 하는 객체 하나를 내보낸다.
 export const HTTP_STATUS = {
   OK: 200, // 호출에 성공했을 때
   CREATED: 201, // 생성에 성공했을 때
