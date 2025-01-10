@@ -3,7 +3,7 @@ import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 import { prisma } from '../utils/prisma/index.js';
-import authRepository from '../repositories/auth.repository.js'
+import authRepository from '../repositories/auth.repository.js';
 
 export const requireAccessToken = async (req, res, next) => {
   try {
@@ -58,7 +58,7 @@ export const requireAccessToken = async (req, res, next) => {
     user.password = undefined;
     user.memberType = memberType;
 
-    console.log(user)
+    console.log(user);
 
     req.user = user;
     next();
