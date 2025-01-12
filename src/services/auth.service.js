@@ -121,6 +121,13 @@ class AuthService {
       throw error;
     }
 
+    if (user.isVerified === true) {
+      const error = new Error(MESSAGES.AUTH.COMMON.EMAILVERIFICATION.ALREADYDONE);
+      error.status = HTTP_STATUS.CONFLICT;
+      error.name = 'isVerified';
+      throw error;
+    }
+
     if (user.verificationCode !== verificationCode) {
       const error = new Error(MESSAGES.AUTH.COMMON.EMAILVERIFICATION.WORNGCODE);
       error.status = HTTP_STATUS.UNAUTHORIZED;

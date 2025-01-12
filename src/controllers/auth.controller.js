@@ -70,7 +70,8 @@ class AuthController {
       if (
         error.name === 'existedUser' ||
         error.name === 'wrongCode' ||
-        error.name === 'noInput'
+        error.name === 'noInput' ||
+        error.name === 'isVerified'
       )
         errorForm(error, res);
       else next(error);
