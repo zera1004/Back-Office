@@ -14,5 +14,24 @@
 🧑‍🍳김용우
 🧑‍🍳박재상
 
+## 기술 스택
+🗄️Node.js
+💻Express
+🛕 Prisma
+📁GIT
+📦GITHUB
+🛠️AWS
+🐬MYSQL
+
+## ERD 다이어그램
+🧩 https://drawsql.app/teams/first-52/diagrams/backoffice
+![back_office](https://github.com/user-attachments/assets/56566abb-b9b7-4d35-a325-f6da479dffc8)
+
 ## 프로젝트 기능
-(작성중...)
+### 🍔 1.음식을 주문하고 리뷰를 남길수 있습니다 리뷰를 통해 식당을 평가해주세요!
+
+### 🍕 2.보안을 위해 JWT토큰을 이용합니다 안심하고 해당 프로젝트를 이용해주세요!
+
+### 🥗 3.식당에 메뉴를 확인하고 장바구니에 담을수 있습니다 원하는 메뉴를 담아보세요!
+
+### 🌮 4.주소를 등록하시면 배달이 가능합니다 맛있는 음식들을 집에서 편하게 드세요!
