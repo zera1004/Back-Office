@@ -1,4 +1,5 @@
 import restaurantsService from '../services/restaurants.service.js';
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
 class RestaurantController {
   #service;
@@ -20,15 +21,15 @@ class RestaurantController {
         totalPoint,
       });
       return res
-        .status(201)
+        .status(HTTP_STATUS.CREATED)
         .json({ message: '업장 등록에 성공하였습니다!', data: data });
     } catch (err) {
       if (err.message === '사장님을 찾을 수 없습니다.') {
-        return res.status(404).json({ message: err.message });
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
       if (err.message === '업장은 한개만 등록 가능합니다.') {
-        return res.status(403).json({ message: err.message });
+        return res.status(HTTP_STATUS.FORBIDDEN).json({ message: err.message });
       }
       next(err);
     }
@@ -39,11 +40,11 @@ class RestaurantController {
     try {
       const data = await this.#service.getOwnerRestaurant({ ownerId });
       return res
-        .status(200)
+        .status(HTTP_STATUS.OK)
         .json({ message: '업장을 조회하였습니다', data: data });
     } catch (err) {
       if (err.message === '업장을 찾을 수 없습니다.') {
-        return res.status(404).json({ message: err.message });
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
       next(err);
@@ -65,14 +66,14 @@ class RestaurantController {
         restaurantType,
       });
       return res
-        .status(201)
+        .status(HTTP_STATUS.CREATED)
         .json({ message: '업장이 수정되었습니다.', data: data });
     } catch (err) {
       if (err.message === '업장을 찾을 수 없습니다.') {
-        return res.status(404).json({ message: err.message });
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
       if (err.message === '업장 등록자가 아닙니다') {
-        return res.status(404).json({ message: err.message });
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
       next(err);
@@ -89,14 +90,14 @@ class RestaurantController {
         restaurantId,
       });
       return res
-        .status(201)
+        .status(HTTP_STATUS.CREATED)
         .json({ message: '업장이 삭제 되었습니다.', data: data });
     } catch (err) {
       if (err.message === '업장을 찾을 수 없습니다.') {
-        return res.status(404).json({ message: err.message });
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
       if (err.message === '업장 등록자가 아닙니다') {
-        return res.status(404).json({ message: err.message });
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
       next(err);
