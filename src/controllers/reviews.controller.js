@@ -1,5 +1,4 @@
 // src/services/reviews.service.js
-import { MESSAGES } from '../constants/message.constant.js';
 import ReviewsService from '../services/reviews.service.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
@@ -25,7 +24,7 @@ class ReviewsController {
     } catch (error) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR });
+        .json({ message: '잘못된 요청 입니다.' });
     }
   };
 
@@ -41,7 +40,7 @@ class ReviewsController {
     } catch (error) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR });
+        .json({ message: '잘못된 요청 입니다.' });
     }
   };
 
@@ -59,7 +58,7 @@ class ReviewsController {
     } catch (error) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR });
+        .json({ message: '잘못된 요청 입니다.' });
     }
   };
 
@@ -87,12 +86,12 @@ class ReviewsController {
       });
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: MESSAGES.REVIEW.CREATE.SUCCEED });
+        .json({ message: '리뷰가 생성되었습니다.' });
     } catch (error) {
       console.error(error);
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: MESSAGES.REVIEW.CREATE.NOT_FOUND_REVIEW });
+        .json({ message: '리뷰 생성에 실패했습니다.' });
     }
   };
 
@@ -120,12 +119,12 @@ class ReviewsController {
       });
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: MESSAGES.REVIEW.UPDATE.SUCCEED });
+        .json({ message: '리뷰가 수정되었습니다.' });
     } catch (error) {
       console.error(error);
       return res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: MESSAGES.REVIEW.UPDATE.NOT_FOUND_REVIEW });
+        .json({ message: '리뷰 수정에 실패했습니다.' });
     }
   };
 
@@ -151,12 +150,12 @@ class ReviewsController {
       // PostService가 반환한 결과를 Client에게 전달
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: MESSAGES.REVIEW.DELETE.SUCCEED });
+        .json({ message: '리뷰가 삭제되었습니다.' });
     } catch (error) {
       console.error(error);
       return res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: MESSAGES.REVIEW.DELETE.NOT_FOUND_REVIEW });
+        .json({ message: '리뷰 삭제에 실패했습니다.' });
     }
   };
 }

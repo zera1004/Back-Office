@@ -1,4 +1,3 @@
-import { MESSAGES } from '../constants/message.constant.js';
 import restaurantsRepository from '../repositories/restaurants.repository.js';
 
 class restaurantsService {
@@ -11,11 +10,11 @@ class restaurantsService {
     const ownerRestaurant = await this.#repository.findOwnerRestaurant(data);
 
     if (!owner) {
-      throw new Error(MESSAGES.RESTAURANT.COMMON.OWNER);
+      throw new Error('사장님을 찾을 수 없습니다.');
     }
 
     if (ownerRestaurant) {
-      throw new Error(MESSAGES.RESTAURANT.CREATE.ONE_RESTAURANT);
+      throw new Error('업장은 한개만 등록 가능합니다.');
     }
     return await this.#repository.postRestaurant(data);
   };
@@ -24,7 +23,7 @@ class restaurantsService {
     const ownerRestaurant = await this.#repository.findOwnerRestaurant(data);
 
     if (!ownerRestaurant) {
-      throw new Error(MESSAGES.RESTAURANT.READ_LIST.NOT_FOUND_RESTAURANT);
+      throw new Error('업장을 찾을 수 없습니다.');
     }
 
     return ownerRestaurant;
@@ -34,11 +33,11 @@ class restaurantsService {
     const findRestaurant = await this.#repository.findRestaurant(data);
 
     if (!findRestaurant) {
-      throw new Error(MESSAGES.RESTAURANT.UPDATE.NOT_FOUND_RESTAURANT);
+      throw new Error('업장을 찾을 수 없습니다.');
     }
 
     if (parseInt(data.ownerId) !== findRestaurant.ownerId) {
-      throw new Error(MESSAGES.RESTAURANT.UPDATE.NOT_OWNER);
+      throw new Error('업장 등록자가 아닙니다');
     }
 
     return await this.#repository.updateRestaurant(data);
@@ -48,10 +47,10 @@ class restaurantsService {
     const findRestaurant = await this.#repository.findRestaurant(data);
 
     if (!findRestaurant) {
-      throw new Error(MESSAGES.RESTAURANT.DELETE.NOT_FOUND_RESTAURANT);
+      throw new Error('업장을 찾을 수 없습니다.');
     }
     if (parseInt(data.ownerId) !== findRestaurant.ownerId) {
-      throw new Error(MESSAGES.RESTAURANT.DELETE.NOT_OWNER);
+      throw new Error('업장 등록자가 아닙니다');
     }
     return await this.#repository.deleteRestaurant(data);
   };

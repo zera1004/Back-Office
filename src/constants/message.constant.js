@@ -84,6 +84,7 @@ export const MESSAGES = {
       NO_BODY_DATA: '삭제 할 주소 ID를 입력해 주세요.',
     },
   },
+<<<<<<< HEAD
   RESTAURANT: {
     COMMON: {
       OWNER: {
@@ -291,4 +292,6 @@ export const MESSAGES = {
       },
     },
   },
+=======
+>>>>>>> parent of 816e98b (Merge pull request #12 from zera1004/feature/kdh/address)
 };

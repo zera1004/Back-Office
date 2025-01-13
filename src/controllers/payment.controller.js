@@ -1,4 +1,3 @@
-import { MESSAGES } from '../constants/message.constant.js';
 import paymentService from '../services/payment.service.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 class paymentController {
@@ -15,7 +14,7 @@ class paymentController {
       const data = await this.#service.getPayment(userId);
       return res.status(HTTP_STATUS.OK).json({
         status: HTTP_STATUS.OK,
-        message: MESSAGES.PAYMENT.READ_LIST.SUCCEED,
+        message: '결제 내역 조회 완료',
         data,
       });
     } catch (error) {
@@ -38,12 +37,10 @@ class paymentController {
         },
       });
     } catch (error) {
-      if (
-        error.message === MESSAGES.PAYMENT.READ_LIST_POINT.NOT_FOUND_RESTAURANT
-      ) {
+      if (error.message === 'RESTAURANT_NOT_FOUND') {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           status: HTTP_STATUS.NOT_FOUND,
-          message: MESSAGES.PAYMENT.READ_LIST_POINT.FAIL,
+          message: '레스토랑을 찾을 수 없습니다.',
         });
       }
       next(error);

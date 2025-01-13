@@ -28,8 +28,8 @@ class AddressController {
     } catch (error) {
       console.error('주소 생성 중 오류 발생:', error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.CREATE.NO_BODY_DATA });
     }
   };
 
@@ -45,8 +45,8 @@ class AddressController {
     } catch (error) {
       console.error('주소 조회 중 오류 발생:', error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.READ_LIST.NO_BODY_DATA });
     }
   };
 
@@ -69,8 +69,8 @@ class AddressController {
     } catch (error) {
       console.error('주소 수정 중 오류 발생:', error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.UPDATE.NO_BODY_DATA });
     }
   };
 
@@ -89,8 +89,8 @@ class AddressController {
     } catch (error) {
       console.error('주소 삭제 중 오류 발생:', error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.DELETE.NO_BODY_DATA });
     }
   };
 }
