@@ -14,24 +14,38 @@ class OrderServices {
     restaurantId,
     cartId,
     status,
-    total_price,
   }) => {
     try {
-      // 1. 사용자 포인트 확인 및 계산
+      let total_price = 0 
+
+      // 1. 사용자 조회
       const user = await this.#repository.getUserById(userId);
-      if (user.point < total_price) {
+
+      // 2. 메뉴 및 카운트갯수 조회(menuId , count 얻음)
+      const menuList = await this.#repository.getMenuByCartId(cartId)
+
+      // 3. 메뉴 가격을 찾아서 카운트 갯수를 곱한뒤 total_price 에 저장
+      for (const menu of menuList){
+        const price = await this.#repository.getPriceByMenuId(menu.menuId)
+        total_price += menu.count * price 
+        }
+
+      // 4. 유저가 가지고 있는 포인트가 total_price 보다 적으면 에러
+      if (user.point< total_price)
+      {
         throw new Error(MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT);
       }
-      const remainingPoints = user.point - total_price;
 
-      // 2. 결제 생성
+      let remainingPoints = user.point - total_price
+
+      // 5. 결제 생성
       const payment = await this.#repository.createPayment({
         userId,
         restaurantId,
         total_price,
       });
 
-      // 3. 주문 생성
+      // 6. 주문 생성
       const order = await this.#repository.createOrder({
         userId,
         restaurantId,
@@ -40,13 +54,13 @@ class OrderServices {
         paymentId: payment.paymentId,
       });
 
-      // 4. 포인트 업데이트
+      // 7. 유저 포인트 업데이트
       await this.#repository.updateUserPoints({
         userId,
         points: remainingPoints,
       });
 
-      return remainingPoints; // 남은 포인트 반환
+      return {remainingPoints , order}; // 남은 포인트, 주문 반환
     } catch (error) {
       if (error.message === MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT) {
         throw error;

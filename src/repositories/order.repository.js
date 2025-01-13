@@ -14,6 +14,23 @@ class orderRepository {
     });
   };
 
+  // 메뉴아이디 및 카운터 조회
+  getMenuByCartId = async (cartId) => {
+    return await this.#orm.CartDetail.findMany({
+      where: { cartId },
+      data: {menuId: true , count: true}
+             
+    });
+  };
+
+  // 가격 조회
+  getPriceByMenuId = async (menuId) => {
+    return await this.#orm.Menu.findMany({
+      where: { menuId },
+      data: {price: true}
+    });
+  };
+
   // 결제 생성
   createPayment = async ({ userId, restaurantId, total_price }) => {
     return await this.#orm.Payment.create({

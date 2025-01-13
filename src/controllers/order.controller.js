@@ -10,7 +10,7 @@ class OrderController {
 
   // 주문 생성
   createOrder = async (req, res) => {
-    const { restaurantId, cartId, status, total_price } = req.body;
+    const { restaurantId, cartId, status} = req.body;
     const { userId } = req.user;
     try {
       const result = await this.#services.createOrder({
@@ -18,10 +18,10 @@ class OrderController {
         restaurantId,
         cartId,
         status,
-        total_price,
       });
       return res.status(HTTP_STATUS.CREATED).json({
-        message: MESSAGES.ORDER.CREATE.SUCCEED`${result}원)`,
+        message: MESSAGES.ORDER.CREATE.SUCCEED`${result.remainingPoints}원이 남았습니다 , 
+        ${result.order})`,
       });
     } catch (error) {
       return res.json({ message: error.message });
