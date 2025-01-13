@@ -9,6 +9,7 @@ import restaurantRouter from './routers/restaurants.router.js';
 import { errorHandler } from './middlewares/error-handler.middleware.js';
 import { authRouter } from './routers/auth.router.js';
 import addressRouter from './routers/address.router.js';
+import cartRouter from './routers/carts.router.js';
 
 import getRestaurants from './routers/getRestaurants.routes.js';
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/api', [
   addressRouter,
   orderRouter,
   getRestaurants,
+  cartRouter,
 ]);
 app.use('/api/auth', authRouter);
 
