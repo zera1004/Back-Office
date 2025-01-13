@@ -7,6 +7,9 @@ class cartService {
   }
 
   postCartDetail = async (data) => {
+    if (!data.userId) {
+      throw new Error('접근권한이 없습니다.');
+    }
     const checkUser = await this.#repository.checkUser(data);
     console.log(checkUser);
     if (!checkUser) {
@@ -21,6 +24,10 @@ class cartService {
   };
 
   getCartDetail = async (data) => {
+    if (!data.userId) {
+      throw new Error('접근권한이 없습니다.');
+    }
+
     const checkUser = await this.#repository.checkUser(data);
 
     if (!checkUser) {
