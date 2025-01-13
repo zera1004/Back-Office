@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>업장 등록</title>
+  </head>
+  <script src="js/postRestaurant.js" defer></script>
+  <body>
+    <br />
+    <main class="container">
+      <header>
+        <h1>업장 등록하기</h1>
+      </header>
+      <br />
+      <p>000사장님 안녕하세요!</p>
+      <form method="POST">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+
+        <button type="logInSubmit" class="logInSubmit">Login</button>
+      </form>
+      <br />
+      <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+    </main>
+  </body>
+</html>
