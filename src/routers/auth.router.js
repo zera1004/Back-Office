@@ -16,4 +16,6 @@ authRouter.post('/log-in', signInValidator, AuthController.logIn);
 
 authRouter.post('/log-out', requireAccessToken, AuthController.logOut);
 
+authRouter.delete('/', requireAccessToken, AuthController.deleteId);
+
 export { authRouter };

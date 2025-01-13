@@ -7,7 +7,7 @@ const schema = Joi.object({
     'string.email': MESSAGES.AUTH.COMMON.EMAIL.INVALID_FORMAT,
   }),
   password: Joi.string().required().messages({
-    'any.required': MESSAGES.AUTH.COMMON.PASSWORD.REQURIED,
+    'any.required': MESSAGES.AUTH.COMMON.PASSWORD.REQUIRED,
   }),
   memberType: Joi.string().valid('customer', 'owner').required().messages({
     'any.required': MESSAGES.AUTH.COMMON.MEMBERTYPE.WRONGTYPE,
