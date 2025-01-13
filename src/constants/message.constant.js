@@ -36,7 +36,7 @@ export const MESSAGES = {
         REQUIRED: '인증 코드를 입력해 주세요.',
         WORNGCODE: '이메일 코드가 일치하지 않습니다.',
         NOVERIFICATION: '이메일 인증을 완료해 주세요.',
-        ALREADYDONE: '이미 이메일 인증을 완료하였습니다.'
+        ALREADYDONE: '이미 이메일 인증을 완료하였습니다.',
       },
       UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
       JWT: {
@@ -88,7 +88,6 @@ export const MESSAGES = {
       NO_BODY_DATA: '삭제 할 주소 ID를 입력해 주세요.',
     },
   },
-<<<<<<< HEAD
   RESTAURANT: {
     COMMON: {
       OWNER: {
@@ -296,6 +295,4 @@ export const MESSAGES = {
       },
     },
   },
-=======
->>>>>>> parent of 816e98b (Merge pull request #12 from zera1004/feature/kdh/address)
 };

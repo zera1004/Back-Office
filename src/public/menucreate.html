@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>메뉴등록</title>
+  </head>
+  <script src="./js/menu.js" defer></script>
+  <style>
+    article header {
+      text-align: center;
+    }
+    button[type='submit'] {
+      width: 120px;
+      margin-left: auto;
+      display: block;
+      background-color: #374956; /* 다크모드에 어울리는 색상 추가 */
+      border-color: #374956; /* 테두리 색상도 동일하게 설정 */
+    }
+
+    /* 호버 효과 추가 */
+    button[type='submit']:hover {
+      background-color: #2c3b47;
+      border-color: #2c3b47;
+    }
+  </style>
+  <body>
+    <main class="container">
+      <article>
+        <header>
+          <h3>메뉴 등록</h3>
+        </header>
+        <form>
+          <input
+            id="menuName"
+            name="menuName"
+            type="text"
+            placeholder="메뉴이름을 입력하세요"
+            required
+          />
+          <input
+            id="price"
+            name="price"
+            type="number"
+            placeholder="메뉴가격을 입력하세요"
+            required
+          />
+          <textarea
+            id="content"
+            name="content"
+            placeholder="메뉴설명을 입력하세요"
+            rows="15"
+            required
+          ></textarea>
+
+          <input id="media" name="media" type="file" accept="image/*" />
+          <button class="menuSubmit" type="submit">메뉴 등록</button>
+        </form>
+      </article>
+    </main>
+  </body>
+</html>

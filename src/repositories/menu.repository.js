@@ -14,13 +14,14 @@ class menuRepository {
     });
   }
 
-  async createMenu(restaurantId, menuName, content, price) {
+  async createMenu(restaurantId, menuName, content, price, media) {
     return await this.#orm.menu.create({
       data: {
         restaurantId,
         menuName,
         content,
-        price,
+        price: parseInt(price),
+        media,
       },
     });
   }

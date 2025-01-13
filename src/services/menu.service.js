@@ -7,8 +7,9 @@ class menuService {
     this.#repository = repository;
   }
 
-  async createMenu(ownerId, menuName, content, price) {
+  async createMenu(ownerId, menuName, content, price, media) {
     const restaurant = await this.#repository.findRestaurantByOwnerId(ownerId);
+    console.log(media);
     if (!restaurant) {
       return null;
     }
@@ -18,6 +19,7 @@ class menuService {
       menuName,
       content,
       price,
+      media,
     );
   }
 

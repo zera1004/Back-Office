@@ -106,4 +106,4 @@ class orderService {
   };
 }
 
-export default new OrderServices(OrderRepository);
+export default new orderService(OrderRepository);
