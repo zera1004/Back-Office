@@ -1,3 +1,4 @@
+import { MESSAGES } from '../constants/message.constant.js';
 import menuService from '../services/menu.service.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
@@ -27,13 +28,13 @@ class menuController {
       if (!data) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           status: HTTP_STATUS.NOT_FOUND,
-          message: '레스토랑을 찾을 수 없습니다.',
+          message: MESSAGES.MENU.CREATE.NOT_FOUND_RESTAURANT,
         });
       }
 
       return res.status(HTTP_STATUS.CREATED).json({
         status: HTTP_STATUS.CREATED,
-        message: '메뉴등록이 완료되었습니다',
+        message: MESSAGES.MENU.CREATE.SUCCEED,
         data,
       });
     } catch (error) {
@@ -50,7 +51,7 @@ class menuController {
       if (!data) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           status: HTTP_STATUS.NOT_FOUND,
-          message: '메뉴를 찾을 수 없습니다.',
+          message: MESSAGES.MENU.READ_LIST.NOT_FOUND_MENU,
         });
       }
 
@@ -80,13 +81,13 @@ class menuController {
       if (!data) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           status: HTTP_STATUS.NOT_FOUND,
-          message: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+          message: MESSAGES.MENU.UPDATE.NOT_FOUND_MENU,
         });
       }
 
       return res.status(HTTP_STATUS.CREATED).json({
         status: HTTP_STATUS.CREATED,
-        message: '메뉴가 수정되었습니다.',
+        message: MESSAGES.MENU.UPDATE.SUCCEED,
         data,
       });
     } catch (error) {
@@ -104,13 +105,13 @@ class menuController {
       if (!data) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           status: HTTP_STATUS.NOT_FOUND,
-          message: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+          message: MESSAGES.MENU.DELETE.NOT_FOUND_MENU,
         });
       }
 
       return res.status(HTTP_STATUS.CREATED).json({
         status: HTTP_STATUS.CREATED,
-        message: '메뉴가 삭제되었습니다.',
+        message: MESSAGES.MENU.DELETE.SUCCEED,
       });
     } catch (error) {
       next(error);
