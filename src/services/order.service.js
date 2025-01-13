@@ -23,13 +23,24 @@ class OrderServices {
 
       // 2. 메뉴 및 카운트갯수 조회(menuId , count 얻음)
       const menuList = await this.#repository.getMenuByCartId(cartId)
-
+      if (!menuList || menuList.length === 0) {
+        throw new Error('장바구니에 메뉴가 없습니다.');
+      }
       // 3. 메뉴 가격을 찾아서 카운트 갯수를 곱한뒤 total_price 에 저장
-      for (const menu of menuList){
-        const price = await this.#repository.getPriceByMenuId(menu.menuId)
-        total_price += menu.count * price 
+      for (const menu of menuList) {
+        const priceData = await this.#repository.getPriceByMenuId(menu.menuId);
+        const price = priceData ? priceData.price : 0;  // 가격이 없으면 0으로 설정
+      
+        if (isNaN(price)) {
+          throw new Error(`메뉴 ID ${menu.menuId}의 가격을 찾을 수 없습니다.`);
         }
-
+      
+        if (typeof menu.count !== 'number' || menu.count <= 0) {
+          throw new Error(`잘못된 카운트 값: ${menu.count}`);
+        }
+      
+        total_price += menu.count * price;
+      }
       // 4. 유저가 가지고 있는 포인트가 total_price 보다 적으면 에러
       if (user.point< total_price)
       {
@@ -89,8 +100,9 @@ class OrderServices {
       });
 
       // 4. 주문 및 결제 삭제
-      await this.#repository.deletePayment(payment.paymentId);
       await this.#repository.deleteOrder(orderId);
+      await this.#repository.deletePayment(payment.paymentId);
+      
 
       return payment.total_price; // 환불된 금액 반환
     } catch (error) {

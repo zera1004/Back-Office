@@ -18,16 +18,16 @@ class orderRepository {
   getMenuByCartId = async (cartId) => {
     return await this.#orm.CartDetail.findMany({
       where: { cartId },
-      data: {menuId: true , count: true}
+      select: {menuId: true , count: true}
              
     });
   };
 
   // 가격 조회
   getPriceByMenuId = async (menuId) => {
-    return await this.#orm.Menu.findMany({
+    return await this.#orm.Menu.findFirst({
       where: { menuId },
-      data: {price: true}
+      select: {price: true}
     });
   };
 
