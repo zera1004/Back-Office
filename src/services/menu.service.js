@@ -9,7 +9,9 @@ class menuService {
 
   async createMenu(ownerId, menuName, content, price) {
     const restaurant = await this.#repository.findRestaurantByOwnerId(ownerId);
-    if (!restaurant) return null;
+    if (!restaurant) {
+      return null;
+    }
 
     return await this.#repository.createMenu(
       restaurant.restaurantId,
@@ -28,13 +30,17 @@ class menuService {
 
   async updateMenu(ownerId, menuId, menuName, content, price) {
     const restaurant = await this.#repository.findRestaurantByOwnerId(ownerId);
-    if (!restaurant) return null;
+    if (!restaurant) {
+      throw new Error('RESTAURANT_NOT_FOUND');
+    }
 
     const menu = await this.#repository.findMenuByIdAndRestaurantId(
       menuId,
       restaurant.restaurantId,
     );
-    if (!menu) return null;
+    if (!menu) {
+      return null;
+    }
 
     const updateData = {
       ...(menuName && { menuName }),

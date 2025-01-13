@@ -84,4 +84,36 @@ export const MESSAGES = {
       NO_BODY_DATA: '삭제 할 주소 ID를 입력해 주세요.',
     },
   },
+  MENU: {
+    COMMON: {
+      MENUNAME: {
+        REQUIRED: '메뉴 이름을 입력해 주세요.',
+        TOO_LONG: '이름을 20자 내로 작성해 주세요.',
+      },
+      PRICE: {
+        REQUIRED: '메뉴 가격을 입력해 주세요.',
+        TOO_LOW: '가격을 0보다 큰 값으로 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '메뉴 설명을 입력해 주세요.',
+        TOO_LONG: '메뉴 설명을 100자 내로 입력해 주세요.',
+      },
+    },
+    CREATE: {
+      SUCCEED: '메뉴 등록에 성공했습니다.',
+      NOT_FOUND: '레스토랑을 찾을 수 없습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴가 수정되었습니다.',
+      NOT_FOUND: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+    },
+    GET: {
+      SUCCEED: '메뉴 조회에 성공했습니다.',
+      NOT_FOUND: '메뉴를 찾을 수 없습니다',
+    },
+    DELETE: {
+      SUCCEED: '메뉴가 삭제되었습니다.',
+      NOT_FOUND: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+    },
+  },
 };
