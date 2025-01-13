@@ -1,7 +1,7 @@
-import { MESSAGES } from '../constants/message.constant.js';
-import OrderServices from '../services/order.services.js';
+import orderService from '../services/order.service.js';
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
-class OrderControllers {
+class OrderController {
   #services;
   constructor(services) {
     this.#services = services;
@@ -19,8 +19,8 @@ class OrderControllers {
         status,
         total_price,
       });
-      return res.status(201).json({
-        message: MESSAGES.ORDER.CREATE.SUCCEED`${result}원)`,
+      return res.status(HTTP_STATUS.CREATED).json({
+        message: `주문이 완료되었습니다(남은금액:${result}원)`,
       });
     } catch (error) {
       return res.json({ message: error.message });
@@ -32,8 +32,8 @@ class OrderControllers {
     const { id } = req.params;
     try {
       const result = await this.#services.deleteOrder({ id });
-      return res.status(200).json({
-        message: MESSAGES.ORDER.DELETE.SUCCEED`${result}원)`,
+      return res.status(HTTP_STATUS.CREATED).json({
+        message: `주문이 취소되었습니다(환불금액:${result}원)`,
       });
     } catch (error) {
       return res.json({ message: error.message });
@@ -45,8 +45,8 @@ class OrderControllers {
     const { id } = req.params;
     try {
       const result = await this.#services.checkOrder({ id });
-      return res.status(200).json({
-        message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
+      return res.status(HTTP_STATUS.OK).json({
+        message: `현재 배달상황은: ${result}`,
       });
     } catch (error) {
       return res.json({ message: error.message });
@@ -54,4 +54,4 @@ class OrderControllers {
   };
 }
 
-export default new OrderControllers(OrderServices);
+export default new OrderController(orderService);
