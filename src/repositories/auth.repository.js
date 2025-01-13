@@ -88,6 +88,20 @@ class AuthRepository {
       },
     });
   };
+
+  // 손님 회원 탈퇴
+  deleteCustomerId = async (email) => {
+    return await this.#orm.user.delete({
+      where: { email },
+    });
+  };
+
+  // 사장님 회원 탈퇴
+  deleteOwnerId = async (email) => {
+    return await this.#orm.owner.delete({
+      where: { email },
+    });
+  };
 }
 
 export default new AuthRepository(prisma);

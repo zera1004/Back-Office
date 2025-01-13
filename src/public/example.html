@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+  </head>
+  <script src="js/example.js" defer></script>
+  <body>
+    <br />
+    <main class="container">
+      <header>
+        <h1>Login</h1>
+      </header>
+      <br />
+      <form method="POST">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          autocomplete="username"
+        />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password"
+        />
+
+        <button type="logInSubmit" class="logInSubmit">Login</button>
+      </form>
+      <br />
+      <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+    </main>
+  </body>
+</html>

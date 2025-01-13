@@ -1,3 +1,4 @@
+import { MESSAGES } from '../constants/message.constant.js';
 import restaurantsService from '../services/restaurants.service.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
@@ -8,14 +9,9 @@ class RestaurantController {
   }
 
   postRestaurant = async (req, res) => {
-    const {
-      ownerId,
-      address,
-      phoneNumber,
-      restaurantName,
-      restaurantType,
-      totalPoint,
-    } = req.body;
+    const ownerId = parseInt(req.user.ownerId);
+    const { address, phoneNumber, restaurantName, restaurantType, totalPoint } =
+      req.body;
     try {
       const data = await this.#service.postRestaurant({
         ownerId,
@@ -27,13 +23,13 @@ class RestaurantController {
       });
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: '업장 등록에 성공하였습니다!', data: data });
+        .json({ message: MESSAGES.RESTAURANT.CREATE.SUCCEED, data: data });
     } catch (err) {
-      if (err.message === '사장님을 찾을 수 없습니다.') {
+      if (err.message === MESSAGES.RESTAURANT.CREATE.NOT_FOUND_OWNER) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
-      if (err.message === '업장은 한개만 등록 가능합니다.') {
+      if (err.message === MESSAGES.RESTAURANT.CREATE.ONE_RESTAURANT) {
         return res.status(HTTP_STATUS.FORBIDDEN).json({ message: err.message });
       }
       next(err);
@@ -41,14 +37,14 @@ class RestaurantController {
   };
 
   getOwnerRestaurant = async (req, res) => {
-    const { ownerId } = req.params;
+    const ownerId = parseInt(req.user.ownerId);
     try {
       const data = await this.#service.getOwnerRestaurant({ ownerId });
       return res
         .status(HTTP_STATUS.OK)
-        .json({ message: '업장을 조회하였습니다', data: data });
+        .json({ message: MESSAGES.RESTAURANT.READ_LIST.SUCCEED, data: data });
     } catch (err) {
-      if (err.message === '업장을 찾을 수 없습니다.') {
+      if (err.message === MESSAGES.RESTAURANT.READ_LIST.NOT_FOUND_RESTAURANT) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
@@ -57,9 +53,11 @@ class RestaurantController {
   };
 
   updateRestaurant = async (req, res) => {
-    const { ownerId, restaurantId } = req.params;
+    const ownerId = parseInt(req.user.ownerId);
     const { address, phoneNumber, restaurantName, restaurantType } = req.body;
     try {
+      const getRestaurant = await this.#service.getOwnerRestaurant({ ownerId });
+      const { restaurantId } = getRestaurant;
       const data = await this.#service.updateRestaurant({
         ownerId,
         restaurantId,
@@ -70,12 +68,12 @@ class RestaurantController {
       });
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: '업장이 수정되었습니다.', data: data });
+        .json({ message: MESSAGES.RESTAURANT.UPDATE.SUCCEED, data: data });
     } catch (err) {
-      if (err.message === '업장을 찾을 수 없습니다.') {
+      if (err.message === MESSAGES.RESTAURANT.UPDATE.NOT_FOUND_RESTAURANT) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
-      if (err.message === '업장 등록자가 아닙니다') {
+      if (err.message === MESSAGES.RESTAURANT.UPDATE.NOT_OWNER) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
@@ -84,20 +82,22 @@ class RestaurantController {
   };
 
   deleteRestaurant = async (req, res) => {
-    const { ownerId, restaurantId } = req.params;
+    const ownerId = parseInt(req.user.ownerId);
     try {
+      const getRestaurant = await this.#service.getOwnerRestaurant({ ownerId });
+      const { restaurantId } = getRestaurant;
       const data = await this.#service.deleteRestaurant({
         ownerId,
         restaurantId,
       });
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: '업장이 삭제 되었습니다.', data: data });
+        .json({ message: MESSAGES.RESTAURANT.DELETE.SUCCEED, data: data });
     } catch (err) {
-      if (err.message === '업장을 찾을 수 없습니다.') {
+      if (err.message === MESSAGES.RESTAURANT.DELETE.NOT_FOUND_RESTAURANT) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
-      if (err.message === '업장 등록자가 아닙니다') {
+      if (err.message === MESSAGES.RESTAURANT.DELETE.NOT_OWNER) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 

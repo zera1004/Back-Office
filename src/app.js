@@ -9,6 +9,11 @@ import restaurantRouter from './routers/restaurants.router.js';
 import { errorHandler } from './middlewares/error-handler.middleware.js';
 import { authRouter } from './routers/auth.router.js';
 import addressRouter from './routers/address.router.js';
+import cartRouter from './routers/carts.router.js';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 import getRestaurants from './routers/getRestaurants.routes.js';
 dotenv.config();
@@ -18,6 +23,7 @@ const PORT = 3000;
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/api', router);
 
@@ -29,6 +35,7 @@ app.use('/api', [
   addressRouter,
   orderRouter,
   getRestaurants,
+  cartRouter,
 ]);
 app.use('/api/auth', authRouter);
 
