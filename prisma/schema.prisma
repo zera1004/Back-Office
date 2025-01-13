@@ -88,16 +88,17 @@ enum OrderType {
 }
 
 model Payment {
-  paymentId    Int      @id @default(autoincrement())
+  paymentId    Int            @id @default(autoincrement())
   restaurantId Int
   // orderId      Int
   userId       Int
   total_price  Int
-  order_time   DateTime @default(now())
-  createdAt    DateTime @default(now()) @map("created_at")
+  order_time   DateTime       @default(now())
+  createdAt    DateTime       @default(now()) @map("created_at")
   review       Review[]
   order        Order[]
-  user         User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  user         User           @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  restaurant   Restaurant     @relation(fields: [restaurantId], references: [restaurantId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Restaurant {
@@ -113,8 +114,10 @@ model Restaurant {
   menu           Menu[]
   review         Review[]
   order          Order[]
-  owner          Owner          @relation(fields: [ownerId], references: [ownerId], onDelete: Cascade, onUpdate: Cascade)
   CartDetail     CartDetail[]
+  payment        Payment[]
+  owner          Owner          @relation(fields: [ownerId], references: [ownerId], onDelete: Cascade, onUpdate: Cascade)
+
 }
 
 enum RestaurantType {
