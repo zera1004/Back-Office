@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>사장님 마이페이지</title>
+    <script src="js/ownerMyPage.js" defer></script>
+    <style>
+      .restaurantImage {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin: 20px auto;
+        display: block;
+        background-color: #444;
+        /* 이미지가 없을 때의 기본 배경색 */
+      }
+
+      .restaurant-Info {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .contrast {
+        background-color: whitesmoke;
+      }
+      .restaurant-Info .info-row {
+        display: flex;
+        justify-content: flex-start; /* 왼쪽 정렬 */
+        align-items: center; /* 세로 정렬 */
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        gap: 10px; /* 요소 간 간격 설정 */
+      }
+
+      .restaurant-Info .info-row span {
+        flex-grow: 1; /* 남은 공간을 차지 */
+        text-align: left;
+      }
+
+      .restaurant-Info .edit-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px 10px;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .restaurant-Info .contrast {
+        margin-top: 20px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .modal-content {
+        background-color: var(--background-color);
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 500px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <nav>
+        <ul>
+          <li><strong>마이페이지</strong></li>
+        </ul>
+        <ul>
+          어서오세요 000사장님!
+        </ul>
+        <ul>
+          <li><a href="postRestaurant.html">업장 등록</a></li>
+          <li><a href="#">메뉴 등록</a></li>
+          <li><a href="#">주문 진행</a></li>
+          <li><a href="#">주문 내역</a></li>
+          <li><button class="secondary">회원탈퇴</button></li>
+        </ul>
+      </nav>
+      <div class="restaurant-Info">
+        <img
+          class="restaurantImage"
+          id="restaurantImage"
+          onclick="openMediaModal()"
+          src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fpng.pngtree.com%2Fthumb_back%2Ffw800%2Fbackground%2F20230314%2Fpngtree-fresh-baked-pizza-on-wooden-table-food-photography-overhead-view-for-image_1925586.jpg&type=a340"
+        />
+
+        <div class="info-row">
+            <span class="label">업장명</span>
+            <span id="restaurantName">수제 화덕 피자 (등촌점)</span>
+            <button class="edit-button" onclick="openEditModal('restaurantName')">수정</button>
+          </div>
+          <div class="info-row">
+            <span class="label">업장 주소</span>
+            <span id="restaurantAddress">서울시 강서구 등촌동 4213-321321</span>
+            <button class="edit-button" onclick="openEditModal('restaurantAddress')">수정</button>
+          </div>
+          <div class="info-row">
+            <span class="label">업장 번호</span>
+            <span id="restaurantNumber">010-1111-1111</span>
+            <button class="edit-button" onclick="openEditModal('restaurantNumber')">수정</button>
+          </div>
+          <div class="info-row">
+            <span class="label">업장 종류</span>
+            <span id="restaurantType">양식</span>
+            <button class="edit-button" onclick="openEditModal('restaurantType')">수정</button>
+          </div>
+          
+          <!-- 수정 모달 -->
+          <div id="editModal" class="modal">
+            <div class="modal-content">
+              <h3>수정하기</h3>
+              <input type="text" id="editInput" placeholder="새로운 값을 입력하세요" />
+              <button onclick="saveEdit()">저장</button>
+              <button onclick="closeEditModal()">취소</button>
+            </div>
+          </div>
+          <button class="outline">업장 삭제</button>
+
+      <!-- 비밀번호 수정 모달 -->
+      <div id="passwordModal" class="modal">
+        <div class="modal-content">
+          <h3>비밀번호 수정</h3>
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="새로운 비밀번호"
+          />
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="비밀번호 확인"
+          />
+          <button onclick="savePassword()">저장</button>
+          <button onclick="closePasswordModal()">취소</button>
+        </div>
+      </div>
+      <!-- 프로필 사진 수정 모달 -->
+      <div id="mediaModal" class="modal">
+        <div class="modal-content">
+          <h3></h3>
+          <input type="file" id="media" name="media" accept="image/*" />
+          <button onclick="saveMedia()">저장</button>
+          <button onclick="closeMediaModal()">취소</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

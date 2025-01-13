@@ -35,7 +35,6 @@ class RestaurantRepository {
         phoneNumber: data.phoneNumber,
         restaurantName: data.restaurantName,
         restaurantType: data.restaurantType,
-        totalPoint: data.totalPoint,
       },
     });
   };

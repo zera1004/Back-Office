@@ -10,6 +10,11 @@
     <title>업장 등록</title>
   </head>
   <script src="js/postRestaurant.js" defer></script>
+  <style>
+    .warning {
+      color: brown;
+    }
+  </style>
   <body>
     <br />
     <main class="container">
@@ -18,29 +23,47 @@
       </header>
       <br />
       <p>000사장님 안녕하세요!</p>
+      <p class="warning">업장은 하나만 등록이 가능합니다!</p>
       <form method="POST">
-        <label for="email">Email</label>
+        <label for="address">업장 주소</label>
         <input
           type="text"
-          id="email"
-          name="email"
-          placeholder="Enter your email"
+          id="address"
+          name="address"
+          placeholder="주소를 입력해주세요."
           required
         />
 
-        <label for="password">Password</label>
+        <label for="phoneNumber">업장 전화번호</label>
         <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter your password"
+          type="Text"
+          id="phoneNumber"
+          name="phoneNumber"
+          placeholder="-를 포함하여 입력해주세요."
           required
         />
 
-        <button type="logInSubmit" class="logInSubmit">Login</button>
+        <label for="restaurantName">업장 이름</label>
+        <input
+          type="Text"
+          id="restaurantName"
+          name="restaurantName"
+          placeholder="업장 이름을 입력해주세요."
+          required
+        />
+
+        <label for="restaurantType">업장 종류</label>
+        <input type="radio" name="restaurantType" value="korean" />한식
+        <input type="radio" name="restaurantType" value="japanese" />일식
+        <input type="radio" name="restaurantType" value="western" />양식
+        <input type="radio" name="restaurantType" value="chinese" />중식
+        <input type="radio" name="restaurantType" value="snack" />분식
+        <input type="radio" name="restaurantType" value="cafe" />카페
+        <br />
+        <br />
+        <button type="outline" class="outline">등록하기</button>
       </form>
       <br />
-      <p>Don't have an account? <a href="signup.html">Sign up</a></p>
     </main>
   </body>
 </html>

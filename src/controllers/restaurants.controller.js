@@ -10,8 +10,7 @@ class RestaurantController {
 
   postRestaurant = async (req, res) => {
     const ownerId = parseInt(req.user.ownerId);
-    const { address, phoneNumber, restaurantName, restaurantType, totalPoint } =
-      req.body;
+    const { address, phoneNumber, restaurantName, restaurantType } = req.body;
     try {
       const data = await this.#service.postRestaurant({
         ownerId,
@@ -19,7 +18,6 @@ class RestaurantController {
         phoneNumber,
         restaurantName,
         restaurantType,
-        totalPoint,
       });
       return res
         .status(HTTP_STATUS.CREATED)
