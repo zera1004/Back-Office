@@ -1,5 +1,5 @@
 import { MESSAGES } from '../constants/message.constant.js';
-import OrderRepository from '../repositories/order.repositories.js';
+import OrderRepository from '../repositories/order.repository.js';
 
 class OrderServices {
   #repository;
@@ -104,4 +104,4 @@ class OrderServices {
   };
 }
 
-export default new orderService(orderRepository);
+export default new OrderServices(OrderRepository);
