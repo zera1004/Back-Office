@@ -108,8 +108,8 @@ model Restaurant {
   phoneNumber    String
   restaurantName String
   restaurantType RestaurantType
-  totalPoint     Int // 총 매출
-  averageStar    Int? // 평균 평점
+  totalPoint     Int?           @default(0)
+  averageStar    Int?           @default(0)
   media          String?
   createdAt      DateTime       @default(now()) @map("created_at")
   menu           Menu[]
