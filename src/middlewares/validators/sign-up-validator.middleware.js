@@ -12,15 +12,15 @@ const schema = Joi.object({
     'string.email': MESSAGES.AUTH.COMMON.EMAIL.INVALID_FORMAT,
   }),
   password: Joi.string().required().min(MIN_PASSWORD_LENGTH).messages({
-    'any.required': MESSAGES.AUTH.COMMON.PASSWORD.REQURIED,
+    'any.required': MESSAGES.AUTH.COMMON.PASSWORD.REQUIRED,
     'string.min': MESSAGES.AUTH.COMMON.PASSWORD.MIN_LENGTH,
   }),
   passwordConfirm: Joi.string().required().valid(Joi.ref('password')).messages({
-    'any.required': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.REQURIED,
+    'any.required': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.REQUIRED,
     'any.only': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.NOT_MACHTED_WITH_PASSWORD,
   }),
   name: Joi.string().required().messages({
-    'any.required': MESSAGES.AUTH.COMMON.NAME.REQURIED,
+    'any.required': MESSAGES.AUTH.COMMON.NAME.REQUIRED,
   }),
   phoneNumber: Joi.string().min(MIN_PHONE_LENGTH).max(MAX_PHONE_LENGTH).required().messages({
     'any.required': MESSAGES.AUTH.COMMON.PHONE.REQUIRED,
