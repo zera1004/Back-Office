@@ -62,7 +62,7 @@ class AuthController {
         memberType,
       });
 
-      return res.status(HTTP_STATUS.CREATED).json({
+      return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.AUTH.EMAIL_VERIFY.SUCCEED,
         data,
       });

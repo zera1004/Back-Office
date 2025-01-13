@@ -1,4 +1,6 @@
+import { MESSAGES } from '../constants/message.constant.js';
 import menuService from '../services/menu.service.js';
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
 class menuController {
   #service;
@@ -24,15 +26,15 @@ class menuController {
       );
 
       if (!data) {
-        return res.status(404).json({
-          status: 404,
-          message: '레스토랑을 찾을 수 없습니다.',
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          status: HTTP_STATUS.NOT_FOUND,
+          message: MESSAGES.MENU.CREATE.NOT_FOUND_RESTAURANT,
         });
       }
 
-      return res.status(200).json({
-        status: 200,
-        message: '메뉴등록이 완료되었습니다',
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.MENU.CREATE.SUCCEED,
         data,
       });
     } catch (error) {
@@ -47,14 +49,14 @@ class menuController {
       const data = await this.#service.getMenus(restaurantId);
 
       if (!data) {
-        return res.status(404).json({
-          status: 404,
-          message: '메뉴를 찾을 수 없습니다.',
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          status: HTTP_STATUS.NOT_FOUND,
+          message: MESSAGES.MENU.READ_LIST.NOT_FOUND_MENU,
         });
       }
 
-      return res.status(200).json({
-        status: 200,
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
         data,
       });
     } catch (error) {
@@ -77,15 +79,15 @@ class menuController {
       );
 
       if (!data) {
-        return res.status(404).json({
-          status: 404,
-          message: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          status: HTTP_STATUS.NOT_FOUND,
+          message: MESSAGES.MENU.UPDATE.NOT_FOUND_MENU,
         });
       }
 
-      return res.status(200).json({
-        status: 200,
-        message: '메뉴가 수정되었습니다.',
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.MENU.UPDATE.SUCCEED,
         data,
       });
     } catch (error) {
@@ -101,15 +103,15 @@ class menuController {
       const data = await this.#service.deleteMenu(ownerId, menuId);
 
       if (!data) {
-        return res.status(404).json({
-          status: 404,
-          message: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          status: HTTP_STATUS.NOT_FOUND,
+          message: MESSAGES.MENU.DELETE.NOT_FOUND_MENU,
         });
       }
 
-      return res.status(200).json({
-        status: 200,
-        message: '메뉴가 삭제되었습니다.',
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.MENU.DELETE.SUCCEED,
       });
     } catch (error) {
       next(error);

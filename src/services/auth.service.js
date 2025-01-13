@@ -161,7 +161,7 @@ class AuthService {
 
     const isPasswordMatched =
       user && bcrypt.compareSync(password, user.password);
-
+    email;
     if (!isPasswordMatched) {
       const error = new Error(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
       error.status = HTTP_STATUS.UNAUTHORIZED;

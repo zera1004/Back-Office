@@ -1,6 +1,8 @@
 // getRestaurants.controller.js
 // 간단하게 서비스 호출만
+import { MESSAGES } from '../constants/message.constant.js';
 import GetRestaurantsService from '../services/getRestaurants.service.js';
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
 class GetRestaurantsController {
   #service;
@@ -10,48 +12,48 @@ class GetRestaurantsController {
 
   // 랭킹조회 : 매출순
   ranking = async (req, res) => {
-    console.log('Controller ranking');
+    console.log(MESSAGES.GETRESTAURANT.RANK.CONTROLLER);
     try {
       const ranking = await this.#service.ranking();
       if (!ranking || ranking.length === 0) {
         return res
-          .status(404)
-          .json({ message: '매장 매출 정보가 존재하지 않습니다.' });
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json({ message: MESSAGES.GETRESTAURANT.RANK.NOT_FOUND });
       }
 
-      return res.status(200).json({
-        message: '매출 상위 20위',
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.GETRESTAURANT.RANK.SUCCEED,
         data: ranking,
       });
     } catch (error) {
-      console.error('Error in ranking:', error);
+      console.error(MESSAGES.GETRESTAURANT.RANK.ERROR_RANK, error);
       return res
-        .status(500)
-        .json({ message: '서버 내부 오류가 발생했습니다.' });
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.GETRESTAURANT.RANK.NOT_ERROR });
     }
   };
 
   // 식당 타입별
   // restaurantByType = async (type) => {console.log("Controller
   restaurantByType = async (req, res) => {
-    console.log('컨트롤러 type');
+    console.log(MESSAGES.GETRESTAURANT.BYTYPE.TYPE);
     try {
       const { type } = req.query; // 쿼리
-      console.log('Controller restaurantByType');
+      console.log(MESSAGES.GETRESTAURANT.BYTYPE.CONSOLE);
 
       const restaurantsByT = await this.#service.restaurantByType(type);
       if (!restaurantsByT || restaurantsByT.length === 0) {
         return res
-          .status(404)
-          .json({ message: '선택한 타입의 매장 정보가 존재하지 않습니다' });
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json({ message: MESSAGES.GETRESTAURANT.BYTYPE.NOT_FOUND });
       }
 
-      return res.status(200).json(restaurantsByT);
+      return res.status(HTTP_STATUS.OK).json(restaurantsByT);
     } catch (error) {
-      console.error('Error in restaurantByType:', error);
+      console.error(MESSAGES.GETRESTAURANT.BYTYPE.ERROR_TYPE, error);
       return res
-        .status(500)
-        .json({ message: '서버 내부 오류가 발생했습니다.' });
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.GETRESTAURANT.BYTYPE.NOT_ERROR });
     }
   };
 
@@ -60,21 +62,21 @@ class GetRestaurantsController {
   restaurantByAddress = async (req, res) => {
     try {
       const { address } = req.query; // 쿼리
-      console.log('Controller restaurantByAddress');
+      console.log(MESSAGES.GETRESTAURANT.BYADDRESS.CONSOLE);
 
       const restaurantsByA = await this.#service.restaurantByAddress(address);
       if (!restaurantsByA || restaurantsByA.length === 0) {
         return res
-          .status(404)
-          .json({ message: '선택한 지역의 매장 정보가 존재하지 않습니다' });
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json({ message: MESSAGES.GETRESTAURANT.BYADDRESS.NOT_FOUND });
       }
 
-      return res.status(200).json(restaurantsByA);
+      return res.status(HTTP_STATUS.OK).json(restaurantsByA);
     } catch (error) {
-      console.error('Error in restaurantByType:', error);
+      console.error(MESSAGES.GETRESTAURANT.BYADDRESS.ERROR_TYPE, error);
       return res
-        .status(500)
-        .json({ message: '서버 내부 오류가 발생했습니다.' });
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.GETRESTAURANT.BYADDRESS.NOT_ERROR });
     }
   };
 
@@ -84,21 +86,21 @@ class GetRestaurantsController {
   //allRestaurant = async () => {console.log("Controller
   allRestaurant = async (req, res) => {
     try {
-      console.log('Controller allRestaurant');
+      console.log(MESSAGES.GETRESTAURANT.ALL.CONSOLE);
 
       const restaurants = await this.#service.allRestaurant();
       if (!restaurants || restaurants.length === 0) {
         return res
-          .status(404)
-          .json({ message: '매장 정보가 존재하지 않습니다.' });
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json({ message: MESSAGES.GETRESTAURANT.ALL.NOT_FOUND });
       }
 
-      return res.status(200).json(restaurants);
+      return res.status(HTTP_STATUS.OK).json(restaurants);
     } catch (error) {
-      console.error('Error in allRestaurant:', error);
+      console.error(MESSAGES.GETRESTAURANT.ALL.ERROR_TYPE, error);
       return res
-        .status(500)
-        .json({ message: '서버 내부 오류가 발생했습니다.' });
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.GETRESTAURANT.ALL.NOT_ERROR });
     }
   };
 
@@ -106,12 +108,14 @@ class GetRestaurantsController {
 
   // 매장검색
   searchRestaurants = async (req, res) => {
-    console.log('Controller searchRestaurants');
+    console.log(MESSAGES.GETRESTAURANT.SEARCH.CONSOLE);
     try {
       const { search, type } = req.query; // 쿼리 파라미터로 전달된 search, type 값
 
       if (!search) {
-        return res.status(400).json({ message: '검색어를 입력해 주세요.' });
+        return res
+          .status(HTTP_STATUS.BAD_REQUEST)
+          .json({ message: MESSAGES.GETRESTAURANT.SEARCH.SEARCH_RESTAURANT });
       }
 
       // 검색 타입에 따른 분기 처리
@@ -126,16 +130,16 @@ class GetRestaurantsController {
 
       if (!restaurants || restaurants.length === 0) {
         return res
-          .status(404)
-          .json({ message: '일치하는 매장 정보가 존재하지 않습니다.' });
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json({ message: MESSAGES.GETRESTAURANT.SEARCH.NOT_FOUND });
       }
 
-      return res.status(200).json(restaurants);
+      return res.status(HTTP_STATUS.OK).json(restaurants);
     } catch (error) {
-      console.error('Error in searchRestaurants:', error);
+      console.error(MESSAGES.GETRESTAURANT.SEARCH.ERROR_TYPE, error);
       return res
-        .status(500)
-        .json({ message: '서버 내부 오류가 발생했습니다.' });
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.GETRESTAURANT.SEARCH.NOT_ERROR });
     }
   };
 
@@ -143,22 +147,22 @@ class GetRestaurantsController {
   // restaurantDetail = async (restaurantId) => {console.log("Controller
   restaurantDetail = async (req, res) => {
     try {
-      console.log('Controller restaurantDetail');
+      console.log(MESSAGES.GETRESTAURANT.DETAIL.CONSOLE);
       const { restaurantId } = req.params; // URL 경로에서 id 추출
 
       const restaurant = await this.#service.restaurantDetail(+restaurantId);
       if (!restaurant || restaurant.length === 0) {
         return res
-          .status(404)
-          .json({ message: '매장 정보가 존재하지 않습니다.' });
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json({ message: MESSAGES.GETRESTAURANT.DETAIL.NOT_FOUND });
       }
 
-      return res.status(200).json(restaurant);
+      return res.status(HTTP_STATUS.OK).json(restaurant);
     } catch (error) {
-      console.error('Error in restaurantDetail:', error);
+      console.error(MESSAGES.GETRESTAURANT.DETAIL.ERROR_TYPE, error);
       return res
-        .status(500)
-        .json({ message: '서버 내부 오류가 발생했습니다.' });
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: MESSAGES.GETRESTAURANT.DETAIL.NOT_ERROR });
     }
   };
 }

@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import OrderRouter from './routers/order.routers.js';
+import orderRouter from './routers/order.router.js';
 import menuRouter from './routers/menu.router.js';
 import paymentRouter from './routers/payment.router.js';
 import reviewRouter from './routers/reviews.router.js';
@@ -9,6 +9,7 @@ import restaurantRouter from './routers/restaurants.router.js';
 import { errorHandler } from './middlewares/error-handler.middleware.js';
 import { authRouter } from './routers/auth.router.js';
 import addressRouter from './routers/address.router.js';
+import cartRouter from './routers/carts.router.js';
 
 import getRestaurants from './routers/getRestaurants.routes.js';
 dotenv.config();
@@ -27,8 +28,9 @@ app.use('/api', [
   restaurantRouter,
   reviewRouter,
   addressRouter,
-  OrderRouter,
+  orderRouter,
   getRestaurants,
+  cartRouter,
 ]);
 app.use('/api/auth', authRouter);
 
