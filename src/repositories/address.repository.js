@@ -55,6 +55,15 @@ class AddressRepository {
       where: { userId },
     });
   };
+
+  setMainAddress = async ({ addressId, userId }) => {
+    return await this.#orm.address.patch({
+      where: { addressId, userId },
+      data: {
+        mainAddress: true,
+      },
+    });
+  };
 }
 
 export default new AddressRepository(prisma);

@@ -68,6 +68,14 @@ class AddressService {
       addressId,
     });
   };
+
+  // 주소 상세 조회
+  findAddressById = async (addressId) => {
+    const existAddress = await this.#repository.findUnique(addressId);
+    if (!existAddress) throw new Error(MESSAGES.ADDRESS.COMMON.NOT_FOUND);
+
+    return await this.#repository.findUnique(addressId);
+  };
 }
 
 export default new AddressService(addressRepository);
