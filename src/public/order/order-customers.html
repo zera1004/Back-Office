@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Page(Customer)</title>
+</head>
+<script src="order-customers.js" defer></script>
+
+<body>
+  <br />
+  <main class="container">
+    <header>
+      <h1>주문 진행</h1>
+      <h4>주문현황 (고객용)</h4>
+    </header>
+    <br />
+    <form method="POST" style="background-color: rgba(98, 226, 194, 0.349); padding: 10px;">
+
+      <div class="orderProgressStatus" style=" display: flex; gap: 10px; align-items: flex-start;">
+        <label for="email" style="width: 100px;">진행 상황</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email" required autocomplete="username" />
+
+      </div>
+      <div class="OrderDetails" style=" display: flex; gap: 10px; align-items: flex-start;">
+        <span style="width: 100px;">주문내역 </span>
+        <textarea readonly id="OrderDetails" style="
+          border: 1px solid #ccc; 
+          padding: 5px; 
+          resize: none; 
+          width: 100%; 
+          height: 100px; 
+          overflow-y: auto; 
+          word-wrap: break-word;
+          white-space: pre-wrap;
+        ">
+여기에 긴 텍스트가 들어갑니다.
+텍스트가 길어지면 스크롤바가 나타납니다.
+줄바꿈도 가능합니다.
+        </textarea>
+      </div>
+      <div class="CustomerInfo" style=" display: flex; gap: 10px; align-items: flex-start;">
+        <span style="width: 100px;">고객 정보 </span>
+        <textarea readonly id="CustomerInfo" style="
+          border: 1px solid #ccc; 
+          padding: 5px; 
+          resize: none; 
+          width: 100%; 
+          height: 100px; 
+          overflow-y: auto; 
+          word-wrap: break-word;
+          white-space: pre-wrap;
+        ">
+여기에 긴 텍스트가 들어갑니다.
+텍스트가 길어지면 스크롤바가 나타납니다.
+줄바꿈도 가능합니다.
+        </textarea>
+      </div>
+
+
+
+      <div style="display: flex; justify-content: flex-end; padding: 10px; height: 70px;">
+
+        <button type="OrderProgress" class="OrderProgress" id="OrderProgress-ready"
+          style="margin-right: 10px;">음식준비완료</button>
+        <button type="OrderProgress" class="OrderProgress" id="OrderProgress-deliveryComplete">배달완료</button>
+      </div>
+    </form>
+    <br />
+    <!-- <p>Don't have an account? <a href="signup.html">Sign up</a></p> -->
+  </main>
+</body>
+
+</html>

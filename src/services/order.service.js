@@ -102,6 +102,57 @@ class OrderServices {
       throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
     }
   };
+
+  // 주문내역 조회
+  /**
+    // 사용자 조회
+  getUserById = async (userId) => {
+    return await this.#orm.User.findFirst({
+      where: { userId },
+    });
+  };
+   */
+
+  /**
+  // 주문 조회
+  getOrderById = async (orderId) => {
+    return await this.#orm.Order.findFirst({
+      where: { orderId },
+    });
+  };
+   */
+
+
+
+  // 주문 취소
+/**
+  // 포인트 복원
+  restoreUserPoints = async ({ userId, refundedAmount }) => {
+    return await this.#orm.User.update({
+      where: { userId },
+      data: {
+        point: {
+          increment: refundedAmount,
+        },
+      },
+    });
+  };
+
+  // 주문 삭제
+  deleteOrder = async (orderId) => {
+    return await this.#orm.Order.delete({
+      where: { orderId },
+    });
+  };
+
+  // 결제 삭제
+  deletePayment = async (paymentId) => {
+    return await this.#orm.Payment.delete({
+      where: { paymentId },
+    });
+  };
+ */
+  
 }
 
 export default new OrderServices(OrderRepository);
