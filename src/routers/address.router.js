@@ -35,5 +35,10 @@ addressRouter.get(
   requireAccessToken,
   addressController.findAddressById,
 );
+addressRouter.patch(
+  '/users/me/addresses/:addressId/main',
+  requireAccessToken,
+  addressController.setMainAddress,
+);
 
 export default addressRouter;

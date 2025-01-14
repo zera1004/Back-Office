@@ -26,7 +26,6 @@ const fetchAddresses = async () => {
 
 // 주소 목록 렌더링
 const renderAddressList = (addresses) => {
-  // console.log(addresses);
   addressList.innerHTML = '';
   if (addresses.length === 0) {
     addressList.innerHTML = '<p>등록된 주소가 없습니다.</p>';
@@ -34,14 +33,47 @@ const renderAddressList = (addresses) => {
   }
 
   addresses.forEach((address) => {
-    // console.log(address);
     const listItem = document.createElement('li');
     listItem.innerHTML = `
       <strong>${address.addressName}</strong>: ${address.address}
+      ${
+        address.mainAddress
+          ? `<span style="color: green;">[메인 주소]</span>
+             <a href="#" class="cancelMainButton" data-id="${address.addressId}" role="button">메인 주소 취소</a>`
+          : `<a href="mainAddress.html?id=${address.addressId}" role="button">메인 주소로 설정</a>`
+      }
       <a href="patchAddress.html?id=${address.addressId}" role="button">수정</a>
       <a href="deleteAddress.html?id=${address.addressId}" role="button" class="deleteButton">삭제</a>
     `;
     addressList.appendChild(listItem);
+  });
+
+  // 메인 주소 취소 버튼 이벤트 추가
+  document.querySelectorAll('.cancelMainButton').forEach((button) => {
+    button.addEventListener('click', async (e) => {
+      const addressId = e.target.dataset.id;
+
+      try {
+        const response = await fetch(
+          `api/users/me/addresses/${addressId}/main`,
+          {
+            method: 'PATCH',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mainAddress: false }), // 메인 주소 취소 요청
+          },
+        );
+
+        if (!response.ok) throw new Error('메인 주소 취소에 실패했습니다.');
+
+        alert('메인 주소가 취소되었습니다.');
+        window.location.reload();
+      } catch (error) {
+        console.error('메인 주소 취소 오류:', error);
+      }
+    });
   });
 };
 

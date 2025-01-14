@@ -76,6 +76,19 @@ class AddressService {
 
     return await this.#repository.findUnique(addressId);
   };
+
+  // 메인 주소 설정
+  setMainAddress = async ({ addressId, userId }) => {
+    const existingMainAddresses =
+      await this.#repository.getMainAddresses(userId);
+
+    // 데이터 무결성 검증: 중복된 mainAddress가 있을 경우 정리
+    if (existingMainAddresses.length > 1) {
+      throw new Error('중복된 메인 주소가 존재합니다. 데이터를 확인하세요.');
+    }
+
+    return await this.#repository.setMainAddress({ addressId, userId });
+  };
 }
 
 export default new AddressService(addressRepository);
