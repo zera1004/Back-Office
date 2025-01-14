@@ -10,7 +10,7 @@ class OrderController {
 
   // 주문 생성
   createOrder = async (req, res) => {
-    const { restaurantId, cartId, status, total_price } = req.body;
+    const { restaurantId, cartId, status, total_price, address } = req.body;
     const { userId } = req.user;
     try {
       const result = await this.#services.createOrder({
@@ -19,6 +19,7 @@ class OrderController {
         cartId,
         status,
         total_price,
+        address,
       });
       return res.status(HTTP_STATUS.CREATED).json({
         message: MESSAGES.ORDER.CREATE.SUCCEED`${result}원)`,
@@ -29,6 +30,7 @@ class OrderController {
   };
 
   // 주문 취소
+  // paymentId
   deleteOrder = async (req, res) => {
     const { id } = req.params;
     try {
@@ -55,7 +57,32 @@ class OrderController {
   };
 
   // 주문확인
+  /*
   orderInfo = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await this.#services.orderInfo({ id });
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
+      });
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
+  };
+  */
+  orderInfoByUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await this.#services.orderInfo({ id });
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
+      });
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
+  };
+
+  orderInfoByRestaurant = async (req, res) => {
     try {
       const { id } = req.params;
       const result = await this.#services.orderInfo({ id });
@@ -72,7 +99,7 @@ class OrderController {
     try {
       const { id } = req.params;
       const { status } = req.body;
-      orderStatusUpdate(id, status);
+      const result = await this.#services.orderStatusUpdate(id, status);
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
       });

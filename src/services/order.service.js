@@ -15,8 +15,13 @@ class OrderServices {
     cartId,
     status,
     total_price,
+    address,
   }) => {
     try {
+      // 주소 없으면 매인 가져오기
+      if (!address || address.lemgth < 1) {
+        address = await this.#repository.getMainAddress(userId);
+      }
       // 1. 사용자 포인트 확인 및 계산
       const user = await this.#repository.getUserById(userId);
       if (user.point < total_price) {
@@ -29,6 +34,7 @@ class OrderServices {
         userId,
         restaurantId,
         total_price,
+        address,
       });
 
       // 3. 주문 생성
@@ -59,24 +65,31 @@ class OrderServices {
   // 주문 삭제
   deleteOrder = async ({ orderId }) => {
     try {
+      /*
       // 1. 주문 정보 조회
       const order = await this.#repository.getOrderById(orderId);
       if (!order) {
         throw new Error(MESSAGES.ORDER.SERVICE.DELETE.NOT_FOUND);
       }
+        */
 
       // 2. 결제 정보 조회
-      const payment = await this.#repository.getPaymentById(order.paymentId);
-
+      const payment = await this.#repository.getPaymentById(paymentId);
+      if (!payment) {
+        throw new Error(MESSAGES.ORDER.SERVICE.DELETE.NOT_FOUND);
+      }
       // 3. 포인트 복원
       await this.#repository.restoreUserPoints({
-        userId: order.userId,
+        userId: payment.userId,
         refundedAmount: payment.total_price,
       });
 
-      // 4. 주문 및 결제 삭제
-      await this.#repository.deletePayment(payment.paymentId);
-      await this.#repository.deleteOrder(orderId);
+      // 4. 주문 및 결제 삭제 -> 상태변경
+      // await this.#repository.deletePayment(paymentId);
+      // await this.#repository.deleteOrder(paymentId);
+      for (const element of payment.user) {
+        await this.#repository.editOrderStatus(element, CANCELED);
+      }
 
       return payment.total_price; // 환불된 금액 반환
     } catch (error) {
@@ -122,40 +135,15 @@ class OrderServices {
   // 주문상태 수정
   orderStatusUpdate = async (orderId, status) => {
     try {
+      const statusType = [PREPARING, DELIVERING, DELIVERED, CANCELED];
+      if (!status.include(statusType)) {
+        throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
+      }
       return this.#repository.editOrderStatus(orderId, status);
     } catch (error) {
       throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
     }
   };
-
-  // 주문 취소
-  /**
-  // 포인트 복원
-  restoreUserPoints = async ({ userId, refundedAmount }) => {
-    return await this.#orm.User.update({
-      where: { userId },
-      data: {
-        point: {
-          increment: refundedAmount,
-        },
-      },
-    });
-  };
-
-  // 주문 삭제
-  deleteOrder = async (orderId) => {
-    return await this.#orm.Order.delete({
-      where: { orderId },
-    });
-  };
-
-  // 결제 삭제
-  deletePayment = async (paymentId) => {
-    return await this.#orm.Payment.delete({
-      where: { paymentId },
-    });
-  };
- */
 }
 
 export default new OrderServices(OrderRepository);

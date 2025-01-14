@@ -93,6 +93,50 @@ class AddressController {
         .json({ message: error.message });
     }
   };
+
+  // 주소 상세 조회
+  findAddressById = async (req, res, next) => {
+    try {
+      const { addressId } = req.params;
+
+      const _address = await this.#service.findAddressById(+addressId);
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.READ_LIST.SUCCEED,
+        data: _address,
+      });
+    } catch (error) {
+      console.error('주소 조회 중 오류 발생:', error);
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: error.message });
+    }
+  };
+
+  // 메인 주소 설정
+  setMainAddress = async (req, res, next) => {
+    try {
+      const { addressId } = req.params;
+      const { userId } = req.user;
+
+      const _address = await this.#service.setMainAddress({
+        addressId: +addressId,
+        userId: +userId,
+      });
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.UPDATE.SUCCEED,
+        data: _address,
+      });
+    } catch (error) {
+      console.error('메인 주소 설정 중 오류 발생:', error);
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: error.message });
+    }
+  };
 }
 
 export default new AddressController(addressService);
