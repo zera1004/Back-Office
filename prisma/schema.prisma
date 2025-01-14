@@ -64,6 +64,7 @@ model Address {
   userId      Int
   address     String
   addressName String
+  mainAddress Boolean @default(false)   
   user        User   @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
