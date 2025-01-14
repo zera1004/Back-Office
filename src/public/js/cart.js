@@ -1,33 +1,88 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const cartItems = [
-      { id: 1, name: 'Item 1', price: 100000, quantity: 2 },
-      { id: 2, name: 'Item 2', price: 200000, quantity: 1 },
-      { id: 3, name: 'Item 3', price: 50000, quantity: 3 }
-    ]; // 예시 데이터. 실제로는 API로 받아올 수 있습니다.
-    
-    const cartItemsList = document.querySelector('#cartItems');
-    const totalPriceEl = document.querySelector('#totalPrice');
-    const checkoutButton = document.querySelector('#checkoutButton');
-    
-    // 장바구니 항목 추가
+document.addEventListener('DOMContentLoaded', () => {
+  const cartTableBody = document.getElementById('cartItems');
+  const totalAmountElement = document.getElementById('totalAmount');
+  const orderButton = document.getElementById('orderButton');
+
+  const userId = 14; // 예시로 User ID를 설정 (현재 유저 ID)
+  const cartId = 2;  // 예시로 Cart ID를 설정
+
+  // 장바구니에 메뉴 추가
+  async function addMenuToCart(menuId, restaurantId, count) {
+    const response = await fetch(`/api/users/${userId}/carts/${cartId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        menuId: menuId,
+        restaurantId: restaurantId,
+        count: count,
+      }),
+    });
+
+    if (response.ok) {
+      // 메뉴가 추가되면 장바구니 항목을 갱신
+      getCartItems();
+    } else {
+      alert('메뉴 추가에 실패했습니다.');
+    }
+  }
+
+  // 장바구니 항목 조회
+  async function getCartItems() {
+    const response = await fetch(`/api/users/${userId}/carts/${cartId}`);
+    const cartItems = await response.json();
+
+    // 테이블을 갱신
+    cartTableBody.innerHTML = '';
+    let totalAmount = 0;
+
     cartItems.forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <strong>${item.name}</strong> - ${item.quantity} x ${item.price}원
-        <span class="price">총 ${item.price * item.quantity}원</span>
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.menuName}</td>
+        <td class="price">${item.price}</td>
+        <td>${item.restaurantName}</td>
+        <td><input type="number" value="${item.count}" min="1" class="count" style="width: 60px;" /></td>
+        <td><button type="button" class="delete-btn" onclick="deleteCartItem(${item.cartDetailId})">삭제</button></td>
       `;
-      cartItemsList.appendChild(li);
+      cartTableBody.appendChild(row);
+
+      // 총액 계산
+      totalAmount += item.price * item.count;
     });
-    
-    // 총 가격 계산
-    const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    totalPriceEl.textContent = totalPrice.toLocaleString();
-    
-    // 결제 버튼 클릭 시
-    checkoutButton.addEventListener('click', function () {
-      // 예시: 결제 처리 로직 (API 호출 등)
-      alert('Proceeding to checkout...');
-      // 실제로는 결제 처리 후 페이지 이동 등을 할 수 있습니다.
+
+    totalAmountElement.textContent = `₩${totalAmount}`;
+  }
+
+  // 장바구니 항목 삭제
+  async function deleteCartItem(cartDetailId) {
+    const response = await fetch(`/api/users/${userId}/carts/${cartId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cartDetailId: cartDetailId,
+      }),
     });
+
+    if (response.ok) {
+      // 항목 삭제 후 장바구니 항목 갱신
+      getCartItems();
+    } else {
+      alert('삭제에 실패했습니다.');
+    }
+  }
+
+  // 장바구니 조회
+  getCartItems();
+
+  // 예시로 메뉴를 추가할 수 있는 함수 (임시로 버튼으로 테스트)
+  const addMenuButton = document.createElement('button');
+  addMenuButton.textContent = '짜장면 추가';
+  addMenuButton.addEventListener('click', () => {
+    addMenuToCart(2, 2, 2); // 메뉴 ID, 식당 ID, 수량
   });
-  
+  document.body.appendChild(addMenuButton);
+});

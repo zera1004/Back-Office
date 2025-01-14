@@ -26,7 +26,6 @@ class CartController {
         .json({ message: '장바구니 메뉴 등록에 성공하였습니다.', data: data });
     } catch (err) {
       if (err.message === '접근권한이 없습니다.') {
-        return res.status(HTTP_STATUS.FORBIDDEN).json({ message: err.message });
       }
 
       if (err.message === '수량을 선택해 주세요') {

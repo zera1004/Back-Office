@@ -21,7 +21,7 @@ cartRouter.get(
   cartsController.getCartDetail,
 );
 
-// 이것도 마찬가지로 유저테이블에 카트 id만 추가하면 더 쉽게 할수 있을듯함..... 시봉방거 ...
+
 cartRouter.delete(
   '/users/me/carts/:cartId',
   requireAccessToken,

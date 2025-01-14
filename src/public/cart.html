@@ -44,37 +44,26 @@
         </ul>
       </nav>
     </div>
-    <table role="grid">
+    <table role="grid" id="cartTable">
       <thead>
         <tr>
-          <th>음식 사진</th>
           <th>음식 이름</th>
           <th>가격</th>
+          <th>식당 이름</th>
           <th>개수</th>
           <th>삭제</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td><img src="food1.jpg" alt="음식1" style="width: 80px; height: auto;"></td>
-          <td>김밥</td>
-          <td>₩3,000</td>
-          <td><input type="number" value="1" min="1" style="width: 60px;"></td>
-          <td><button type="button">삭제</button></td>
-        </tr>
-        <tr>
-          <td><img src="food2.jpg" alt="음식2" style="width: 80px; height: auto;"></td>
-          <td>떡볶이</td>
-          <td>₩4,500</td>
-          <td><input type="number" value="1" min="1" style="width: 60px;"></td>
-          <td><button type="button">삭제</button></td>
-        </tr>
+      <tbody id="cartItems">
+        <!-- 장바구니 항목이 여기에 동적으로 추가됩니다. -->
       </tbody>
     </table>
     <div class="total">
-      <strong>총액: ₩7,500</strong>
-      <button type="button">주문하기</button>
+      <strong>총액: <span id="totalAmount">₩0</span></strong>
+      <button type="button" id="orderButton">주문하기</button>
     </div>
   </main>
+
+  <script src="cart.js"></script>
 </body>
 </html>

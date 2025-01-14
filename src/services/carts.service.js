@@ -5,8 +5,8 @@ class cartService {
   constructor(repository) {
     this.#repository = repository;
   }
-
-  postCartDetail = async (data) => {
+  // 카트 정보와 유저정보가 일치한지 확인후 cartDetail 모델 생성
+  postCartDetail = async (data) => { 
     const checkUser = await this.#repository.checkUser(data);
     console.log(checkUser);
     if (!checkUser) {
