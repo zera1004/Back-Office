@@ -31,11 +31,13 @@ class ReviewsController {
 
   // 내 리뷰 전체 조회 (인증 O)
   findAllMyReviews = async (req, res) => {
-    const userId = req.user;
+    const { userId } = req.user;
+    console.log('컨트롤러 계층 : 인증 사용자 ID:', userId);
     try {
       const AllMyReviews = await this.#service.findAllMyReviews({
-        userId: userId,
+        userId,
       });
+      console.log('컨트롤러 계층 : 전달할 리뷰 데이터:', AllMyReviews);
 
       return res.status(HTTP_STATUS.CREATED).json({ data: AllMyReviews });
     } catch (error) {
@@ -101,14 +103,9 @@ class ReviewsController {
     // Client로 부터 받은 데이터를 가공
     const { content, star } = req.body;
     // 파라미터로 부터 받은 데이터
-    // const { reviewId } = req.params;
+    const { reviewId } = req.params;
     // 인증 미들웨어에서 받은 유저 정보
-    // const userId = req.user;
-
-    // 테스트 용
-    const reviewId = 4;
-    const userId = 10;
-    // 테스트 용
+    const userId = req.user;
 
     // ReviewsService를 이용하여 게시글 생성 요청
     try {

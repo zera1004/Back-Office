@@ -124,7 +124,11 @@ class AuthController {
       const { email, memberType } = req.user;
       const { password } = req.body;
 
-      const data = await this.#service.deleteId({email, password, memberType});
+      const data = await this.#service.deleteId({
+        email,
+        password,
+        memberType,
+      });
 
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.AUTH.DELETE_ID.SUCCEED,

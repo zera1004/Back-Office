@@ -36,7 +36,7 @@ export const MESSAGES = {
         REQUIRED: '인증 코드를 입력해 주세요.',
         WORNGCODE: '이메일 코드가 일치하지 않습니다.',
         NOVERIFICATION: '이메일 인증을 완료해 주세요.',
-        ALREADYDONE: '이미 이메일 인증을 완료하였습니다.'
+        ALREADYDONE: '이미 이메일 인증을 완료하였습니다.',
       },
       UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
       JWT: {
@@ -136,7 +136,7 @@ export const MESSAGES = {
     SERVICE: {
       NOT_FOUND_ERROR: '잘못된 요청입니다.',
       ERROR_RESTAURANT: 'Validation Error: restaurantId는 정수여야 합니다.',
-      ERROR_USER: 'Validation Error: userId 정수여야 합니다.',
+      ERROR_USER: 'Validation Error: userId는 정수여야 합니다.',
       ERROR_PAYMENT: 'Validation Error: userId, paymentId는 정수여야 합니다.',
       ERROR_ALL:
         'Validation Error: userId, restaurantId, paymentId는 정수여야 합니다.',

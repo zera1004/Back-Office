@@ -3,8 +3,7 @@ const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 logInSubmit.addEventListener('click', function (e) {
   e.preventDefault();
-
-  fetch('/api/login', {
+  fetch('/api/auth/log-in', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -12,6 +11,7 @@ logInSubmit.addEventListener('click', function (e) {
     body: JSON.stringify({
       email: email.value,
       password: password.value,
+      memberType: 'customer',
     }),
   })
     .then((response) => {
@@ -20,9 +20,8 @@ logInSubmit.addEventListener('click', function (e) {
     })
     .then((result) => {
       console.log(result);
-      window.location.href = 'index.html';
+      window.location.href = 'reviewsByUser.html';
     })
-
     .catch((err) => {
       console.log('에러: ', err);
     });

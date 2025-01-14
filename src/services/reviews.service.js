@@ -43,6 +43,7 @@ class ReviewsService {
         paymentId: review.paymentId,
         userId: review.userId,
         content: review.content,
+        star: review.star,
         createdAt: review.createdAt,
       };
     });
@@ -51,18 +52,20 @@ class ReviewsService {
   // 내 모든 리뷰
   // data : userId
   findAllMyReviews = async (data) => {
-    if (!Number.isInteger(data.userId)) {
+    const { userId } = data;
+    console.log('서비스 계층 : 전달된 사용자 ID:', userId);
+    if (!Number.isInteger(userId)) {
       console.error(MESSAGES.REVIEW.SERVICE.ERROR_USER, {
-        userId: data.userId,
+        userId: userId,
       });
       throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
     }
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const reviews = await this.#repository.findAllMyReviews(data.userId);
-
+    const reviews = await this.#repository.findAllMyReviews(userId);
+    console.log('서비스계층 : 사용자 ID로 조회된 리뷰 데이터:', reviews);
     // 본인의 리뷰만 조회 가능
-    if (reviews.userId !== data.userId)
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
+    // if (reviews.userId !== userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
 
     reviews.sort((a, b) => {
       return b.createdAt - a.createdAt;
@@ -77,7 +80,9 @@ class ReviewsService {
         restaurantId: review.restaurantId,
         paymentId: review.paymentId,
         userId: review.userId,
+        reviewId: review.reviewId,
         content: review.content,
+        star: review.star,
         createdAt: review.createdAt,
       };
     });
@@ -159,8 +164,8 @@ class ReviewsService {
     const review = await this.#repository.findReviewByReviewId(data.reviewId);
     if (!review) throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND);
 
-    if (review.userId !== data.userId)
-      throw new Error(MESSAGES.REVIEW.SERVICE.USER_UPDATE);
+    // if (review.userId !== data.userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.USER_UPDATE);
 
     if (data.star < 1 || data.star > 5)
       throw new Error(MESSAGES.REVIEW.SERVICE.DATA_STAR);
