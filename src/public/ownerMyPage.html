@@ -105,22 +105,22 @@
 
         <div class="info-row">
             <span class="label">업장명</span>
-            <span id="restaurantName">수제 화덕 피자 (등촌점)</span>
+            <span id="restaurantName"></span>
             <button class="edit-button" onclick="openEditModal('restaurantName')">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 주소</span>
-            <span id="restaurantAddress">서울시 강서구 등촌동 4213-321321</span>
+            <span id="restaurantAddress"></span>
             <button class="edit-button" onclick="openEditModal('restaurantAddress')">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 번호</span>
-            <span id="restaurantNumber">010-1111-1111</span>
+            <span id="restaurantNumber"></span>
             <button class="edit-button" onclick="openEditModal('restaurantNumber')">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 종류</span>
-            <span id="restaurantType">양식</span>
+            <span id="restaurantType"></span>
             <button class="edit-button" onclick="openEditModal('restaurantType')">수정</button>
           </div>
           
@@ -134,32 +134,6 @@
             </div>
           </div>
           <button class="outline">업장 삭제</button>
-
-      <!-- 비밀번호 수정 모달 -->
-      <div id="passwordModal" class="modal">
-        <div class="modal-content">
-          <h3>비밀번호 수정</h3>
-          <input
-            type="password"
-            id="newPassword"
-            placeholder="새로운 비밀번호"
-          />
-          <input
-            type="password"
-            id="confirmPassword"
-            placeholder="비밀번호 확인"
-          />
-          <button onclick="savePassword()">저장</button>
-          <button onclick="closePasswordModal()">취소</button>
-        </div>
-      </div>
-      <!-- 프로필 사진 수정 모달 -->
-      <div id="mediaModal" class="modal">
-        <div class="modal-content">
-          <h3></h3>
-          <input type="file" id="media" name="media" accept="image/*" />
-          <button onclick="saveMedia()">저장</button>
-          <button onclick="closeMediaModal()">취소</button>
         </div>
       </div>
     </main>

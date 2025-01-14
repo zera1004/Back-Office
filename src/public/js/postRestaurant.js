@@ -2,10 +2,18 @@ const outline = document.querySelector('.outline');
 const address = document.querySelector('#address');
 const phoneNumber = document.querySelector('#phoneNumber');
 const restaurantName = document.querySelector('#restaurantName');
-const restaurantType = document.querySelector('#restaurantType');
 
 outline.addEventListener('click', function (e) {
   e.preventDefault();
+  const restaurantType = document.querySelector(
+    'input[name="restaurantType"]:checked',
+  );
+  console.log(restaurantType);
+
+  if (!restaurantType) {
+    alert('레스토랑 타입을 선택해주세요.');
+    return;
+  }
 
   fetch('api/owners/me/restaurants', {
     method: 'POST',
@@ -21,8 +29,11 @@ outline.addEventListener('click', function (e) {
     }),
   })
     .then((response) => {
-      if (!response.ok) throw new Error('업장 등록에 실패했습니다.');
-      alert('업장 등록에 실패했습니다.');
+      if (!response.ok) {
+        alert('업장 등록에 실패했습니다.');
+        throw new Error('업장 등록에 실패했습니다.');
+      }
+
       return response.json();
     })
     .then((result) => {

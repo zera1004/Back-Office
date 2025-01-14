@@ -153,8 +153,8 @@ function getUserPosts() {
 }
 
 // 사용자 정보 조회
-function getUserProfile() {
-  fetch('/api/profile', {
+function getOwnerRestaurant() {
+  fetch('/api/owners/me/restaurants', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -170,6 +170,6 @@ function getUserProfile() {
 
 // 페이지 로드시 사용자 정보와 게시글 모두 조회
 window.onload = function () {
-  getUserProfile();
+  getOwnerRestaurant();
   getUserPosts();
 };
