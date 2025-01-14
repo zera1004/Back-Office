@@ -41,11 +41,38 @@ class OrderController {
     }
   };
 
-  // 주문 확인
+  // 주문 확인 - 안씀
   checkOrder = async (req, res) => {
     const { id } = req.params;
     try {
       const result = await this.#services.checkOrder({ id });
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
+      });
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
+  };
+
+  // 주문확인
+  orderInfo = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await this.#services.orderInfo({ id });
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
+      });
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
+  };
+
+  //주문상태 수정
+  editStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      orderStatusUpdate(id, status);
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
       });

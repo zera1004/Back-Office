@@ -14,6 +14,12 @@ class orderRepository {
     });
   };
 
+  // 가게 조회
+  getRestaurantById = async (restaurantId) => {
+    return await this.#orm.Restaurant.findFirst({
+      where: { restaurantId },
+    });
+  };
   // 결제 생성
   createPayment = async ({ userId, restaurantId, total_price }) => {
     return await this.#orm.Payment.create({
@@ -48,8 +54,21 @@ class orderRepository {
 
   // 주문 조회
   getOrderById = async (orderId) => {
-    return await this.#orm.Order.findFirst({
+    return await this.#orm.Order.findMany({
       where: { orderId },
+      // 그룹바이 페이먼트id
+      groupby: { pamentId },
+      include: {
+        cartId: {
+          include: {
+            cartDetail: {
+              select: {
+                count: true,
+              },
+            },
+          },
+        },
+      },
     });
   };
 
@@ -93,6 +112,14 @@ class orderRepository {
       select: { status: true },
     });
     return order?.status;
+  };
+
+  // 주문상태 수정
+  editOrderStatus = async (orderId, status) => {
+    return await this.#orm.Order.update({
+      where: { orderId },
+      data: { status },
+    });
   };
 }
 

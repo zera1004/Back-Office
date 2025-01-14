@@ -92,6 +92,7 @@ class OrderServices {
   checkOrder = async ({ orderId }) => {
     try {
       const status = await this.#repository.getOrderStatus(orderId);
+
       const statusMapping = {
         PREPARING: MESSAGES.ORDER.SERVICE.CHECK.READY,
         DELIVERING: MESSAGES.ORDER.SERVICE.CHECK.GO,
@@ -104,28 +105,31 @@ class OrderServices {
   };
 
   // 주문내역 조회
-  /**
-    // 사용자 조회
-  getUserById = async (userId) => {
-    return await this.#orm.User.findFirst({
-      where: { userId },
-    });
+  orderInfo = async ({ orderId }) => {
+    try {
+      const order = await this.#repository.getOrderById(orderId);
+      const user = await this.#repository.getUserById(order.userId);
+      const restaurant = await this.#repository.getRestaurantById(
+        order.restaurantId,
+      );
+      const orderInfo = { order, user, restaurant };
+      return orderInfo;
+    } catch (error) {
+      throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
+    }
   };
-   */
 
-  /**
-  // 주문 조회
-  getOrderById = async (orderId) => {
-    return await this.#orm.Order.findFirst({
-      where: { orderId },
-    });
+  // 주문상태 수정
+  orderStatusUpdate = async (orderId, status) => {
+    try {
+      return this.#repository.editOrderStatus(orderId, status);
+    } catch (error) {
+      throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
+    }
   };
-   */
-
-
 
   // 주문 취소
-/**
+  /**
   // 포인트 복원
   restoreUserPoints = async ({ userId, refundedAmount }) => {
     return await this.#orm.User.update({
@@ -152,7 +156,6 @@ class OrderServices {
     });
   };
  */
-  
 }
 
 export default new OrderServices(OrderRepository);
