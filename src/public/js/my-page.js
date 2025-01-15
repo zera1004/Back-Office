@@ -143,6 +143,33 @@ function savePhoneNumber() {
     });
 }
 
+// 로그아웃
+function Logout() {
+
+  fetch('/api/auth/log-out', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
+  .then((response) => {
+    if (!response.ok) {
+      return response.json().then((err) => {
+        alert(err.message);
+        throw new Error(err.message);
+      });
+    }
+    return response.json();
+  })
+  .then((result) => {
+    console.log(result.message);
+    alert(result.message);
+    window.location.href = 'log-in.html';
+  })
+  .catch((err) => {
+    console.log('에러', err.message);
+  });
+}
+
 // 회원탈퇴
 function saveDeleteAccount() {
   const confirmPassword = document.getElementById('confirmPassword').value;
