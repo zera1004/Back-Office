@@ -28,8 +28,8 @@ class AddressController {
     } catch (error) {
       console.error(MESSAGES.ADDRESS.CREATE.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.CREATE.NO_BODY_DATA });
     }
   };
 
@@ -45,8 +45,8 @@ class AddressController {
     } catch (error) {
       console.error(MESSAGES.ADDRESS.READ_LIST.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.READ_LIST.NO_BODY_DATA });
     }
   };
 
@@ -69,8 +69,8 @@ class AddressController {
     } catch (error) {
       console.error(MESSAGES.ADDRESS.UPDATE.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.UPDATE.NO_BODY_DATA });
     }
   };
 
@@ -133,8 +133,8 @@ class AddressController {
     } catch (error) {
       console.error(MESSAGES.ADDRESS.MAINADDRESS.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.DELETE.NO_BODY_DATA });
     }
   };
 }
