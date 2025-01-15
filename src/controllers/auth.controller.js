@@ -110,7 +110,7 @@ class AuthController {
   // 로그아웃
   logOut = async (req, res, next) => {
     try {
-      res.clearCookie('token');
+      res.clearCookie('accessToken');
 
       res.status(HTTP_STATUS.OK).json({ message: '로그아웃 성공' });
     } catch (error) {
@@ -141,13 +141,58 @@ class AuthController {
     }
   };
 
-  getLoginStatus = async (req, res, next) => {
+  // 본인 정보 조회
+  getProfile = async (req, res, next) => {
     try {
-      const { id, memberType } = req.user; // requireAccessToken 미들웨어에서 설정된 값
-      const data = await this.#service.getLoginStatus(id, memberType);
-      return res.status(200).json(data);
+      const { email, memberType } = req.user;
+
+      const data = await this.#service.getProfile({ email, memberType });
+
+      return res.status(HTTP_STATUS.OK).json({
+        data,
+      });
     } catch (error) {
       next(error);
+    }
+  };
+
+  // 본인 정보 수정
+  updateProfile = async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const { password, phoneNumber } = req.body;
+
+      if (password) {
+        const data = {
+          email,
+          password,
+        };
+        await this.#service.updateProfile(data);
+        return res
+          .status(HTTP_STATUS.CREATED)
+          .json(MESSAGES.AUTH.UPDATE_PASSWORD.SUCCEED);
+      }
+
+      if (phoneNumber) {
+        const data = {
+          email,
+          phoneNumber,
+        };
+        await this.#service.updateProfile(data);
+        return res
+          .status(HTTP_STATUS.CREATED)
+          .json(MESSAGES.AUTH.UPDATE_PHONENUMBER.SUCCEED);
+      }
+
+      if (!password && !phoneNumber) {
+        const error = new Error(MESSAGES.AUTH.UPDATE_PHONENUMBER.FALSE);
+        error.status = HTTP_STATUS.BAD_REQUEST;
+        error.name = 'noInput';
+        throw error;
+      }
+    } catch (error) {
+      if (error.name === 'noInput') errorForm(error, res);
+      else next(error);
     }
   };
 }

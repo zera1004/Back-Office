@@ -233,28 +233,37 @@ class AuthService {
     return user.email;
   };
 
-  // 로그인 상태 확인
-  getLoginStatus = async (userId, memberType) => {
+  // 본인 정보 조회
+  getProfile = async (authData) => {
+    const { email, memberType } = authData;
+
     let user;
 
     if (memberType === 'customer') {
-      user = await this.#repository.findCustomerById(userId);
+      user = await this.#repository.findCustomer(email);
     } else if (memberType === 'owner') {
-      user = await this.#repository.findOwnerById(userId);
+      user = await this.#repository.findOwner(email);
     }
 
-    if (!user) {
-      const error = new Error(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
-      error.status = HTTP_STATUS.UNAUTHORIZED;
-      throw error;
+    user.password = '*********';
+
+    return user;
+  };
+
+  // 회원 정보 수정
+  updateProfile = async (authData) => {
+    const { email, password, phoneNumber } = authData;
+
+    const updateData = {};
+
+    if (password) {
+      const hashedPassword = bcrypt.hashSync(password, HASH_SALT_ROUNDS);
+      updateData.password = hashedPassword;
     }
 
-    return {
-      isLoggedIn: true,
-      email: user.email,
-      name: user.name,
-      memberType: memberType,
-    };
+    if (phoneNumber) updateData.phoneNumber = phoneNumber;
+
+    let user = await this.#repository.updateProfile(email, updateData);
   };
 }
 
