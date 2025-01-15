@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import orderRouter from './routers/order.router.js';
 import menuRouter from './routers/menu.router.js';
@@ -23,6 +24,7 @@ const PORT = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -42,6 +42,7 @@ class ReviewsService {
         paymentId: review.paymentId,
         userId: review.userId,
         content: review.content,
+        star: review.star,
         createdAt: review.createdAt,
       };
     });
@@ -50,17 +51,20 @@ class ReviewsService {
   // 내 모든 리뷰
   // data : userId
   findAllMyReviews = async (data) => {
-    if (!Number.isInteger(data.userId)) {
-      console.error('Validation Error: userId 정수여야 합니다.', {
-        userId: data.userId,
+    const { userId } = data;
+    console.log('서비스 계층 : 전달된 사용자 ID:', userId);
+    if (!Number.isInteger(userId)) {
+      console.error(MESSAGES.REVIEW.SERVICE.ERROR_USER, {
+        userId: userId,
       });
       throw new Error('잘못된 요청입니다.');
     }
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const reviews = await this.#repository.findAllMyReviews(data.userId);
-
+    const reviews = await this.#repository.findAllMyReviews(userId);
+    console.log('서비스계층 : 사용자 ID로 조회된 리뷰 데이터:', reviews);
     // 본인의 리뷰만 조회 가능
-    if (reviews.userId !== data.userId) throw new Error('잘못된 요청입니다.');
+    // if (reviews.userId !== userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
 
     reviews.sort((a, b) => {
       return b.createdAt - a.createdAt;
@@ -75,7 +79,9 @@ class ReviewsService {
         restaurantId: review.restaurantId,
         paymentId: review.paymentId,
         userId: review.userId,
+        reviewId: review.reviewId,
         content: review.content,
+        star: review.star,
         createdAt: review.createdAt,
       };
     });
@@ -162,8 +168,8 @@ class ReviewsService {
     const review = await this.#repository.findReviewByReviewId(data.reviewId);
     if (!review) throw new Error('존재하지 않는 리뷰입니다.');
 
-    if (review.userId !== data.userId)
-      throw new Error('본인의 리뷰만 수정할 수 있습니다.');
+    // if (review.userId !== data.userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.USER_UPDATE);
 
     if (data.star < 1 || data.star > 5)
       throw new Error('별점은 1에서 5 사이여야 합니다.');
@@ -182,8 +188,8 @@ class ReviewsService {
     const review = await this.#repository.findReviewByReviewId(data.reviewId);
     if (!review) throw new Error('이미 존재하지 않는 리뷰입니다.');
 
-    if (review.userId !== data.userId)
-      throw new Error('본인의 리뷰만 삭제할 수 있습니다.');
+    // if (review.userId !== data.userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.USER_DELETE);
 
     // 저장소에 요청
     await this.#repository.deleteReview(data.reviewId);

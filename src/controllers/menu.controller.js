@@ -41,9 +41,9 @@ class menuController {
   async getMenus(req, res, next) {
     try {
       const restaurantId = parseInt(req.params.restaurantId);
-
+      console.log(`컨트롤러 계층 : 음식점 ID 값 :`, restaurantId);
       const data = await this.#service.getMenus(restaurantId);
-
+      console.log(`컨트롤러 계층 : 음식점 ID로 매뉴 조회  :`, data);
       if (!data) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           message: MESSAGES.MENU.GET.NOT_FOUND,

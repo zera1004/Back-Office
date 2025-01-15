@@ -22,7 +22,7 @@ class ReviewsRepository {
     const myReviews = await this.#orm.review.findMany({
       where: { userId },
     });
-
+    console.log('리포지토리 계층 : 사용자 ID로 db에서 리뷰 조회:', myReviews);
     return myReviews;
   };
 

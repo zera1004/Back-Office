@@ -54,6 +54,16 @@ class restaurantsService {
     }
     return await this.#repository.deleteRestaurant(data);
   };
+
+  getAllRestaurant = async (data) => {
+    const findRestaurant = await this.#repository.findRestaurant(data);
+
+    if (!findRestaurant) {
+      throw new Error(MESSAGES.RESTAURANT.DELETE.NOT_FOUND_RESTAURANT);
+    }
+
+    return findRestaurant;
+  };
 }
 
 export default new restaurantsService(restaurantsRepository);
