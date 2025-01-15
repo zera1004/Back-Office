@@ -42,6 +42,7 @@ class cartService {
       return {
         menuName: item.Menu.menuName,
         price: item.Menu.price,
+        cartDetailId: item.cartDetailId,
         count: item.count,
         // 개별 메뉴의 총 가격
         itemTotalPrice,

@@ -94,8 +94,8 @@ class AuthController {
           60 *
           60 *
           ACCESS_TOKEN_EXPIRES_IN.slice(0, ACCESS_TOKEN_EXPIRES_IN.length - 1),
-        httpOnly: true,
       });
+      console.log({ login: accessToken })
 
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.AUTH.LOG_IN.SUCCEED,
