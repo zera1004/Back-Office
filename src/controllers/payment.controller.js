@@ -51,6 +51,40 @@ class paymentController {
       next(error);
     }
   }
+
+  // 주문 진행
+  async orderInfo(req, res, next) {
+    try {
+      const { userId, restaurantId } = req.params;
+      const data = await this.#service.orderInfo({ userId, restaurantId });
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.PAYMENT.READ_LIST.SUCCEED,
+        data,
+      });
+    } catch (error) {
+      // 서비스 계층에서 발생한 에러를 다음 미들웨어로 전달
+      next(error);
+    }
+  }
+
+  // 주문 내역
+  async paymentInfo(req, res, next) {
+    try {
+      const { userId, restaurantId } = req.params;
+      const data = await this.#service.paymentInfo({ userId, restaurantId });
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.PAYMENT.READ_LIST.SUCCEED,
+        data,
+      });
+    } catch (error) {
+      // 서비스 계층에서 발생한 에러를 다음 미들웨어로 전달
+      next(error);
+    }
+  }
 }
 
 export default new paymentController(paymentService);

@@ -22,11 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         (payment) => payment.userId === userId,
       );
 
-      // id="storname"인 요소를 선택
-      const stornameElement = document.getElementById('storname');
-      // 요소의 텍스트를 업데이트
-      stornameElement.textContent = `주문현황 - ${order.storeName}`;
-
       // repitByPament 안에 데이터 렌더링
       const container = document.querySelector('.repitByPament');
       container.innerHTML = ''; // 기존 내용을 초기화
@@ -64,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ${payment.orderDetails
   .map(
     (order) => `
-            - ${order.itemName} ${order.quantity}개 
+            ${order.storeName} - ${order.itemName} ${order.quantity}개 ${order.status}
           `,
   )
   .join('\n')}
@@ -75,8 +70,8 @@ ${payment.orderDetails
           <textarea readonly id="CustomerInfo" class="info">
           ${payment.storeInfo
             .map(
-              (user) => `
-            ${user.userName} 주소: ${user.address} 
+              (store) => `
+            ${store.storeName} 주소: ${store.address} 평점: ${store.rating}
           `,
             )
             .join('\n')}

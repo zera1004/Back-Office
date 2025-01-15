@@ -28,6 +28,55 @@ class paymentRepository {
       },
     });
   }
+
+  // 주문 진행 현황 조회
+  getOrderIdByPayment = async ({ userId, restaurantId }) => {
+    const whereCondition = userId ? { userId } : { restaurantId };
+
+    return await this.#orm.Payment.findUnique({
+      where: whereCondition,
+      orderBy: { paymentId },
+      select: {
+        order: {
+          select: {
+            paymentId: true,
+            restaurantId: {
+              select: {
+                ownerId: true,
+                address: true,
+                phoneNumber: true, // 식당전화
+                restaurantName: true,
+                averageStar: true,
+              },
+            },
+            userId: {
+              select: {
+                name: true,
+                address: {
+                  where: { mainAddress: true },
+                  select: { address: true },
+                },
+              },
+            },
+            total_price: true,
+            order_time: true,
+            order: {
+              select: {
+                cartId: {
+                  select: {
+                    cartDetail: { select: { menuId: true, count: true } },
+                  },
+                },
+                status: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  };
+
+  // 상태수정은 오더에서
 }
 
 export default new paymentRepository(prisma);
