@@ -1,41 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>장바구니</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <style>
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      gap: 1rem;
-    }
-    .total {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1rem;
-    }
-    .center-title {
-      text-align: center;
-    }
-    .nav-container {
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: flex-end;
-    }
-  </style>
+  <script src="js/cart.js" defer></script>
 </head>
+<style>
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .total {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .center-title {
+    text-align: center;
+  }
+
+  /* .nav-container {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+  } */
+</style>
+
 <body>
   <header>
     <h1 class="center-title">장바구니</h1>
   </header>
 
   <main class="container">
-    <div class="nav-container">
+    <!-- <div class="nav-container">
       <nav>
         <ul>
           <li><a href="#" aria-current="page">장바구니</a></li>
@@ -43,7 +49,8 @@
           <li><a href="my.html">MY</a></li>
         </ul>
       </nav>
-    </div>
+    </div> -->
+
     <table role="grid">
       <thead>
         <tr>
@@ -51,30 +58,18 @@
           <th>음식 이름</th>
           <th>가격</th>
           <th>개수</th>
-          <th>삭제</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><img src="food1.jpg" alt="음식1" style="width: 80px; height: auto;"></td>
-          <td>김밥</td>
-          <td>₩3,000</td>
-          <td><input type="number" value="1" min="1" style="width: 60px;"></td>
-          <td><button type="button">삭제</button></td>
-        </tr>
-        <tr>
-          <td><img src="food2.jpg" alt="음식2" style="width: 80px; height: auto;"></td>
-          <td>떡볶이</td>
-          <td>₩4,500</td>
-          <td><input type="number" value="1" min="1" style="width: 60px;"></td>
-          <td><button type="button">삭제</button></td>
-        </tr>
+        <!-- JS로 채울 예정 -->
       </tbody>
     </table>
+
     <div class="total">
       <strong>총액: ₩7,500</strong>
       <button type="button">주문하기</button>
     </div>
   </main>
 </body>
+
 </html>

@@ -2,13 +2,23 @@ import cartsRepository from '../repositories/carts.repository.js';
 
 class cartService {
   #repository;
+
   constructor(repository) {
     this.#repository = repository;
   }
 
   postCartDetail = async (data) => {
+    const { userId } = data;
+    console.log(`userId! :`, userId);
+    console.log(`data! :`, data);
+
+    const { cartId } = await this.#repository.getCartIdbyUserId(userId);
+    console.log(`카트 ID :`, cartId);
+
+    // data에 cartId를 추가
+    data.cartId = cartId;
+
     const checkUser = await this.#repository.checkUser(data);
-    console.log(checkUser);
     if (!checkUser) {
       throw new Error('접근권한이 없습니다.');
     }
@@ -17,6 +27,8 @@ class cartService {
     if (data.count === 0) {
       throw new Error('수량을 선택해 주세요');
     }
+
+    console.log(`카트 ID 추가 후 데이터 :`, data);
     return await this.#repository.postCartDetail(data);
   };
 
@@ -28,7 +40,7 @@ class cartService {
     }
 
     const getCart = await this.#repository.getCartDetail(data);
-
+    console.log(getCart);
     if (!getCart || getCart.length === 0) {
       throw new Error('장바구니가 비어있습니다');
     }
@@ -40,6 +52,7 @@ class cartService {
       totalPrice += itemTotalPrice;
 
       return {
+        cartDetailId: item.cartDetailId,
         menuName: item.Menu.menuName,
         price: item.Menu.price,
         count: item.count,
