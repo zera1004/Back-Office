@@ -1,6 +1,17 @@
-// API 호출 및 리뷰 목록 가져오기
+// 전역 변수: 장바구니 목록과 총합
+let cart = []; // [{menuId, restaurantId, price, quantity, subTotal}, ...]
+let totalPrice = 0; // 장바구니 총 금액
+
+window.onload = () => {
+  const restaurantId = '1'; // 임시 값
+  menuByRestaurant(restaurantId);
+  setupPaymentButton();
+};
+
+// 메뉴 목록 불러오기
 async function menuByRestaurant(restaurantId) {
   try {
+    // 실제 API 주소와 맞춰주세요
     const response = await fetch(`/api/restaurnts/${restaurantId}/menus`, {
       method: 'GET',
     });
@@ -8,45 +19,152 @@ async function menuByRestaurant(restaurantId) {
     if (!response.ok) {
       throw new Error('네트워크 응답이 좋지 않습니다.');
     }
-    console.log('응답 상태:', response.status);
+
     const data = await response.json();
-    console.log('응답 데이터:', data);
-    const menus = data.data; // 'data' 속성에서 리뷰 배열 추출
-    console.log(menus);
-    // 리뷰가 배열인지 확인
+    // 예시: { data: [ { menuId, restaurantId, menuName, price, content }, ... ] }
+    const menus = data.data; // 'data' 속성에서 메뉴 배열 추출
+
     if (!Array.isArray(menus)) {
-      throw new Error('리뷰 데이터가 배열이 아닙니다.');
+      throw new Error('메뉴 데이터가 배열이 아닙니다.');
     }
 
     displayMenus(menus);
   } catch (error) {
-    console.error('리뷰를 가져오는 중 오류 발생:', error);
+    console.error('메뉴를 가져오는 중 오류 발생:', error);
   }
 }
 
-// 리뷰 목록을 HTML로 표시
+// 메뉴 목록을 동적으로 표시
 function displayMenus(menus) {
   const menusContainer = document.getElementById('menusContainer');
   menusContainer.innerHTML = ''; // 기존 내용 초기화
 
-  menus.forEach((menus) => {
-    const menusElement = document.createElement('div');
-    menusElement.className = 'menusContainer';
+  menus.forEach((menu) => {
+    // 메뉴 하나당 컨테이너 div
+    const menuContainer = document.createElement('div');
+    menuContainer.style.marginBottom = '1rem';
 
-    menusElement.innerHTML = `
-          <article id="menu">
-    <span class="left">${menus.menuName}</span> <!-- 왼쪽 정렬 -->
-    <span class="center">${menus.content}</span> <!-- 가운데 정렬 -->
-    <span class="right">${menus.price}원</span> <!-- 오른쪽 정렬 -->
-  </article>
-      `;
+    // 메뉴 정보 article
+    const menuArticle = document.createElement('article');
+    menuArticle.id = 'menu';
+    menuArticle.innerHTML = `
+      <span class="left">${menu.menuName}</span>
+      <span class="center">${menu.content}</span>
+      <span class="right">${menu.price}원</span>
+    `;
 
-    menusContainer.appendChild(menusElement);
+    // 수량 선택 UI
+    const quantityUI = document.createElement('div');
+    quantityUI.className = 'quantityUI';
+    quantityUI.innerHTML = `
+      <div style="display: flex;  align-items: center; height:100px; margin-top:0px">
+
+        <div style="display: flex; gap: 0.5rem; align-items: center; margin : 0px auto 0px auto;">
+          <button type="button" class="minusBtn">-</button>
+          <input
+            type="number"
+            class="quantityInput"
+            value="1"
+            min="1"
+            style="width:150px;text-align:center;font-size:1rem;"
+          />
+          <button type="button" class="plusBtn">+</button>
+          <button type="button" class="addToCartBtn" style="width:150px;height:66px;">
+            주문 담기
+          </button>
+        </div>
+      </div>
+    `;
+
+    // (1) 메뉴(article)를 클릭하면 수량 UI를 토글
+    menuArticle.addEventListener('click', () => {
+      if (quantityUI.style.display === 'none' || !quantityUI.style.display) {
+        quantityUI.style.display = 'block';
+      } else {
+        quantityUI.style.display = 'none';
+      }
+    });
+
+    // (2) 수량 조절 / 주문 담기 이벤트
+    setTimeout(() => {
+      const minusBtn = quantityUI.querySelector('.minusBtn');
+      const plusBtn = quantityUI.querySelector('.plusBtn');
+      const quantityInput = quantityUI.querySelector('.quantityInput');
+      const addToCartBtn = quantityUI.querySelector('.addToCartBtn');
+
+      // 마이너스 버튼
+      minusBtn.addEventListener('click', () => {
+        let val = parseInt(quantityInput.value, 10);
+        if (val > 1) {
+          quantityInput.value = val - 1;
+        }
+      });
+
+      // 플러스 버튼
+      plusBtn.addEventListener('click', () => {
+        let val = parseInt(quantityInput.value, 10);
+        quantityInput.value = val + 1;
+      });
+
+      // 주문 담기 버튼
+      addToCartBtn.addEventListener('click', () => {
+        const count = parseInt(quantityInput.value, 10);
+        // 합계 업데이트
+        const subTotal = menu.price * count;
+        totalPrice += subTotal;
+
+        // 장바구니 배열에 push (필요 시 중복 체크/합산 로직 추가)
+        cart.push({
+          menuId: menu.menuId,
+          restaurantId: menu.restaurantId,
+          price: menu.price,
+          quantity: count,
+          subTotal: subTotal,
+        });
+
+        // 합계 UI 반영
+        updateTotalPriceUI();
+
+        alert(
+          `${menu.menuName} ${count}개(${subTotal}원)를 장바구니에 담았습니다.`,
+        );
+      });
+    });
+
+    // (3) DOM 배치
+    menuContainer.appendChild(menuArticle);
+    menuContainer.appendChild(quantityUI);
+    menusContainer.appendChild(menuContainer);
   });
 }
 
-// 페이지 로드 시 리뷰 가져오기
-window.onload = () => {
-  const restaurantId = '25';
-  menuByRestaurant(restaurantId);
-};
+// 총합 표시 부분 갱신
+function updateTotalPriceUI() {
+  const totalPriceLabel = document.getElementById('totalPriceLabel');
+  totalPriceLabel.textContent = `합계: ${totalPrice}원`;
+}
+
+// “주문하기” 버튼 세팅
+function setupPaymentButton() {
+  const goPaymentBtn = document.getElementById('goPaymentBtn');
+  goPaymentBtn.addEventListener('click', () => {
+    console.log(cart);
+    if (cart.length === 0) {
+      alert('장바구니가 비어있습니다.');
+      return;
+    }
+
+    // 결제창으로 넘어갈 때 각 메뉴의 menuId, restaurantId, price 등을 넘겨주어야 함
+    // 간단히 cart 배열을 JSON으로 직렬화해서 query string으로 넘기는 예시
+    // (아직 개발 전이므로 주석 처리)
+
+    /*
+    const cartJSON = encodeURIComponent(JSON.stringify(cart));
+    window.location.href = `payment.html?cart=${cartJSON}`;
+    */
+
+    alert(
+      `결제하기 창으로 넘어갑니다.\n(현재는 개발 전, 장바구니 데이터: ${JSON.stringify(cart)})`,
+    );
+  });
+}

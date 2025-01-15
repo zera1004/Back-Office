@@ -29,6 +29,8 @@ class menuRepository {
     return await this.#orm.menu.findMany({
       where: { restaurantId },
       select: {
+        menuId: true,
+        restaurantId: true,
         menuName: true,
         price: true,
         content: true,
