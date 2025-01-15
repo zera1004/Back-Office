@@ -55,6 +55,38 @@ class AddressRepository {
       where: { userId },
     });
   };
+
+  // 메인 주소 설정
+  setMainAddress = async ({ addressId, userId }) => {
+    // 1. 기존 메인 주소 비활성화
+    await this.#orm.address.updateMany({
+      where: { userId, mainAddress: true },
+      data: { mainAddress: false },
+    });
+
+    // 2. 지정된 주소를 메인 주소로 설정
+    return await this.#orm.address.update({
+      where: { addressId },
+      data: { mainAddress: true },
+    });
+  };
+
+  // Repository 메서드: 특정 사용자의 mainAddress가 true인 주소들을 조회
+  getMainAddresses = async (userId) => {
+    return await this.#orm.address.findMany({
+      where: {
+        userId, // 특정 사용자
+        mainAddress: true, // mainAddress가 true인 항목만
+      },
+    });
+  };
+
+  // 특정 사용자의 모든 주소 조회
+  getAllAddressesByUserId = async (userId) => {
+    return await this.#orm.address.findMany({
+      where: { userId },
+    });
+  };
 }
 
 export default new AddressRepository(prisma);
