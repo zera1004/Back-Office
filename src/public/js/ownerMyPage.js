@@ -30,9 +30,31 @@ function openRestaurantTypeModal() {
 
 function closeTypeModal() {
   document.getElementById('restaurantTypeModal').style.display = 'none';
-  document.getElementById('newRestaurantType').value = '';
+  const selectedRadio = document.querySelector(
+    'input[name="restaurantType"]:checked',
+  );
+  if (selectedRadio) {
+    selectedRadio.checked = false;
+  }
 }
-// 닉네임 변경
+
+function openDeleteRestaurant() {
+  document.getElementById('deleteRestaurantModal').style.display = 'block';
+}
+
+function closeDelete() {
+  document.getElementById('deleteRestaurantModal').style.display = 'none';
+}
+
+function openDeleteAccount() {
+  document.getElementById('deleteAccountModal').style.display = 'block';
+}
+
+function closeDeleteAccount() {
+  document.getElementById('deleteAccountModal').style.display = 'none';
+  document.getElementById('newPassword').value = '';
+}
+// 업장명 변경
 function saveName() {
   const newRestaurantName = document.getElementById('newRestaurantName').value;
 
@@ -49,88 +71,121 @@ function saveName() {
       document.getElementById('restaurantName').textContent = newRestaurantName;
       closeNameModal();
       alert('업장명이 변경되었습니다.');
+      location.reload();
     })
     .catch((err) => alert(err.message));
 }
 
-// 비밀번호 변경
-function savePassword() {
-  const newPassword = document.getElementById('newPassword').value;
-  const confirmPassword = document.getElementById('confirmPassword').value;
+// 업장주소 변경
+function saveAddress() {
+  const newAddress = document.getElementById('newRestaurantAddress').value;
 
-  if (newPassword !== confirmPassword) {
-    return alert('비밀번호가 일치하지 않습니다.');
-  }
-
-  fetch('/api/profile', {
+  fetch('/api/owners/me/restaurants', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include', // 쿠키 포함
+    body: JSON.stringify({ address: newAddress }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('주소 변경에 실패했습니다.');
+      }
+      closeAddressModal();
+      alert('주소가 변경되었습니다.');
+      location.reload();
+    })
+    .catch((err) => alert(err.message));
+}
+
+// 업장 번호 변경
+function saveNumber() {
+  const newPhoneNumber = document.getElementById('newRestaurantNumber').value;
+
+  fetch('/api/owners/me/restaurants', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // 쿠키 포함
+    body: JSON.stringify({ phoneNumber: newPhoneNumber }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('번호 변경에 실패했습니다.');
+      }
+      closeNumberModal();
+      alert('번호가 변경되었습니다.');
+      location.reload();
+    })
+    .catch((err) => alert(err.message));
+}
+
+function saveType() {
+  const selectedRadio = document.querySelector(
+    'input[name="restaurantType"]:checked',
+  );
+
+  if (!selectedRadio) {
+    alert('변경할 업종을 선택하세요!');
+    return;
+  }
+  const newType = selectedRadio.value;
+
+  fetch('/api/owners/me/restaurants', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // 쿠키 포함
+    body: JSON.stringify({ restaurantType: newType }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('업종 변경에 실패했습니다.');
+      }
+      closeTypeModal();
+      alert('업종이 변경되었습니다.');
+      location.reload();
+    })
+    .catch((err) => alert(err.message));
+}
+
+function saveDelete() {
+  fetch('/api/owners/me/restaurants', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('업장 삭제에 실패했습니다.');
+      }
+      closeDelete();
+      alert('업장이 삭제되었습니다.');
+      location.reload();
+    })
+    .catch((err) => alert(err.message));
+}
+
+function saveDeleteAccount() {
+  const newPassword = document.getElementById('newPassword').value;
+
+  fetch('/api/auth', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ password: newPassword }),
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error('비밀번호 변경에 실패했습니다.');
+        throw new Error('회원탈퇴에 실패했습니다.');
       }
-      closePasswordModal();
-      alert('비밀번호가 변경되었습니다.');
+      closeDelete();
+      alert('회원탈퇴가 되었습니다.');
+      alert('진짜로 탈퇴하셨군요');
+      alert('저는 마음이 아픕니다.');
+      alert('다음에 다시 오실거죠?.');
+      alert('돈 버셔야죠.');
+      alert('언젠가 다시 만납시다.');
+      location.reload();
     })
     .catch((err) => alert(err.message));
-}
-// 프로필 사진 변경
-function saveMedia() {
-  const formData = new FormData();
-  formData.append('media', media.files[0]);
-
-  fetch('/api/profile', {
-    method: 'PATCH',
-    credentials: 'include',
-    body: formData,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('프로필 변경에 실패했습니다.');
-      }
-      closeMediaModal();
-      alert('프로필 사진이 변경되었습니다.');
-      location.reload(); //새로고침
-    })
-    .catch((err) => alert(err.message));
-}
-
-function getUserPosts() {
-  fetch('/api/posts', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include', // 쿠키를 포함하여 요청을 보냄
-  })
-    .then((response) => response.json())
-    .then((posts) => {
-      const postsContainer = document.getElementById('userPosts');
-
-      // 게시글이 없는 경우
-      if (posts.data.length === 0) {
-        postsContainer.innerHTML = '<p>작성한 게시글이 없습니다.</p>';
-        return;
-      }
-      // 게시글 HTML 만들기
-      let postList = '';
-      posts.data.forEach((post) => {
-        postList += `
-            <article class="post-card">
-              <h5>${post.title}</h5>
-              <p>${post.content}</p>
-              <div class="post-info">
-                <small>작성일: ${new Date(post.createdAt).toLocaleDateString()}</small>
-                <small>❤️ ${post._count.Like}</small>
-              </div>
-            </article>
-          `;
-      });
-
-      postsContainer.innerHTML = postList;
-    })
-    .catch((err) => alert('게시글을 불러오는데 실패했습니다.'));
 }
 
 // 사용자 정보 조회

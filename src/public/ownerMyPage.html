@@ -70,10 +70,10 @@
       .modal-content {
         background-color: var(--background-color);
         margin: 15% auto;
-        padding: 20px;
+        padding: 5px;
         border-radius: 8px;
-        width: 80%;
-        max-width: 500px;
+        width: 90%;
+        max-width: 550px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       }
     </style>
@@ -89,7 +89,7 @@
           <li><a href="#">메뉴 등록</a></li>
           <li><a href="#">주문 진행</a></li>
           <li><a href="#">주문 내역</a></li>
-          <li><button class="secondary">회원탈퇴</button></li>
+          <li><button class="secondary" onclick="openDeleteAccount()">회원탈퇴</button></li>
         </ul>
       </nav>
       <div class="restaurant-Info">
@@ -105,22 +105,22 @@
             <p></p>
             <p>    </p>
             <span id="restaurantName"></span>
-            <button class="edit-button" onclick="openRestaurantNameModal('restaurantName')">수정</button>
+            <button class="edit-button" onclick="openRestaurantNameModal()">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 주소</span>
             <span id="restaurantAddress"></span>
-            <button class="edit-button" onclick="openRestaurantAddressModal('restaurantAddress')">수정</button>
+            <button class="edit-button" onclick="openRestaurantAddressModal()">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 번호</span>
             <span id="restaurantNumber"></span>
-            <button class="edit-button" onclick="openRestaurantNumberModal('restaurantNumber')">수정</button>
+            <button class="edit-button" onclick="openRestaurantNumberModal()">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 종류</span>
             <span id="restaurantType"></span>
-            <button class="edit-button" onclick="openRestaurantTypeModal('restaurantType')">수정</button>
+            <button class="edit-button" onclick="openRestaurantTypeModal()">수정</button>
           </div>
           
           <!-- 수정 모달 -->
@@ -151,12 +151,33 @@
           <div id="restaurantTypeModal" class="modal">
             <div class="modal-content">
               <h3>업장 종류 수정하기</h3>
-              <input type="text" id="newRestaurantType" placeholder="새로운 값을 입력하세요" />
+              <input type="radio" id="restaurantTypeKorean" name="restaurantType" value="korean" />한식
+              <input type="radio" id="restaurantTypeJapanese" name="restaurantType" value="japanese" />일식
+              <input type="radio" id="restaurantTypeWestern" name="restaurantType" value="western" />양식
+              <input type="radio" id="restaurantTypeChinese" name="restaurantType" value="chinese" />중식
+              <input type="radio" id="restaurantTypeSnack" name="restaurantType" value="snack" />분식
+              <input type="radio" id="restaurantTypeCafe" name="restaurantType" value="cafe" />카페
+              <p></p>
               <button onclick="saveType()">저장</button>
               <button onclick="closeTypeModal()">취소</button>
             </div>
           </div>
-          <button class="outline">업장 삭제</button>
+          <div id="deleteRestaurantModal" class="modal">
+            <div class="modal-content">
+              <h3>정말로 업장을 삭제하시겠습니까?</h3>
+              <button onclick="saveDelete()">삭제</button>
+              <button onclick="closeDelete()">취소</button>
+            </div>
+          </div>
+          <div id="deleteAccountModal" class="modal">
+            <div class="modal-content">
+              <h3>정말로 회원을 탈퇴하시겠습니까?</h3>
+              <input type="text" id="newPassword" placeholder="비밀번호를 입력해주세요." />
+              <button onclick="saveDeleteAccount()">삭제</button>
+              <button onclick="closeDeleteAccount()">취소</button>
+            </div>
+          </div>
+          <button class="outline" onclick="openDeleteRestaurant()">업장 삭제</button>
         </div>
       </div>
     </main>
