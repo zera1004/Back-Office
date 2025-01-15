@@ -124,7 +124,11 @@ class AuthController {
       const { email, memberType } = req.user;
       const { password } = req.body;
 
-      const data = await this.#service.deleteId({email, password, memberType});
+      const data = await this.#service.deleteId({
+        email,
+        password,
+        memberType,
+      });
 
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.AUTH.DELETE_ID.SUCCEED,
@@ -134,6 +138,16 @@ class AuthController {
       if (error.name === 'isPasswordMatched' || error.name === 'noInput')
         errorForm(error, res);
       else next(error);
+    }
+  };
+
+  getLoginStatus = async (req, res, next) => {
+    try {
+      const { id, memberType } = req.user; // requireAccessToken 미들웨어에서 설정된 값
+      const data = await this.#service.getLoginStatus(id, memberType);
+      return res.status(200).json(data);
+    } catch (error) {
+      next(error);
     }
   };
 }

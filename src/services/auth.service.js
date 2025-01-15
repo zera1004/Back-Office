@@ -122,7 +122,9 @@ class AuthService {
     }
 
     if (user.isVerified === true) {
-      const error = new Error(MESSAGES.AUTH.COMMON.EMAILVERIFICATION.ALREADYDONE);
+      const error = new Error(
+        MESSAGES.AUTH.COMMON.EMAILVERIFICATION.ALREADYDONE,
+      );
       error.status = HTTP_STATUS.CONFLICT;
       error.name = 'isVerified';
       throw error;
@@ -229,6 +231,30 @@ class AuthService {
     }
 
     return user.email;
+  };
+
+  // 로그인 상태 확인
+  getLoginStatus = async (userId, memberType) => {
+    let user;
+
+    if (memberType === 'customer') {
+      user = await this.#repository.findCustomerById(userId);
+    } else if (memberType === 'owner') {
+      user = await this.#repository.findOwnerById(userId);
+    }
+
+    if (!user) {
+      const error = new Error(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
+      error.status = HTTP_STATUS.UNAUTHORIZED;
+      throw error;
+    }
+
+    return {
+      isLoggedIn: true,
+      email: user.email,
+      name: user.name,
+      memberType: memberType,
+    };
   };
 }
 
