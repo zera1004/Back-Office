@@ -75,6 +75,7 @@ export const MESSAGES = {
       SUCCEED: '주소 생성에 성공했습니다.',
       NO_BODY_DATA: '생성 할 정보를 입력해 주세요.',
       NOT_ERROR: '주소 생성 중 오류 발생:',
+      EXCEED_LIMIT: '주소는 최대 5개까지 등록 가능합니다.',
     },
     READ_LIST: {
       SUCCEED: '주소 조회에 성공했습니다.',

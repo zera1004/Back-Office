@@ -80,6 +80,13 @@ class AddressRepository {
       },
     });
   };
+
+  // 특정 사용자의 모든 주소 조회
+  getAllAddressesByUserId = async (userId) => {
+    return await this.#orm.address.findMany({
+      where: { userId },
+    });
+  };
 }
 
 export default new AddressRepository(prisma);
