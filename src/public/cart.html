@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>장바구니</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      gap: 1rem;
-    }
-    .total {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1rem;
-    }
-    .center-title {
-      text-align: center;
-    }
-    .nav-container {
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: flex-end;
-    }
+    nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 1rem; }
+    .total { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; }
+    .center-title { text-align: center; }
+    .nav-container { margin-bottom: 1rem; display: flex; justify-content: flex-end; }
   </style>
 </head>
 <body>
@@ -44,37 +28,113 @@
         </ul>
       </nav>
     </div>
-    <table role="grid">
+    <table id="cart-table" role="grid">
       <thead>
         <tr>
-          <th>음식 사진</th>
+          <th>번호</th>
           <th>음식 이름</th>
           <th>가격</th>
           <th>개수</th>
+          <th>총 가격</th>
           <th>삭제</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td><img src="food1.jpg" alt="음식1" style="width: 80px; height: auto;"></td>
-          <td>김밥</td>
-          <td>₩3,000</td>
-          <td><input type="number" value="1" min="1" style="width: 60px;"></td>
-          <td><button type="button">삭제</button></td>
-        </tr>
-        <tr>
-          <td><img src="food2.jpg" alt="음식2" style="width: 80px; height: auto;"></td>
-          <td>떡볶이</td>
-          <td>₩4,500</td>
-          <td><input type="number" value="1" min="1" style="width: 60px;"></td>
-          <td><button type="button">삭제</button></td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
     <div class="total">
-      <strong>총액: ₩7,500</strong>
-      <button type="button">주문하기</button>
+      <strong id="total-amount">총액: ₩0</strong>
+      <button type="button" onclick="placeOrder()">주문하기</button>
     </div>
   </main>
+
+  <script>
+    const login = async () => {
+      const response = await axios.post(`http://localhost:3000/api/auth/log-in`, {
+        email: "pineapplep505@gmail.com",
+        password: "pineapple1",
+        memberType: "customer"
+      });
+      alert(JSON.stringify(response.data))
+    }
+
+  
+
+    // 장바구니 항목을 불러오는 함수
+  async function fetchCartItems(cartId) {
+  await login();
+  try {
+    const response = await axios.get(`http://localhost:3000/api/users/me/carts/${cartId}`);
+    // 장바구니 항목을 가져오는 GET 요청
+    const cartItems = response.data.data;
+    const totalPrice = response.data.totalPrice;
+    console.log(response);
+    // 장바구니 항목을 HTML로 렌더링
+    const cartTableBody = document.getElementById('cart-table').querySelector('tbody');
+    cartTableBody.innerHTML = '';  // 기존 항목을 지우고 새로 렌더링
+
+    cartItems.forEach(item => {
+      const row = document.createElement('tr');
+      row.setAttribute('data-cart-detail-id', item.cartDetailId); // cartDetailId를 data 속성에 추가
+      row.innerHTML = `
+        <td>${item.cartDetailId}</td>
+        <td>${item.menuName}</td>
+        <td>₩${item.price.toLocaleString()}</td>
+        <td>${item.count}</td>
+        <td>₩${item.itemTotalPrice.toLocaleString()}</td>
+        <td>
+          <button type="button" onclick="deleteCartItem(event)">삭제</button>
+        </td>
+      `;
+      cartTableBody.appendChild(row);
+    });
+
+    // 총액 업데이트
+    document.querySelector('#total-amount').textContent = `총액: ₩${totalPrice.toLocaleString()}`;
+
+  } catch (error) {
+    console.error('장바구니 항목을 불러오는 중 오류가 발생했습니다.', error);
+  }
+}
+
+async function deleteCartItem(event) {
+  // cartId를 이미 알고 있는 상태에서 호출
+  const cartId = 2;  // 예시 cartId, 실제로는 변수로 처리해야 함
+  try {
+    // cartId에 해당하는 장바구니 항목 가져오기
+    const response = await axios.get(`http://localhost:3000/api/users/me/carts/${cartId}`);
+    const cartItems = response.data.data;
+
+    // 삭제할 항목을 찾기 (event.target.closest('tr')로 버튼의 부모 행을 찾음)
+    const cartDetailId = event.target.closest('tr').getAttribute('data-cart-detail-id');
+    const itemToDelete = cartItems.find(item => item.cartDetailId === parseInt(cartDetailId));
+
+    // 삭제할 항목이 존재할 경우
+    if (itemToDelete) {
+      // DELETE 요청 보내기
+      const deleteResponse = await axios.delete(`http://localhost:3000/api/users/me/carts/${cartId}`, {
+        data: { cartDetailId: itemToDelete.cartDetailId }
+      });
+
+      // 응답 성공 시 테이블에서 해당 행 삭제
+      if (deleteResponse.data.message === "장바구니 메뉴가 삭제되었습니다.") {
+        const rowToDelete = event.target.closest('tr');
+        rowToDelete.remove();  // 해당 행 삭제
+        alert('장바구니에서 항목이 삭제되었습니다.');
+        // 총액 업데이트 (필요한 경우)
+        await fetchCartItems(cartId);  // 예시로 cartId가 2일 경우
+      }
+    }
+  } catch (error) {
+    console.error('장바구니 항목 삭제 중 오류가 발생했습니다.', error);
+    alert('삭제에 실패했습니다.');
+  }
+}
+
+window.onload = () => {
+      const cartId = '2';
+      fetchCartItems(cartId);
+    };
+    
+  </script>
 </body>
 </html>
