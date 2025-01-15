@@ -25,9 +25,6 @@ router.post(
 // 리뷰 수정 (인증 O)
 router.put('/users/me/reviews/:reviewId', ReviewsController.updateReview);
 // 리뷰 삭제 (인증 O)
-router.delete(
-  '/users/me/restaurants/:restaurantId/reviews/:reviewId',
-  ReviewsController.deleteReview,
-);
+router.delete('/users/me/reviews/:reviewId', ReviewsController.deleteReview);
 
 export default router;

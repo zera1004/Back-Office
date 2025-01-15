@@ -184,8 +184,8 @@ class ReviewsService {
     const review = await this.#repository.findReviewByReviewId(data.reviewId);
     if (!review) throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND);
 
-    if (review.userId !== data.userId)
-      throw new Error(MESSAGES.REVIEW.SERVICE.USER_DELETE);
+    // if (review.userId !== data.userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.USER_DELETE);
 
     // 저장소에 요청
     await this.#repository.deleteReview(data.reviewId);

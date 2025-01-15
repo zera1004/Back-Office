@@ -129,14 +129,9 @@ class ReviewsController {
   // 리뷰 삭제 (인증 O)
   deleteReview = async (req, res) => {
     // 파라미터로 부터 받은 데이터
-    // const { reviewId } = req.params;
+    const { reviewId } = req.params;
     // 인증 미들웨어에서 받은 유저 정보
-    // const userId = req.user;
-
-    // 테스트 용
-    const reviewId = 4;
-    const userId = 10;
-    // 테스트 용
+    const userId = req.user;
 
     // PostService를 이용하여 게시글 생성 요청
     try {
