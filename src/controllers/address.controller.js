@@ -26,7 +26,7 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 생성 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.CREATE.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
@@ -43,7 +43,7 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 조회 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.READ_LIST.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
@@ -67,7 +67,7 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 수정 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.UPDATE.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
@@ -87,7 +87,7 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 삭제 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.DELETE.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
@@ -107,7 +107,7 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 조회 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.READ_LIST.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
@@ -131,7 +131,7 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('메인 주소 설정 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.MAINADDRESS.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
