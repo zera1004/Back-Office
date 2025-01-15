@@ -19,6 +19,7 @@ class paymentRepository {
   }
   // 레스토랑 id 조회
   async findRestaurant(ownerId) {
+    console.log('레스토랑 id 조회R');
     return await this.#orm.restaurant.findFirst({
       where: { ownerId },
       select: {
@@ -30,10 +31,11 @@ class paymentRepository {
   }
 
   // 주문 진행 현황 조회
-  getOrderIdByPayment = async ({ userId, restaurantId }) => {
+  async getOrderIdByPayment({ userId, restaurantId }) {
+    console.log('주문현황 조회');
     const whereCondition = userId ? { userId } : { restaurantId };
 
-    return await this.#orm.Payment.findUnique({
+    return await this.#orm.Payment.findMany({
       where: whereCondition,
       orderBy: { paymentId },
       select: {
@@ -74,7 +76,7 @@ class paymentRepository {
         },
       },
     });
-  };
+  }
 
   // 상태수정은 오더에서
 }

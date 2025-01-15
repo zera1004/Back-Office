@@ -13,6 +13,7 @@ class paymentService {
   }
 
   async getRestaurantPoint(ownerId) {
+    console.log('레스토랑 id 조회S');
     const restaurant = await this.#repository.findRestaurant(ownerId);
     if (!restaurant) return null;
 
@@ -23,8 +24,9 @@ class paymentService {
   }
 
   // 주문 진행 조회
-  orderInfo = async ({ userId, restaurantId }) => {
+  async orderInfo({ userId, restaurantId }) {
     try {
+      console.log('주문현황 조회S');
       if (!userId || !restaurantId) {
         throw new Error('INVALID_INPUT'); // 유효성 에러 발생
       }
@@ -64,10 +66,10 @@ class paymentService {
     } catch (error) {
       throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
     }
-  };
+  }
 
   // 주문내역 조회
-  paymentInfo = async ({ userId, restaurantId }) => {
+  async paymentInfo({ userId, restaurantId }) {
     try {
       if (!userId || !restaurantId) {
         throw new Error('INVALID_INPUT'); // 유효성 에러 발생
@@ -105,6 +107,6 @@ class paymentService {
     } catch (error) {
       throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
     }
-  };
+  }
 }
 export default new paymentService(paymentRepository);

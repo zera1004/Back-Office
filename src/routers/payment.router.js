@@ -18,27 +18,27 @@ router.get(
 
 // 주문진행 - 유저
 router.get(
-  '/users/me/orders/:userId',
+  '/users/me/getOrders/user/:userId',
   requireAccessToken,
   paymentController.getRestaurantPoint,
 );
 
 // 주문진행 - 가게
 router.get(
-  '/owners/me/orders/:restoruntsId',
+  '/owners/me/getOrders/restorunts/:restoruntsId',
   requireAccessToken,
   paymentController.getRestaurantPoint,
 );
 
 // 주문내역 - 유저
 router.get(
-  '/users/me/payments/:userId',
+  '/users/me/getPayments/user/:userId',
   requireAccessToken,
   paymentController.getRestaurantPoint,
 );
 // 주문내역 - 가게
 router.get(
-  '/owners/me/payments/:restoruntsId',
+  '/owners/me/getPayments/restorunts/:restoruntsId',
   requireAccessToken,
   paymentController.getRestaurantPoint,
 );

@@ -26,6 +26,7 @@ class paymentController {
   }
 
   async getRestaurantPoint(req, res, next) {
+    console.log('레스토랑 id 조회C');
     try {
       const ownerId = parseInt(req.user.ownerId);
 
@@ -55,6 +56,7 @@ class paymentController {
   // 주문 진행
   async orderInfo(req, res, next) {
     try {
+      console.log('주문현황 조회C');
       const { userId, restaurantId } = req.params;
       const data = await this.#service.orderInfo({ userId, restaurantId });
 
