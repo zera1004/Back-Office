@@ -32,4 +32,9 @@ restaurantRouter.delete(
   restaurantsController.deleteRestaurant,
 );
 
+restaurantRouter.get(
+  '/restaurantName/:restaurantId',
+  restaurantsController.getAllRestaurant,
+);
+
 export default restaurantRouter;

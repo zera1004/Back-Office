@@ -1,5 +1,4 @@
 // src/services/reviews.service.js
-import { MESSAGES } from '../constants/message.constant.js';
 import ReviewsRepository from '../repositories/reviews.repository.js';
 
 class ReviewsService {
@@ -13,10 +12,10 @@ class ReviewsService {
   findALLReviewByRestaurantId = async (data) => {
     if (!Number.isInteger(data.restaurantId)) {
       // 로그에 오류 기록
-      console.error(MESSAGES.REVIEW.SERVICE.ERROR_RESTAURANT, {
+      console.error('Validation Error: restaurantId는 정수여야 합니다.', {
         restaurantId: data.restaurantId,
       });
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
+      throw new Error('잘못된 요청입니다.');
     }
 
     // 저장소(Repository)에게 데이터를 요청합니다.
@@ -25,7 +24,7 @@ class ReviewsService {
     );
 
     if (!reviews) {
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_REVIEW);
+      throw new Error('매장에 리뷰가 없습니다.');
     }
 
     // 호출한 reviews를 가장 최신 게시글 부터 정렬합니다.
@@ -43,6 +42,7 @@ class ReviewsService {
         paymentId: review.paymentId,
         userId: review.userId,
         content: review.content,
+        star: review.star,
         createdAt: review.createdAt,
       };
     });
@@ -51,25 +51,27 @@ class ReviewsService {
   // 내 모든 리뷰
   // data : userId
   findAllMyReviews = async (data) => {
-    if (!Number.isInteger(data.userId)) {
+    const { userId } = data;
+    console.log('서비스 계층 : 전달된 사용자 ID:', userId);
+    if (!Number.isInteger(userId)) {
       console.error(MESSAGES.REVIEW.SERVICE.ERROR_USER, {
-        userId: data.userId,
+        userId: userId,
       });
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
+      throw new Error('잘못된 요청입니다.');
     }
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const reviews = await this.#repository.findAllMyReviews(data.userId);
-
+    const reviews = await this.#repository.findAllMyReviews(userId);
+    console.log('서비스계층 : 사용자 ID로 조회된 리뷰 데이터:', reviews);
     // 본인의 리뷰만 조회 가능
-    if (reviews.userId !== data.userId)
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
+    // if (reviews.userId !== userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
 
     reviews.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
 
     if (!reviews) {
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_REVIEW);
+      throw new Error('작성한 리뷰가 없습니다.');
     }
 
     return reviews.map((review) => {
@@ -77,7 +79,9 @@ class ReviewsService {
         restaurantId: review.restaurantId,
         paymentId: review.paymentId,
         userId: review.userId,
+        reviewId: review.reviewId,
         content: review.content,
+        star: review.star,
         createdAt: review.createdAt,
       };
     });
@@ -87,17 +91,17 @@ class ReviewsService {
   // data : paymentId,userId
   findReviewByPayId = async (data) => {
     if (!Number.isInteger(data.userId) || !Number.isInteger(data.paymentId)) {
-      console.error(MESSAGES.REVIEW.SERVICE.ERROR_PAYMENT, {
+      console.error('Validation Error: userId, paymentId는 정수여야 합니다.', {
         userId: data.userId,
         paymentId: data.paymentId,
       });
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
+      throw new Error('잘못된 요청입니다.');
     }
     // 저장소(Repository)에게 특정 게시글 하나를 요청합니다.
     const reviews = await this.#repository.findReviewByPayId(data.paymentId);
 
     if (!reviews) {
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_REVIEW);
+      throw new Error('작성한 리뷰가 없습니다.');
     }
     return {
       postId: post.postId,
@@ -110,8 +114,9 @@ class ReviewsService {
   };
 
   // 리뷰 생성
-  // data : restaurantId: paymentId, userId, content, star
+  // data : restaurantId: paymentId, userId, content, star, mediaUrl
   createReview = async (data) => {
+    data.paymentId = +data.paymentId;
     if (
       !data.restaurantId ||
       !data.paymentId ||
@@ -119,18 +124,19 @@ class ReviewsService {
       !data.content ||
       data.star === null
     )
-      throw new Error(MESSAGES.REVIEW.SERVICE.ERROR_FILED);
+      throw new Error('필수 필드가 누락되었습니다.');
 
     const existingReview = await this.#repository.findReviewByPayId(
       data.paymentId,
     );
-    if (existingReview) throw new Error(MESSAGES.REVIEW.SERVICE.ONE_REVIEW);
+    if (existingReview)
+      throw new Error('결제별로 하나의 리뷰만 작성할 수 있습니다.');
 
     if (data.star < 1 || data.star > 5)
-      throw new Error(MESSAGES.REVIEW.SERVICE.DATA_STAR);
+      throw new Error('별점은 1에서 5 사이여야 합니다.');
 
     if (data.content.length < 10 || data.content.length > 100)
-      throw new Error(MESSAGES.REVIEW.SERVICE.DATA_LENGTH);
+      throw new Error('리뷰 내용은 10자 이상 100자 이하이어야 합니다.');
 
     if (
       !Number.isInteger(data.userId) ||
@@ -138,14 +144,17 @@ class ReviewsService {
       !Number.isInteger(data.paymentId)
     ) {
       // 로그에 오류 기록
-      console.error(MESSAGES.REVIEW.SERVICE.ERROR_ALL, {
-        userId: data.userId,
-        restaurantId: data.restaurantId,
-        paymentId: data.paymentId,
-      });
+      console.error(
+        'Validation Error: userId, restaurantId, paymentId는 정수여야 합니다.',
+        {
+          userId: data.userId,
+          restaurantId: data.restaurantId,
+          paymentId: data.paymentId,
+        },
+      );
 
       // 클라이언트에게는 일반적인 오류 메시지 반환
-      throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND_ERROR);
+      throw new Error('잘못된 요청입니다.');
     }
 
     // 저장소에 요청
@@ -157,16 +166,16 @@ class ReviewsService {
   updateReview = async (data) => {
     // 저장소(Repository)에게 특정 게시글 하나를 요청합니다.
     const review = await this.#repository.findReviewByReviewId(data.reviewId);
-    if (!review) throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND);
+    if (!review) throw new Error('존재하지 않는 리뷰입니다.');
 
-    if (review.userId !== data.userId)
-      throw new Error(MESSAGES.REVIEW.SERVICE.USER_UPDATE);
+    // if (review.userId !== data.userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.USER_UPDATE);
 
     if (data.star < 1 || data.star > 5)
-      throw new Error(MESSAGES.REVIEW.SERVICE.DATA_STAR);
+      throw new Error('별점은 1에서 5 사이여야 합니다.');
 
     if (data.content.length < 10 || data.content.length > 100)
-      throw new Error(MESSAGES.REVIEW.SERVICE.DATA_LENGTH);
+      throw new Error('리뷰 내용은 10자 이상 100자 이하이어야 합니다.');
 
     // 저장소에 요청
     await this.#repository.updateReview(data);
@@ -177,10 +186,10 @@ class ReviewsService {
   deleteReview = async (data) => {
     // 저장소(Repository)에게 특정 게시글 하나를 요청합니다.
     const review = await this.#repository.findReviewByReviewId(data.reviewId);
-    if (!review) throw new Error(MESSAGES.REVIEW.SERVICE.NOT_FOUND);
+    if (!review) throw new Error('이미 존재하지 않는 리뷰입니다.');
 
-    if (review.userId !== data.userId)
-      throw new Error(MESSAGES.REVIEW.SERVICE.USER_DELETE);
+    // if (review.userId !== data.userId)
+    //   throw new Error(MESSAGES.REVIEW.SERVICE.USER_DELETE);
 
     // 저장소에 요청
     await this.#repository.deleteReview(data.reviewId);
