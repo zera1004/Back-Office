@@ -161,15 +161,19 @@ function getOwnerRestaurant() {
   })
     .then((response) => response.json())
     .then((res) => {
-      document.getElementById('nickname').textContent = res.data.nickname;
-      document.getElementById('email').textContent = res.data.email;
-      document.getElementById('image').src = res.data.media || '';
+      document.getElementById('restaurantName').textContent =
+        res.data.restaurantName;
+      document.getElementById('restaurantAddress').textContent =
+        res.data.address;
+      document.getElementById('restaurantNumber').textContent =
+        res.data.phoneNumber;
+      document.getElementById('restaurantType').textContent =
+        res.data.restaurantType;
     })
-    .catch((err) => alert('프로필 정보를 불러오는데 실패했습니다.', err));
+    .catch((err) => alert('업장이 등록되지 않았습니다.', err));
 }
 
 // 페이지 로드시 사용자 정보와 게시글 모두 조회
 window.onload = function () {
   getOwnerRestaurant();
-  getUserPosts();
 };
