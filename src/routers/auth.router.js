@@ -18,4 +18,8 @@ authRouter.post('/log-out', requireAccessToken, AuthController.logOut);
 
 authRouter.delete('/', requireAccessToken, AuthController.deleteId);
 
+authRouter.get('/profile', requireAccessToken, AuthController.getProfile);
+
+authRouter.patch('/profile', requireAccessToken, AuthController.updateProfile)
+
 export { authRouter };
