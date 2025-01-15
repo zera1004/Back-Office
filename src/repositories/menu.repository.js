@@ -15,7 +15,7 @@ class menuRepository {
   }
 
   async createMenu(restaurantId, menuName, content, price, media) {
-    return await this.#orm.menu.create({
+    const menu = await this.#orm.menu.create({
       data: {
         restaurantId,
         menuName,
@@ -24,6 +24,7 @@ class menuRepository {
         media,
       },
     });
+    return menu;
   }
 
   async findMenusByRestaurantId(restaurantId) {

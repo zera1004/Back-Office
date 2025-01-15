@@ -22,8 +22,9 @@ router.get('/restaurnts/:restaurantId/menus', (req, res, next) => {
 
 router.patch(
   '/owners/me/menus/:menuId',
-  requireAccessToken,
   menusUploader.single('media'),
+  menuValidator,
+  requireAccessToken,
   (req, res, next) => {
     menuController.updateMenu(req, res, next);
   },

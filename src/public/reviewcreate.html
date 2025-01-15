@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>메뉴등록</title>
   </head>
-  <script src="./js/menucreate.js" defer></script>
+  <script src="./js/reviewcreate.js" defer></script>
   <style>
     article header {
       text-align: center;
@@ -32,33 +32,29 @@
     <main class="container">
       <article>
         <header>
-          <h3>메뉴 등록</h3>
+          <h3>리뷰 작성</h3>
         </header>
         <form>
-          <input
-            id="menuName"
-            name="menuName"
-            type="text"
-            placeholder="메뉴이름을 입력하세요"
-            required
-          />
-          <input
-            id="price"
-            name="price"
-            type="number"
-            placeholder="메뉴가격을 입력하세요"
-            required
-          />
+          <h2>별점을 선택해주세요</h2>
+          <select id="rating" name="rating" required>
+            <option value="">별점 선택</option>
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★☆</option>
+            <option value="3">★★★☆☆</option>
+            <option value="2">★★☆☆☆</option>
+            <option value="1">★☆☆☆☆</option>
+          </select>
+
           <textarea
             id="content"
             name="content"
-            placeholder="메뉴설명을 입력하세요"
+            placeholder="리뷰 내용을 입력하세요"
             rows="15"
             required
           ></textarea>
 
           <input id="media" name="media" type="file" accept="image/*" />
-          <button class="menuSubmit" type="submit">메뉴 등록</button>
+          <button class="reviewSubmit" type="submit">메뉴 등록</button>
         </form>
       </article>
     </main>

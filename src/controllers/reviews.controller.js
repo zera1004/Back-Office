@@ -46,7 +46,8 @@ class ReviewsController {
 
   // 결제id로 리뷰 조회 (인증 O)
   findReviewByPayId = async (req, res) => {
-    const { paymentId } = req.params;
+    // const { paymentId } = req.body;
+    const paymentId = 3;
     const userId = req.user;
     try {
       const ReviewByPayId = await this.#service.findReviewByPayId({
@@ -65,24 +66,29 @@ class ReviewsController {
   // 리뷰 생성 (인증 O)
   createReview = async (req, res) => {
     // Client로 부터 받은 데이터를 가공
-    const { content, star } = req.body;
+
+    const { content, star, paymentId } = req.body;
+    // const paymentId = 3;
     // 파라미터로 부터 받은 데이터
     // const { restaurantId, paymentId } = req.params;
     const { restaurantId } = req.params;
     // 인증 미들웨어에서 받은 유저 정보
     // const userId = req.user;
+    const mediaUrl = req.file ? req.file.location : null;
 
     // 테스트용 //
-    const userId = 10;
-    const paymentId = 3;
+    const userId = req.user.userId;
+
     // 테스틍용
     try {
       await this.#service.createReview({
         restaurantId: +restaurantId,
         paymentId: +paymentId,
         userId,
+        paymentId,
         content,
         star,
+        mediaUrl,
       });
       return res
         .status(HTTP_STATUS.CREATED)

@@ -108,8 +108,9 @@ class ReviewsService {
   };
 
   // 리뷰 생성
-  // data : restaurantId: paymentId, userId, content, star
+  // data : restaurantId: paymentId, userId, content, star, mediaUrl
   createReview = async (data) => {
+    data.paymentId = +data.paymentId;
     if (
       !data.restaurantId ||
       !data.paymentId ||

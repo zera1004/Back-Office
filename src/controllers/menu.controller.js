@@ -64,6 +64,7 @@ class menuController {
       const ownerId = parseInt(req.user.ownerId);
       const menuId = parseInt(req.params.menuId);
       const { menuName, content, price } = req.body;
+      const mediaUrl = req.file ? req.file.location : null;
 
       const data = await this.#service.updateMenu(
         ownerId,
@@ -71,6 +72,7 @@ class menuController {
         menuName,
         content,
         price,
+        mediaUrl,
       );
 
       if (!data) {

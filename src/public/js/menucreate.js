@@ -1,10 +1,10 @@
-const postSubmit = document.querySelector('.menuSubmit');
+const menuSubmit = document.querySelector('.menuSubmit');
 const menuName = document.querySelector('#menuName');
 const price = document.querySelector('#price');
 const content = document.querySelector('#content');
 const media = document.querySelector('#media');
 
-postSubmit.addEventListener('click', function (e) {
+menuSubmit.addEventListener('click', function (e) {
   e.preventDefault();
   //폼 데이터 생성
   const formData = new FormData();
@@ -30,9 +30,10 @@ postSubmit.addEventListener('click', function (e) {
     .then((result) => {
       alert('메뉴 등록 완료');
       console.log('요청성공', result);
-      window.location.href = 'login.html';
+      window.location.href = 'reviewcreate.html';
     })
     .catch((err) => {
+      alert('메뉴 등록 실패');
       console.log('에러 발생', err);
     });
 });

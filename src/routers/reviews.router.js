@@ -1,6 +1,7 @@
 import ReviewsController from '../controllers/reviews.controller.js';
 import express from 'express';
-// import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
+import { reviewsUploader } from '..//middlewares/s3uploader.middleware.js';
+import { requireAccessToken } from '../middlewares/authorization.middleware.js';
 
 const router = express.Router();
 
@@ -16,6 +17,8 @@ router.get(
 // 리뷰 생성 (인증 O)
 router.post(
   '/users/me/restaurants/:restaurantId/reviews',
+  requireAccessToken,
+  reviewsUploader.single('media'),
   ReviewsController.createReview,
 );
 // 리뷰 수정 (인증 O)

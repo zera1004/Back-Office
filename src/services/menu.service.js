@@ -8,10 +8,13 @@ class menuService {
   }
 
   async createMenu(ownerId, menuName, content, price, media) {
+    if (!ownerId || !menuName || !content || !price)
+      throw new Error('필수값이 누락되었습니다.');
+
     const restaurant = await this.#repository.findRestaurantByOwnerId(ownerId);
-    console.log(media);
+
     if (!restaurant) {
-      return null;
+      throw new Error('레스토랑이 존재하지 않습니다.');
     }
 
     return await this.#repository.createMenu(
@@ -30,10 +33,10 @@ class menuService {
     return menus;
   }
 
-  async updateMenu(ownerId, menuId, menuName, content, price) {
+  async updateMenu(ownerId, menuId, menuName, content, price, media) {
     const restaurant = await this.#repository.findRestaurantByOwnerId(ownerId);
     if (!restaurant) {
-      throw new Error('RESTAURANT_NOT_FOUND');
+      throw new Error('레스토랑이 존재하지 않습니다.');
     }
 
     const menu = await this.#repository.findMenuByIdAndRestaurantId(
@@ -41,13 +44,14 @@ class menuService {
       restaurant.restaurantId,
     );
     if (!menu) {
-      return null;
+      throw new Error('메뉴가 존재하지 않습니다.');
     }
 
     const updateData = {
       ...(menuName && { menuName }),
       ...(content && { content }),
       ...(price && { price }),
+      ...(media && { media }),
     };
 
     return await this.#repository.updateMenu(menuId, updateData);
