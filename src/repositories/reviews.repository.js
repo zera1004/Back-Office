@@ -7,6 +7,12 @@ class ReviewsRepository {
   constructor(orm) {
     this.#orm = orm;
   }
+  // 레스토랑 찾기!
+  findRestaurant = async (data) => {
+    return await this.#orm.restaurant.findUnique({
+      where: { restaurantId: parseInt(data.restaurantId) },
+    });
+  };
 
   // 음식점 별 리뷰
   findALLReviewByRestaurantId = async (restaurantId) => {

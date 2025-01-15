@@ -16,21 +16,70 @@ async function userReviews() {
     if (!response.ok) {
       throw new Error('네트워크 응답이 좋지 않습니다.');
     }
+
     console.log('응답 상태:', response.status);
     const data = await response.json();
-    console.log('응답 데이터:', data);
+    console.log('userReviews API 응답 데이터:', data);
     const reviews = data.data; // 'data' 속성에서 리뷰 배열 추출
 
-    // 리뷰가 배열인지 확인
     if (!Array.isArray(reviews)) {
       throw new Error('리뷰 데이터가 배열이 아닙니다.');
     }
-    // 전체 리뷰 데이터를 전역 변수에 저장
-    allReviews = reviews;
 
-    displayReviews(reviews);
+    allReviews = reviews; // 전역 변수에 저장
   } catch (error) {
     console.error('리뷰를 가져오는 중 오류 발생:', error);
+  }
+}
+
+async function getRestaurantName(reviews) {
+  try {
+    // restaurantId 중복 제거
+    const uniqueRestaurantIds = [
+      ...new Set(reviews.map((r) => r.restaurantId)),
+    ];
+
+    console.log('유니크한 restaurantIds:', uniqueRestaurantIds);
+
+    // 각 restaurantId에 대해 이름 가져오기
+    const restaurantNames = {};
+    await Promise.all(
+      uniqueRestaurantIds.map(async (restaurantId) => {
+        const response = await fetch(`/api/restaurantName/${restaurantId}`, {
+          method: 'GET',
+          credentials: 'include', // 쿠키 전송 허용
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `레스토랑 이름을 가져오는 중 오류 발생: ${response.status}`,
+          );
+        }
+
+        const data = await response.json();
+        console.log(`레스토랑 ID ${restaurantId}의 API 응답 데이터:`, data);
+
+        // restaurantNames에 저장
+        restaurantNames[restaurantId] = data.data.restaurantName || 'Unknown';
+        console.log(restaurantNames[1]);
+      }),
+    );
+
+    console.log('restaurantNames 객체:', restaurantNames);
+
+    // 리뷰 데이터에 restaurantName 추가
+    const reviewsWithNames = reviews.map((review) => ({
+      ...review,
+      restaurantName:
+        restaurantNames[review.restaurantId] || 'Unknown RestaurantName',
+    }));
+
+    console.log('reviewsWithNames 데이터:', reviewsWithNames);
+
+    // 업데이트된 리뷰 데이터 표시
+    displayReviews(reviewsWithNames);
+  } catch (error) {
+    console.error('레스토랑 이름을 가져오는 중 오류 발생:', error);
   }
 }
 
@@ -150,6 +199,14 @@ function saveReview() {
 }
 
 // 페이지 로드 시 리뷰 가져오기
-window.onload = () => {
-  userReviews();
+window.onload = async () => {
+  try {
+    // 1. 리뷰 데이터 로드
+    await userReviews();
+
+    // 2. 레스토랑 이름 로드 및 리뷰 데이터 표시
+    await getRestaurantName(allReviews);
+  } catch (error) {
+    console.error('페이지 로드 중 오류 발생:', error);
+  }
 };

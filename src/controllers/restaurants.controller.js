@@ -10,8 +10,7 @@ class RestaurantController {
 
   postRestaurant = async (req, res) => {
     const ownerId = parseInt(req.user.ownerId);
-    const { address, phoneNumber, restaurantName, restaurantType, totalPoint } =
-      req.body;
+    const { address, phoneNumber, restaurantName, restaurantType } = req.body;
     try {
       const data = await this.#service.postRestaurant({
         ownerId,
@@ -19,7 +18,6 @@ class RestaurantController {
         phoneNumber,
         restaurantName,
         restaurantType,
-        totalPoint,
       });
       return res
         .status(HTTP_STATUS.CREATED)
@@ -101,6 +99,25 @@ class RestaurantController {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
       }
 
+      next(err);
+    }
+  };
+
+  getAllRestaurant = async (req, res) => {
+    const restaurantId = Number(req.params.restaurantId);
+
+    try {
+      const data = await this.#service.getAllRestaurant({
+        restaurantId,
+      });
+
+      return res.status(HTTP_STATUS.OK).json({
+        data: data,
+      });
+    } catch (err) {
+      if (err.message === MESSAGES.RESTAURANT.DELETE.NOT_FOUND_RESTAURANT) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: err.message });
+      }
       next(err);
     }
   };
