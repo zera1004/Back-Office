@@ -20,6 +20,7 @@ export const requireAccessToken = async (req, res, next) => {
     let payload;
     try {
       payload = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
+      console.log(payload);
     } catch (error) {
       // AccessToken의 유효기한이 지난 경우
       if (error.name === 'TokenExpiredError') {
@@ -41,6 +42,7 @@ export const requireAccessToken = async (req, res, next) => {
 
     if (memberType === 'customer') {
       user = await authRepository.findCustomerId(id);
+      console.log(user);
     } else if (memberType === 'owner') {
       user = await authRepository.findOwnerId(id);
     } else {
@@ -59,8 +61,9 @@ export const requireAccessToken = async (req, res, next) => {
     user.memberType = memberType;
 
     req.user = user;
+    console.log(req.user);
     next();
   } catch (error) {
-    next(error);
+    next(new Error('Authentication middleware error: ' + error.message));
   }
 };

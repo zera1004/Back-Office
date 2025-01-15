@@ -1,6 +1,6 @@
 import ReviewsController from '../controllers/reviews.controller.js';
 import express from 'express';
-// import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
+import { requireAccessToken } from '../middlewares/authorization.middleware.js';
 
 const router = express.Router();
 
@@ -10,7 +10,11 @@ router.get(
   ReviewsController.findALLReviewByRestaurantId,
 );
 // 내 리뷰 전체 조회 (인증 O)
-// router.get('/', requireAccessToken, ReviewsController.findAllMyReviews);
+router.get(
+  '/users/me/reviews',
+  requireAccessToken,
+  ReviewsController.findAllMyReviews,
+);
 // 결제id로 리뷰 조회 (인증 O)
 // router.get('/:resumeId', ReviewsController.findReviewByPayId);
 // 리뷰 생성 (인증 O)
@@ -19,14 +23,8 @@ router.post(
   ReviewsController.createReview,
 );
 // 리뷰 수정 (인증 O)
-router.put(
-  '/users/me/restaurants/:restaurantId/reviews/:reviewId',
-  ReviewsController.updateReview,
-);
+router.put('/users/me/reviews/:reviewId', ReviewsController.updateReview);
 // 리뷰 삭제 (인증 O)
-router.delete(
-  '/users/me/restaurants/:restaurantId/reviews/:reviewId',
-  ReviewsController.deleteReview,
-);
+router.delete('/users/me/reviews/:reviewId', ReviewsController.deleteReview);
 
 export default router;

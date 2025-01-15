@@ -23,6 +23,7 @@ class menuService {
     const menus = await this.#repository.findMenusByRestaurantId(restaurantId);
     if (!menus.length) return null;
 
+    console.log(`서비스 계층 : 음식점 ID로 매뉴 조회  :`, menus);
     return menus;
   }
 

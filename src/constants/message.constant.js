@@ -152,7 +152,7 @@ export const MESSAGES = {
     SERVICE: {
       NOT_FOUND_ERROR: '잘못된 요청입니다.',
       ERROR_RESTAURANT: 'Validation Error: restaurantId는 정수여야 합니다.',
-      ERROR_USER: 'Validation Error: userId 정수여야 합니다.',
+      ERROR_USER: 'Validation Error: userId는 정수여야 합니다.',
       ERROR_PAYMENT: 'Validation Error: userId, paymentId는 정수여야 합니다.',
       ERROR_ALL:
         'Validation Error: userId, restaurantId, paymentId는 정수여야 합니다.',
