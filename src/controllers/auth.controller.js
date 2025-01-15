@@ -124,7 +124,11 @@ class AuthController {
       const { email, memberType } = req.user;
       const { password } = req.body;
 
-      const data = await this.#service.deleteId({email, password, memberType});
+      const data = await this.#service.deleteId({
+        email,
+        password,
+        memberType,
+      });
 
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.AUTH.DELETE_ID.SUCCEED,
@@ -132,6 +136,62 @@ class AuthController {
       });
     } catch (error) {
       if (error.name === 'isPasswordMatched' || error.name === 'noInput')
+        errorForm(error, res);
+      else next(error);
+    }
+  };
+
+  // 본인 정보 조회
+  getProfile = async (req, res, next) => {
+    try {
+      const { email, memberType } = req.user;
+
+      const data = await this.#service.getProfile({ email, memberType });
+
+      return res.status(HTTP_STATUS.OK).json({
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // 본인 정보 수정
+  updateProfile = async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const { password, phoneNumber } = req.body;
+
+      if (password) {
+        const data = {
+          email,
+          password,
+        };
+        await this.#service.updateProfile(data);
+        return res
+          .status(HTTP_STATUS.CREATED)
+          .json(MESSAGES.AUTH.UPDATE_PASSWORD.SUCCEED);
+      }
+
+      if (phoneNumber) {
+        const data = {
+          email,
+          phoneNumber,
+        };
+        await this.#service.updateProfile(data);
+        return res
+          .status(HTTP_STATUS.CREATED)
+          .json(MESSAGES.AUTH.UPDATE_PHONENUMBER.SUCCEED);
+      }
+
+      if (!password && !phoneNumber) {
+        const error = new Error(MESSAGES.AUTH.UPDATE_PHONENUMBER.FALSE);
+        error.status = HTTP_STATUS.BAD_REQUEST;
+        error.name = 'noInput';
+        throw error;
+      }
+    } catch (error) {
+      if (error.name === 'noInput')
         errorForm(error, res);
       else next(error);
     }
