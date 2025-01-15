@@ -61,6 +61,16 @@ function closePhoneNumberModal() {
   document.getElementById('phoneNumberModal').style.display = 'none';
 }
 
+// 회원탈퇴 모달 열기
+function openDeleteAccount() {
+  document.getElementById('deleteAccountModal').style.display = 'block';
+}
+
+// 회원탈퇴 모달 닫기
+function closeDeleteAccount() {
+  document.getElementById('deleteAccountModal').style.display = 'none';
+  document.getElementById('newPassword').value = '';
+}
 // 비밀번호 수정 저장
 function savePassword() {
   const newPassword = document.getElementById('newPassword').value;
@@ -131,6 +141,35 @@ function savePhoneNumber() {
     .catch((err) => {
       console.log('에러', err.message);
     });
+}
+
+// 회원탈퇴
+function saveDeleteAccount() {
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  fetch('/api/auth', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ password: confirmPassword }),
+  })
+  .then((response) => {
+    if (!response.ok) {
+      return response.json().then((err) => {
+        alert(err.message);
+        throw new Error(err.message);
+      });
+    }
+    return response.json();
+  })
+  .then((result) => {
+    console.log(result.message);
+    alert(result.message);
+    window.location.href = 'log-in.html';
+  })
+  .catch((err) => {
+    console.log('에러', err.message);
+  });
 }
 
 // 페이지 로드시 사용자 정보와 게시글 모두 조회

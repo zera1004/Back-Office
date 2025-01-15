@@ -89,7 +89,7 @@
           <li><a href="#">장바구니</a></li>
           <li><a href="#">주문진행</a></li>
           <li><a href="#">주문내역</a></li>
-          <li><button class="secondary">회원탈퇴</button></li>
+          <li><button class="secondary" onclick="openDeleteAccount()">회원탈퇴</button></li>
         </ul>
       </nav>
       <div class="user-info">
@@ -157,6 +157,16 @@
           />
           <button onclick="savePhoneNumber()">저장</button>
           <button onclick="closePhoneNumberModal()">취소</button>
+        </div>
+      </div>
+
+      <!-- 회원 탈퇴 모달 -->
+      <div id="deleteAccountModal" class="modal">
+        <div class="modal-content">
+          <h3>정말로 회원을 탈퇴하시겠습니까?</h3>
+          <input type="text" id="confirmPassword" placeholder="비밀번호를 입력해주세요." />
+          <button onclick="saveDeleteAccount()">삭제</button>
+          <button onclick="closeDeleteAccount()">취소</button>
         </div>
       </div>
 
