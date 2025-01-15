@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="ko" data-theme="dark">
   <head>
     <link
       rel="stylesheet"
@@ -8,41 +8,128 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
+    <title>로그인</title>
+    <style>
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .member-type {
+        margin-bottom: 20px;
+      }
+      .error-message {
+        color: red;
+        display: none;
+        margin-top: 10px;
+      }
+    </style>
   </head>
-  <script src="js/example.js" defer></script>
   <body>
-    <br />
     <main class="container">
       <header>
-        <h1>Login</h1>
+        <h1>로그인</h1>
       </header>
-      <br />
-      <form method="POST">
-        <label for="email">Email</label>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="member-type">
+          <label>회원 유형</label>
+          <label>
+            <input type="radio" name="memberType" value="customer" checked />
+            손님
+          </label>
+          <label>
+            <input type="radio" name="memberType" value="owner" />
+            사장님
+          </label>
+        </div>
+
+        <label for="email">이메일</label>
         <input
-          type="text"
+          type="email"
           id="email"
           name="email"
-          placeholder="Enter your email"
+          placeholder="이메일을 입력하세요"
           required
           autocomplete="username"
         />
 
-        <label for="password">Password</label>
+        <label for="password">비밀번호</label>
         <input
           type="password"
           id="password"
           name="password"
-          placeholder="Enter your password"
+          placeholder="비밀번호를 입력하세요"
           required
           autocomplete="current-password"
         />
 
-        <button type="logInSubmit" class="logInSubmit">Login</button>
+        <div id="errorMessage" class="error-message"></div>
+
+        <button type="submit">로그인</button>
       </form>
-      <br />
-      <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+      <p>계정이 없으신가요? <a href="signup.html">회원가입</a></p>
     </main>
+
+    <script>
+      async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const memberType = document.querySelector(
+          'input[name="memberType"]:checked',
+        ).value;
+        const errorMessage = document.getElementById('errorMessage');
+
+        try {
+          const response = await fetch('/api/auth/log-in', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password, memberType }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // 로그인 성공
+            localStorage.setItem('accessToken', data.accessToken);
+
+            // 홈페이지로 리다이렉트
+            window.location.href = '/views/home.html';
+          } else {
+            // 로그인 실패
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = data.message || '로그인에 실패했습니다.';
+          }
+        } catch (error) {
+          console.error('로그인 오류:', error);
+          errorMessage.style.display = 'block';
+          errorMessage.textContent = '서버 오류가 발생했습니다.';
+        }
+      }
+
+      // 페이지 로드 시 이미 로그인되어 있다면 홈페이지로 리다이렉트
+      document.addEventListener('DOMContentLoaded', async () => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+          try {
+            const response = await fetch('/api/auth/status', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              window.location.href = '/views/home.html';
+            }
+          } catch (error) {
+            console.error('인증 상태 확인 실패:', error);
+            localStorage.removeItem('accessToken');
+          }
+        }
+      });
+    </script>
   </body>
 </html>

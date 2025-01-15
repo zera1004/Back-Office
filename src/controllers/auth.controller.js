@@ -191,8 +191,7 @@ class AuthController {
         throw error;
       }
     } catch (error) {
-      if (error.name === 'noInput')
-        errorForm(error, res);
+      if (error.name === 'noInput') errorForm(error, res);
       else next(error);
     }
   };
