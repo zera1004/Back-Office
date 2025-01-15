@@ -122,7 +122,9 @@ class AuthService {
     }
 
     if (user.isVerified === true) {
-      const error = new Error(MESSAGES.AUTH.COMMON.EMAILVERIFICATION.ALREADYDONE);
+      const error = new Error(
+        MESSAGES.AUTH.COMMON.EMAILVERIFICATION.ALREADYDONE,
+      );
       error.status = HTTP_STATUS.CONFLICT;
       error.name = 'isVerified';
       throw error;
@@ -229,6 +231,39 @@ class AuthService {
     }
 
     return user.email;
+  };
+
+  // 본인 정보 조회
+  getProfile = async (authData) => {
+    const { email, memberType } = authData;
+
+    let user;
+
+    if (memberType === 'customer') {
+      user = await this.#repository.findCustomer(email);
+    } else if (memberType === 'owner') {
+      user = await this.#repository.findOwner(email);
+    }
+
+    user.password = '*********';
+
+    return user;
+  };
+
+  // 회원 정보 수정
+  updateProfile = async (authData) => {
+    const { email, password, phoneNumber } = authData;
+
+    const updateData = {};
+
+    if (password) {
+      const hashedPassword = bcrypt.hashSync(password, HASH_SALT_ROUNDS);
+      updateData.password = hashedPassword;
+    }
+
+    if (phoneNumber) updateData.phoneNumber = phoneNumber;
+
+    let user = await this.#repository.updateProfile(email, updateData);
   };
 }
 
