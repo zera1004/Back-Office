@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <script src="js/my-page.js" defer></script>
+    <style>
+      .profile-image {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin: 20px auto;
+        display: block;
+        background-color: #444;
+      }
+      .user-info {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .user-info h2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .info-box {
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 450px;
+        text-align: left;
+      }
+
+      .edit-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .posts-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      .modal-content {
+        background-color: var(--background-color);
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 500px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <nav>
+        <ul>
+          <li><strong>마이페이지</strong></li>
+        </ul>
+        <ul>
+          어서오세요 <li id = "userName"></li>님!
+        </ul>
+        <ul>
+          <li><a href="postRestaurant.html">주소 등록</a></li>
+          <li><a href="#">내 리뷰조회</a></li>
+          <li><a href="#">장바구니</a></li>
+          <li><a href="#">주문진행</a></li>
+          <li><a href="#">주문내역</a></li>
+          <li><button class="secondary" onclick="Logout()">로그아웃</button></li>
+          <li><button class="secondary" onclick="openDeleteAccount()">회원탈퇴</button></li>
+        </ul>
+      </nav>
+      <div class="user-info">
+        <img
+          class="profile-image"
+          id="image"
+          onclick="openMediaModal()"
+          src=""
+        />
+
+        <h2>
+          <span id="name"></span>
+        </h2>
+
+        <div class="info-box" id="email">
+          이메일: <span id="emailValue"></span>
+        </div>
+
+        <div class="info-box" id="password">
+          비밀번호: <span id="passwordValue"></span>
+        </div>
+
+        <div class="info-box" id="phoneNumber">
+          전화번호: <span id="phoneNumberValue"></span>
+        </div>
+
+        <div class="info-box" id="point">
+          포인트: <span id="pointValue"></span>
+        </div>
+        <button class="edit-button" onclick="openPasswordModal()">
+          비밀번호 변경하기
+        </button>
+        <button class="edit-button" onclick="openPhoneNumberModal()">
+          전화번호 변경하기
+        </button>
+      </div>
+
+      <!-- 비밀번호 변경 모달 -->
+      <div id="passwordModal" class="modal">
+        <div class="modal-content">
+          <h3>비밀번호 수정</h3>
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="새로운 비밀번호"
+          />
+          <input
+            type="password"
+            id="confirmNewPassword"
+            placeholder="새로운 비밀번호 확인"
+          />
+          <button onclick="savePassword()">저장</button>
+          <button onclick="closePasswordModal()">취소</button>
+        </div>
+      </div>
+
+      <!-- 전화번호 변경 모달 -->
+      <div id="phoneNumberModal" class="modal">
+        <div class="modal-content">
+          <h3>전화번호 수정</h3>
+          <input
+            type="text"
+            id="newPhoneNumber"
+            placeholder="새로운 전화번호"
+          />
+          <button onclick="savePhoneNumber()">저장</button>
+          <button onclick="closePhoneNumberModal()">취소</button>
+        </div>
+      </div>
+
+      <!-- 회원 탈퇴 모달 -->
+      <div id="deleteAccountModal" class="modal">
+        <div class="modal-content">
+          <h3>정말로 회원을 탈퇴하시겠습니까?</h3>
+          <input type="text" id="confirmPassword" placeholder="비밀번호를 입력해주세요." />
+          <button onclick="saveDeleteAccount()">삭제</button>
+          <button onclick="closeDeleteAccount()">취소</button>
+        </div>
+      </div>
+
+      <!-- 프로필 사진 수정 모달 -->
+      <div id="mediaModal" class="modal">
+        <div class="modal-content">
+          <h3>프로필 사진 수정</h3>
+          <input type="file" id="media" name="media" accept="image/*" />
+          <button onclick="saveMedia()">저장</button>
+          <button onclick="closeMediaModal()">취소</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
