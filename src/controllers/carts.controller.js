@@ -46,9 +46,12 @@ class CartController {
         userId,
         cartId,
       });
+  
+      // 서버에서 반환하는 데이터 형식을 조정
       return res.status(HTTP_STATUS.OK).json({
         message: '장바구니를 조회하였습니다',
-        data: data,
+        data: data.cartTotalPrice, // 음식 이름, 가격, 개수 포함
+        totalPrice: data.totalPrice, // 총액
       });
     } catch (err) {
       if (err.message === '접근권한이 없습니다.') {

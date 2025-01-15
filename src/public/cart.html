@@ -38,7 +38,7 @@
     <div class="nav-container">
       <nav>
         <ul>
-          <li><a href="#" aria-current="page">장바구니</a></li>
+          <li><a href="cart.html" aria-current="page">장바구니</a></li>
           <li><a href="login.html">로그인/회원가입</a></li>
           <li><a href="my.html">MY</a></li>
         </ul>
@@ -58,13 +58,13 @@
           <td>김밥</td>
           <td>₩3,000</td>
           <td><input type="number" value="1" min="1" style="width: 80px;"></td>
-          <td><button type="button">삭제</button></td>
+          <td><button type="button" class="delete-btn">삭제</button></td>
         </tr>
         <tr>
           <td>떡볶이</td>
           <td>₩4,500</td>
           <td><input type="number" value="1" min="1" style="width: 80px;"></td>
-          <td><button type="button">삭제</button></td>
+          <td><button type="button" class="delete-btn">삭제</button></td>
         </tr>
       </tbody>
     </table>
@@ -73,5 +73,15 @@
       <button type="button">주문하기</button>
     </div>
   </main>
+
+  <script>
+    // 삭제 버튼 클릭 시 해당 행 삭제
+    document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const row = this.closest('tr'); // 해당 버튼이 속한 행(tr)을 찾음
+        row.remove(); // 행을 삭제
+      });
+    });
+  </script>
 </body>
 </html>
