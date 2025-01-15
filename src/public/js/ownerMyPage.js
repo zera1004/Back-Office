@@ -1,73 +1,54 @@
-let currentEditId = null; // 현재 수정 중인 요소의 ID
-
-// 모달 열기
-function openEditModal(elementId) {
-  currentEditId = elementId; // 수정할 요소 ID 저장
-  const currentValue = document.getElementById(elementId).innerText; // 기존 값 가져오기
-  document.getElementById('editInput').value = currentValue; // 입력 필드에 기존 값 설정
-  document.getElementById('editModal').style.display = 'block'; // 모달 열기
+function openRestaurantNameModal() {
+  document.getElementById('restaurantNameModal').style.display = 'block';
 }
 
-// 모달 닫기
-function closeEditModal() {
-  document.getElementById('editModal').style.display = 'none'; // 모달 닫기
-  currentEditId = null; // 수정 중인 ID 초기화
+function closeNameModal() {
+  document.getElementById('restaurantNameModal').style.display = 'none';
+  document.getElementById('newRestaurantName').value = '';
 }
 
-// 수정 값 저장
-function saveEdit() {
-  if (currentEditId) {
-    const newValue = document.getElementById('editInput').value; // 입력된 새 값 가져오기
-    document.getElementById(currentEditId).innerText = newValue; // 해당 요소에 새 값 반영
-    closeEditModal(); // 모달 닫기
-  }
+function openRestaurantAddressModal() {
+  document.getElementById('restaurantAddressModal').style.display = 'block';
 }
 
-function openNicknameModal() {
-  document.getElementById('nicknameModal').style.display = 'block';
+function closeAddressModal() {
+  document.getElementById('restaurantAddressModal').style.display = 'none';
+  document.getElementById('newRestaurantAddress').value = '';
 }
 
-function closeNicknameModal() {
-  document.getElementById('nicknameModal').style.display = 'none';
-  document.getElementById('newNickname').value = '';
+function openRestaurantNumberModal() {
+  document.getElementById('restaurantNumberModal').style.display = 'block';
 }
 
-function openPasswordModal() {
-  document.getElementById('passwordModal').style.display = 'block';
+function closeNumberModal() {
+  document.getElementById('restaurantNumberModal').style.display = 'none';
+  document.getElementById('newRestaurantNumber').value = '';
+}
+function openRestaurantTypeModal() {
+  document.getElementById('restaurantTypeModal').style.display = 'block';
 }
 
-function closePasswordModal() {
-  document.getElementById('passwordModal').style.display = 'none';
-  document.getElementById('newPassword').value = '';
-  document.getElementById('confirmPassword').value = '';
+function closeTypeModal() {
+  document.getElementById('restaurantTypeModal').style.display = 'none';
+  document.getElementById('newRestaurantType').value = '';
 }
-
-function openMediaModal() {
-  document.getElementById('mediaModal').style.display = 'block';
-}
-
-function closeMediaModal() {
-  document.getElementById('mediaModal').style.display = 'none';
-  document.getElementById('media').value = '';
-}
-
 // 닉네임 변경
-function saveNickname() {
-  const newNickname = document.getElementById('newNickname').value;
+function saveName() {
+  const newRestaurantName = document.getElementById('newRestaurantName').value;
 
-  fetch('/api/profile', {
+  fetch('/api/owners/me/restaurants', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include', // 쿠키 포함
-    body: JSON.stringify({ nickname: newNickname }),
+    body: JSON.stringify({ restaurantName: newRestaurantName }),
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error('닉네임 변경에 실패했습니다.');
+        throw new Error('업장명 수정에 실패하였습니다.');
       }
-      document.getElementById('nickname').textContent = newNickname;
-      closeNicknameModal();
-      alert('닉네임이 변경되었습니다.');
+      document.getElementById('restaurantName').textContent = newRestaurantName;
+      closeNameModal();
+      alert('업장명이 변경되었습니다.');
     })
     .catch((err) => alert(err.message));
 }

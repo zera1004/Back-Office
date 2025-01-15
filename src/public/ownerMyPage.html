@@ -105,31 +105,55 @@
             <p></p>
             <p>    </p>
             <span id="restaurantName"></span>
-            <button class="edit-button" onclick="openEditModal('restaurantName')">수정</button>
+            <button class="edit-button" onclick="openRestaurantNameModal('restaurantName')">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 주소</span>
             <span id="restaurantAddress"></span>
-            <button class="edit-button" onclick="openEditModal('restaurantAddress')">수정</button>
+            <button class="edit-button" onclick="openRestaurantAddressModal('restaurantAddress')">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 번호</span>
             <span id="restaurantNumber"></span>
-            <button class="edit-button" onclick="openEditModal('restaurantNumber')">수정</button>
+            <button class="edit-button" onclick="openRestaurantNumberModal('restaurantNumber')">수정</button>
           </div>
           <div class="info-row">
             <span class="label">업장 종류</span>
             <span id="restaurantType"></span>
-            <button class="edit-button" onclick="openEditModal('restaurantType')">수정</button>
+            <button class="edit-button" onclick="openRestaurantTypeModal('restaurantType')">수정</button>
           </div>
           
           <!-- 수정 모달 -->
-          <div id="editModal" class="modal">
+          <div id="restaurantNameModal" class="modal">
             <div class="modal-content">
-              <h3>수정하기</h3>
-              <input type="text" id="editInput" placeholder="새로운 값을 입력하세요" />
-              <button onclick="saveEdit()">저장</button>
-              <button onclick="closeEditModal()">취소</button>
+              <h3>업장명 수정하기</h3>
+              <input type="text" id="newRestaurantName" placeholder="새로운 값을 입력하세요" />
+              <button onclick="saveName()">저장</button>
+              <button onclick="closeNameModal()">취소</button>
+            </div>
+          </div>
+          <div id="restaurantAddressModal" class="modal">
+            <div class="modal-content">
+              <h3>업장 주소 수정하기</h3>
+              <input type="text" id="newRestaurantAddress" placeholder="새로운 값을 입력하세요" />
+              <button onclick="saveAddress()">저장</button>
+              <button onclick="closeAddressModal()">취소</button>
+            </div>
+          </div>
+          <div id="restaurantNumberModal" class="modal">
+            <div class="modal-content">
+              <h3>업장 번호 수정하기</h3>
+              <input type="text" id="newRestaurantNumber" placeholder="새로운 값을 입력하세요" />
+              <button onclick="saveNumber()">저장</button>
+              <button onclick="closeNumberModal()">취소</button>
+            </div>
+          </div>
+          <div id="restaurantTypeModal" class="modal">
+            <div class="modal-content">
+              <h3>업장 종류 수정하기</h3>
+              <input type="text" id="newRestaurantType" placeholder="새로운 값을 입력하세요" />
+              <button onclick="saveType()">저장</button>
+              <button onclick="closeTypeModal()">취소</button>
             </div>
           </div>
           <button class="outline">업장 삭제</button>
