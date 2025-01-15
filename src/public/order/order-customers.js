@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
           'background-color: rgba(98, 226, 194, 0.349); padding: 10px;';
 
         form.innerHTML = `
+        <form method="POST" style="background-color: rgba(98, 226, 194, 0.349); padding: 10px;">
             <div class="orderProgressStatus" style="display: flex; gap: 10px; align-items: flex-start;">
               <label for="email" style="width: 85px;">진행 상황</label>
               <p id="orderProgressStatus" style="
@@ -56,17 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
               ">${payment.status}</p>
             </div>
   
-        <p id="pamentId">${payment.paymentId} : 000005</p>
+        <p id="pamentId">${payment.paymentId}</p>
             <div class="OrderDetails" style="display: flex; gap: 10px; align-items: flex-start;">
               <span style="width: 100px;">주문내역</span>
               <textarea readonly id="OrderDetails" class="info">
-                ${payment.orderDetails
-                  .map(
-                    (order) => `
-                  ${order.storeName} - ${order.itemName} ${order.quantity}개 ${order.status}
+${payment.orderDetails
+  .map(
+    (order) => `
+${order.storeName} - ${order.itemName} ${order.quantity}개 ${order.status}
                 `,
-                  )
-                  .join('\n')}
+  )
+  .join('\n')}
               </textarea>
             </div>
   
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
             <div style="display: flex; justify-content: flex-end; padding: 10px; height: 70px;">
               <button type="button" class="OrderProgress" id="OrderProgress-delete">주문취소</button>
-            </div>
+            </div></form>
           `;
 
         container.appendChild(form);

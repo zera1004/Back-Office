@@ -55,19 +55,22 @@ class orderRepository {
   /********* 주문조회 ************/
 
   // 주문정보 조회
-  getOrderIdByPayment = async ({ paymentId }) => {
+  getOrderIdByPaymentU = async (userId) => {
     return await this.#orm.Payment.findUnique({
-      where: { paymentId },
+      where: { userId },
+      orderBy: { paymentId },
       select: {
-        order: true,
         order: {
           select: {
             cartId: { select: { count: true } },
-            userId: {
-              select: { address: true },
-            },
+            userId: { select: { address: true } },
             restaurantId: {
-              select: { address: true },
+              select: {
+                address: {
+                  where: { mainAddress: true },
+                  select: { address: true },
+                },
+              },
             },
           },
         },
@@ -75,6 +78,29 @@ class orderRepository {
     });
   };
 
+  getOrderIdByPaymentR = async ({ restaurantId }) => {
+    return await this.#orm.Payment.findUnique({
+      where: { restaurantId },
+      orderBy: { paymentId },
+      select: {
+        order: {
+          where: { restaurantId },
+          select: {
+            cartId: { select: { count: true } },
+            userId: { select: { address: true } },
+            restaurantId: {
+              select: {
+                address: {
+                  where: { mainAddress: true },
+                  select: { address: true },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  };
   // 주문 상태 조회
   getOrderStatus = async (orderId) => {
     const order = await this.#orm.Order.findFirst({

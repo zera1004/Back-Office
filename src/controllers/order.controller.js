@@ -10,7 +10,7 @@ class OrderController {
 
   // 주문 생성
   createOrder = async (req, res) => {
-    const { restaurantId, cartId, status, total_price, address } = req.body;
+    const { restaurantId, cartId, status, total_price } = req.body;
     const { userId } = req.user;
     try {
       const result = await this.#services.createOrder({
@@ -19,7 +19,6 @@ class OrderController {
         cartId,
         status,
         total_price,
-        address,
       });
       return res.status(HTTP_STATUS.CREATED).json({
         message: MESSAGES.ORDER.CREATE.SUCCEED`${result}원)`,
@@ -73,7 +72,7 @@ class OrderController {
   orderInfoByUser = async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await this.#services.orderInfo({ id });
+      const result = await this.#services.orderInfoByU({ id });
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
       });
@@ -85,7 +84,7 @@ class OrderController {
   orderInfoByRestaurant = async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await this.#services.orderInfo({ id });
+      const result = await this.#services.orderInfoByR({ id });
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.ORDER.CHECK.SUCCEED`${result}`,
       });

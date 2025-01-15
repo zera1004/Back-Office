@@ -94,7 +94,7 @@ model Payment {
   restaurantId Int
   userId       Int
   total_price  Int
-  address      String // 주소컬럼 추가
+  // address      String // 주소컬럼 추가
   order_time   DateTime   @default(now())
   createdAt    DateTime   @default(now()) @map("created_at")
   review       Review[]

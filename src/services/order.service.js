@@ -15,13 +15,12 @@ class OrderServices {
     cartId,
     status,
     total_price,
-    address,
   }) => {
     try {
-      // 주소 없으면 매인 가져오기
-      if (!address || address.lemgth < 1) {
-        address = await this.#repository.getMainAddress(userId);
-      }
+      // // 주소 없으면 매인 가져오기
+      // if (!address || address.lemgth < 1) {
+      //   address = await this.#repository.getMainAddress(userId);
+      // }
       // 1. 사용자 포인트 확인 및 계산
       const user = await this.#repository.getUserById(userId);
       if (user.point < total_price) {
@@ -34,7 +33,6 @@ class OrderServices {
         userId,
         restaurantId,
         total_price,
-        address,
       });
 
       // 3. 주문 생성
@@ -52,7 +50,7 @@ class OrderServices {
         points: remainingPoints,
       });
 
-      return remainingPoints; // 남은 포인트 반환
+      return order, remainingPoints; // 남은 포인트 반환
     } catch (error) {
       if (error.message === MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT) {
         throw error;
@@ -118,20 +116,33 @@ class OrderServices {
   };
 
   // 주문내역 조회
-  orderInfo = async ({ orderId }) => {
+  orderInfoByU = async ({ userId }) => {
     try {
-      const order = await this.#repository.getOrderById(orderId);
-      const user = await this.#repository.getUserById(order.userId);
-      const restaurant = await this.#repository.getRestaurantById(
-        order.restaurantId,
-      );
-      const orderInfo = { order, user, restaurant };
-      return orderInfo;
+      const orderInfo = await this.#repository.getOrderIdByPaymentU({ userId });
+
+      // const info = // { order, user, restaurant };
+      //{data:[{order:{menu = []}},{user},{restaurant}]}
+
+      return; //info;
     } catch (error) {
       throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
     }
   };
 
+  orderInfoByR = async ({ restaurantId }) => {
+    try {
+      const orderInfo = await this.#repository.getOrderIdByPaymentR({
+        restaurantId,
+      });
+
+      // const info = // { order, user, restaurant };
+      //{data:[{order:{menu = []}},{user},{restaurant}]}
+
+      return; //info;
+    } catch (error) {
+      throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
+    }
+  };
   // 주문상태 수정
   orderStatusUpdate = async (orderId, status) => {
     try {
