@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게임의 만족</title>
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+      }
+
+      /* 사용자 유형 선택 박스 스타일 */
+      .user-type {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+      }
+
+      .user-option {
+        flex: 1;
+        text-align: center;
+        border: 2px solid #888;
+        padding: 10px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .user-option.selected {
+        background-color: #444; /* 선택된 경우 배경 색상 */
+        color: white; /* 선택된 경우 텍스트 색상 */
+      }
+    </style>
+  </head>
+  <script src="js/sign-up.js" defer></script>
+  <script>
+  </script>
+  <body>
+    <h2 style="text-align: center; color: white">회원가입</h2>
+    <main class="container">
+      <form id="signUpForm">
+        <div class="user-type">
+          <div class="user-option" data-type="customer" onclick="selectUserType(this)">
+            손님
+          </div>
+          <div class="user-option" data-type="owner" onclick="selectUserType(this)">
+            사장님
+          </div>
+        </div>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <input
+          type="password"
+          id="passwordConfirm"
+          name="passwordConfirm"
+          placeholder="passwordConfirm"
+          required
+        />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="name"
+          required
+        />
+        <input
+          type="text"
+          id="phoneNumber"
+          name="phoneNumber"
+          placeholder="phoneNumber"
+          required
+        />
+        <div style="display: flex; justify-content: flex-end; gap: 10px">
+          <button class="signUpSubmit" type="submit">확인</button>
+          <button type="button" onclick='window.location.href="index.html"'>
+            돌아가기
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <form>
+          <p>이메일에 전달된 인증번호로 인증을 진행해주세요</p>
+          <input
+            type="text"
+            id="verificationCode"
+            name="verificationCode"
+            placeholder="verificationCode"
+          />
+          <div style="display: flex; justify-content: flex-end; gap: 10px">
+            <button class="verificationCodeSubmit" type="submit">확인</button>
+            <button type="button">돌아가기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

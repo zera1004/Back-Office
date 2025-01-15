@@ -59,6 +59,13 @@ export const MESSAGES = {
     DELETE_ID: {
       SUCCEED: '회원 탈퇴가 완료되었습니다.',
     },
+    UPDATE_PASSWORD: {
+      SUCCEED: '비밀번호가 수정되었습니다.',
+    },
+    UPDATE_PHONENUMBER: {
+      SUCCEED: '전화번호가 수정되었습니다.',
+      FALSE: '정보를 입력해주세요.'
+    },
   },
   ADDRESS: {
     COMMON: {

@@ -60,11 +60,12 @@ model CartDetail {
 }
 
 model Address {
-  addressId   Int    @id @default(autoincrement())
+  addressId   Int     @id @default(autoincrement())
   userId      Int
   address     String
   addressName String
-  user        User   @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  mainAddress Boolean @default(false)
+  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Order {
@@ -82,6 +83,7 @@ model Order {
 }
 
 enum OrderType {
+  CANCELED
   PREPARING
   DELIVERING
   DELIVERED
@@ -108,8 +110,8 @@ model Restaurant {
   phoneNumber    String
   restaurantName String
   restaurantType RestaurantType
-  totalPoint     Int // 총 매출
-  averageStar    Int? // 평균 평점
+  totalPoint     Int?           @default(0)
+  averageStar    Int?           @default(0)
   media          String?
   createdAt      DateTime       @default(now()) @map("created_at")
   menu           Menu[]
