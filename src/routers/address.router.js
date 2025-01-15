@@ -30,5 +30,15 @@ addressRouter.delete(
   requireAccessToken,
   addressController.deleteAddress,
 );
+addressRouter.get(
+  '/users/me/addresses/:addressId',
+  requireAccessToken,
+  addressController.findAddressById,
+);
+addressRouter.patch(
+  '/users/me/addresses/:addressId/main',
+  requireAccessToken,
+  addressController.setMainAddress,
+);
 
 export default addressRouter;
