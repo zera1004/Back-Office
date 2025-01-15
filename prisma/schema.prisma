@@ -83,6 +83,7 @@ model Order {
 }
 
 enum OrderType {
+  CANCELED
   PREPARING
   DELIVERING
   DELIVERED

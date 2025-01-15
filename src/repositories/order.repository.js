@@ -7,16 +7,37 @@ class orderRepository {
     this.#orm = orm;
   }
 
-  /********* 주문생성 ************/
-  // 매인주소 가져오기
-  // Repository 메서드: 특정 사용자의 mainAddress가 true인 주소들을 조회
-  getMainAddresses = async (userId) => {
-    return await this.#orm.address.findFirst({
-      where: {
-        userId, // 특정 사용자
-        mainAddress: true, // mainAddress가 true인 항목만
+  // 사용자 조회
+  getUserById = async (userId) => {
+    return await this.#orm.User.findFirst({
+      where: { userId },
+    });
+  };
+
+  // 메뉴아이디 및 카운터 조회
+  getMenuByCartId = async (cartId) => {
+    return await this.#orm.CartDetail.findMany({
+      where: { cartId },
+      select: { menuId: true, count: true },
+    });
+  };
+
+  // 가격 조회
+  getPriceByMenuId = async (menuId) => {
+    return await this.#orm.Menu.findFirst({
+      where: { menuId },
+      select: { price: true },
+    });
+  };
+
+  // 결제 생성
+  createPayment = async ({ userId, restaurantId, total_price }) => {
+    return await this.#orm.Payment.create({
+      data: {
+        userId,
+        restaurantId,
+        total_price,
       },
-      select: { address: true },
     });
   };
   // 주문 생성

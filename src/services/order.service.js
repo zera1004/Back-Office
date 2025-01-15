@@ -9,33 +9,48 @@ class OrderServices {
   }
 
   // 주문 생성
-  createOrder = async ({
-    userId,
-    restaurantId,
-    cartId,
-    status,
-    total_price,
-  }) => {
+  createOrder = async ({ userId, restaurantId, cartId, status }) => {
     try {
-      // // 주소 없으면 매인 가져오기
-      // if (!address || address.lemgth < 1) {
-      //   address = await this.#repository.getMainAddress(userId);
-      // }
-      // 1. 사용자 포인트 확인 및 계산
+      let total_price = 0;
+
+      // 1. 사용자 조회
       const user = await this.#repository.getUserById(userId);
+
+      // 2. 메뉴 및 카운트갯수 조회(menuId , count 얻음)
+      const menuList = await this.#repository.getMenuByCartId(cartId);
+      if (!menuList || menuList.length === 0) {
+        throw new Error('장바구니에 메뉴가 없습니다.');
+      }
+      // 3. 메뉴 가격을 찾아서 카운트 갯수를 곱한뒤 total_price 에 저장
+      for (const menu of menuList) {
+        const priceData = await this.#repository.getPriceByMenuId(menu.menuId);
+        const price = priceData ? priceData.price : 0; // 가격이 없으면 0으로 설정
+
+        if (isNaN(price)) {
+          throw new Error(`메뉴 ID ${menu.menuId}의 가격을 찾을 수 없습니다.`);
+        }
+
+        if (typeof menu.count !== 'number' || menu.count <= 0) {
+          throw new Error(`잘못된 카운트 값: ${menu.count}`);
+        }
+
+        total_price += menu.count * price;
+      }
+      // 4. 유저가 가지고 있는 포인트가 total_price 보다 적으면 에러
       if (user.point < total_price) {
         throw new Error(MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT);
       }
-      const remainingPoints = user.point - total_price;
 
-      // 2. 결제 생성
+      let remainingPoints = user.point - total_price;
+
+      // 5. 결제 생성
       const payment = await this.#repository.createPayment({
         userId,
         restaurantId,
         total_price,
       });
 
-      // 3. 주문 생성
+      // 6. 주문 생성
       const order = await this.#repository.createOrder({
         userId,
         restaurantId,
@@ -44,13 +59,13 @@ class OrderServices {
         paymentId: payment.paymentId,
       });
 
-      // 4. 포인트 업데이트
+      // 7. 유저 포인트 업데이트
       await this.#repository.updateUserPoints({
         userId,
         points: remainingPoints,
       });
 
-      return order, remainingPoints; // 남은 포인트 반환
+      return { remainingPoints, order }; // 남은 포인트, 주문 반환
     } catch (error) {
       if (error.message === MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT) {
         throw error;
@@ -82,12 +97,9 @@ class OrderServices {
         refundedAmount: payment.total_price,
       });
 
-      // 4. 주문 및 결제 삭제 -> 상태변경
-      // await this.#repository.deletePayment(paymentId);
-      // await this.#repository.deleteOrder(paymentId);
-      for (const element of payment.user) {
-        await this.#repository.editOrderStatus(element, CANCELED);
-      }
+      // 4. 주문 및 결제 삭제
+      await this.#repository.deleteOrder(orderId);
+      await this.#repository.deletePayment(payment.paymentId);
 
       return payment.total_price; // 환불된 금액 반환
     } catch (error) {
