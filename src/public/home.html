@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>배달의 종족</title>
+    <script src="js/home.js" defer></script>
+    <style>
+      header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        background-color: var(--background-color);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-left: 800px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        margin-left: auto;
+      }
+
+      nav {
+        margin: 1rem 0;
+        display: flex;
+        justify-content: center;
+        background-color: var(--background-color);
+        padding: 0.5rem 0;
+        border-radius: 8px;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .main-content {
+        display: flex;
+        margin-top: 2rem;
+      }
+
+      .search-ranking {
+        flex: 1;
+        padding: 1rem;
+      }
+
+      .search {
+        margin-bottom: 2rem;
+      }
+
+      .ranking {
+        margin-top: 2rem;
+      }
+
+      .image-area {
+        flex: 2;
+        height: 400px;
+        background-color: #444;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        margin-left: 1rem;
+      }
+      /* 검색된 맛집 항목 스타일 */
+      /* 검색된 맛집 항목 스타일 */
+      .restaurant-item {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      /* 맛집 이미지 스타일 */
+      .restaurant-image {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 8px;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      /* 이미지 영역 스타일 (기존의 스타일을 재사용) */
+      .image-area {
+        display: flex;
+        flex-direction: row; /* 가로 정렬 */
+        gap: 20px; /* 항목 간 간격 */
+        overflow-x: auto; /* 가로 스크롤 활성화 */
+        padding: 10px; /* 내부 여백 추가 */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        scroll-behavior: smooth;
+        box-sizing: border-box; /* 패딩 포함 크기 계산 */
+      }
+
+      .restaurant-item {
+        flex: 0 0 auto; /* 고정된 크기 */
+        width: 300px; /* 고정된 너비 */
+        height: 200px; /* 고정된 높이 */
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #ffffff;
+        text-align: center;
+        display: flex;
+        flex-direction: column; /* 내용물 수직 정렬 */
+        justify-content: center; /* 수직 중앙 정렬 */
+        align-items: center; /* 가로 중앙 정렬 */
+        box-sizing: border-box; /* 패딩 포함 크기 계산 */
+        margin: 0; /* 외부 여백 제거 */
+      }
+
+      .image-area::-webkit-scrollbar {
+        height: 8px; /* 스크롤바 높이 */
+      }
+
+      .image-area::-webkit-scrollbar-thumb {
+        background-color: #888; /* 스크롤바 색상 */
+        border-radius: 4px;
+      }
+
+      .image-area::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">배달의 종족</div>
+      <div class="nav-links"></div>
+      <!-- 버튼을 동적으로 업데이트 -->
+    </header>
+    <nav>
+      <ul>
+        <li><a href="#">한식</a></li>
+        <li><a href="#">일식</a></li>
+        <li><a href="#">중식</a></li>
+        <li><a href="#">양식</a></li>
+        <li><a href="#">분식</a></li>
+        <li><a href="#">카페</a></li>
+      </ul>
+    </nav>
+    <main class="main-content container">
+      <div class="search-ranking">
+        <div class="search">
+          <input type="text" placeholder="맛집 검색..." />
+          <button onclick="searchRestaurants()">검색</button>
+        </div>
+        <div class="ranking">
+          <h3>맛집 랭킹</h3>
+          <ol>
+            <li>맛집 1</li>
+            <li>맛집 2</li>
+            <li>맛집 3</li>
+            <li>맛집 4</li>
+            <li>맛집 5</li>
+          </ol>
+        </div>
+      </div>
+      <div class="image-area"></div>
+    </main>
+
+    <!-- 외부 JS 파일 링크 -->
+  </body>
+</html>

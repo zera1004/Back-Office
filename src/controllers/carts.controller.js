@@ -9,21 +9,31 @@ class CartController {
 
   postCartDetail = async (req, res) => {
     const { userId } = req.user;
-    const { cartId } = req.params;
-    const { menuId, restaurantId, count } = req.body;
+    // const { cartId } = req.params;
+    const { cart } = req.body;
 
     try {
-      const data = await this.#service.postCartDetail({
-        userId,
-        cartId,
-        menuId,
-        restaurantId,
-        count,
-      });
+      // 결과를 담을 배열
+      const results = [];
+
+      // cart 배열을 순회하면서 DB에 삽입
+      for (const item of cart) {
+        const { menuId, restaurantId, count } = item;
+
+        // 예: 서비스 계층에 넘길 때도 하나씩 처리
+        //     userId나 기타 값도 같이 넘겨야 하는 경우가 많음
+        const data = await this.#service.postCartDetail({
+          userId,
+          menuId,
+          restaurantId,
+          count,
+        });
+        results.push(data); // 각 등록 결과 푸시
+      }
 
       return res
         .status(HTTP_STATUS.CREATED)
-        .json({ message: '장바구니 메뉴 등록에 성공하였습니다.', data: data });
+        .json({ message: '장바구니 메뉴 등록에 성공하였습니다.' });
     } catch (err) {
       if (err.message === '접근권한이 없습니다.') {
         return res.status(HTTP_STATUS.FORBIDDEN).json({ message: err.message });
@@ -64,6 +74,7 @@ class CartController {
     const { userId } = req.user;
     const { cartId } = req.params;
     const { cartDetailId } = req.body;
+    console.log(`클라이언트에서 준 값`, userId, cartId, cartDetailId);
     try {
       const data = await this.#service.deleteCartDetail({
         userId,
