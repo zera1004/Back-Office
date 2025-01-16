@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Page(Store)</title>
+</head>
+<script src="order-store.js" defer></script>
+<style>
+  .info {
+    border: 1px solid #ccc;
+    padding: 5px;
+    resize: none;
+    width: 100%;
+    height: 100px;
+    overflow-y: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+</style>
+
+<body>
+  <br />
+  <main class="container">
+    <header>
+      <h1>주문 진행</h1>
+      <h4 id="storname">주문현황 (가게용)</h4>
+    </header>
+    <br />
+    <dev class="repitByPament">
+      <form method="POST" style="background-color: rgba(98, 226, 194, 0.349); padding: 10px;">
+
+        <div class="orderProgressStatus" style=" display: flex; gap: 10px; align-items: flex-start;">
+          <label for="email" style="width: 85px;">진행 상황</label>
+          <p id="orderProgressStatus" style="
+        margin-right: auto;
+          border: 1px solid #ccc; 
+          font-weight: bold;
+          font-size: 20px;
+          background-color: rgba(119, 238, 108, 0.438);
+          border-radius:3px;         
+          resize: none; 
+          width: 200px ;
+          height: 40px; text-align: center; /* 텍스트 중앙 정렬 */
+          overflow-y: auto; 
+          word-wrap: break-word;
+          white-space: pre-wrap;
+        ">status</p>
+          <p id="pamentId">주문번호 : 000005</p>
+        </div>
+        <div class="OrderDetails" style=" display: flex; gap: 10px; align-items: flex-start;">
+          <span style="width: 100px;">주문내역 </span>
+          <textarea readonly id="OrderDetails" class="info">
+여기에 긴 텍스트가 들어갑니다.
+텍스트가 길어지면 스크롤바가 나타납니다.
+줄바꿈도 가능합니다.
+        </textarea>
+        </div>
+        <div class="CustomerInfo" style=" display: flex; gap: 10px; align-items: flex-start;">
+          <span style="width: 100px;">고객 정보 </span>
+          <textarea readonly id="CustomerInfo" class="info">
+여기에 긴 텍스트가 들어갑니다.
+텍스트가 길어지면 스크롤바가 나타납니다.
+줄바꿈도 가능합니다.
+        </textarea>
+        </div>
+
+
+
+        <div style="display: flex; justify-content: flex-end; padding: 10px; height: 70px;">
+
+          <button type="OrderProgress" class="OrderProgress" id="OrderProgress-ready"
+            style="margin-right: 10px;">음식준비완료</button>
+          <!-- 배달중으로 바꾸기,  주문준비중 버튼 보이기 -->
+          <button type="OrderProgress" class="OrderProgress" id="OrderProgress-deliveryComplete"
+            style="margin-right: 10px;">배달완료</button>
+          <!-- 다른버튼 없애기 -->
+          <button type="OrderProgress" class="OrderProgress" id="OrderProgress-delete">주문취소</button>
+          <!-- 취소된 주문으로 상태 바꾸기? 데이터 삭제? -->
+        </div>
+        </div>
+      </form>
+    </dev>
+    <br />
+    <!-- <p>Don't have an account? <a href="signup.html">Sign up</a></p> -->
+  </main>
+</body>
+
+</html>
