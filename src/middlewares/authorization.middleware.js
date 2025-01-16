@@ -22,7 +22,7 @@ export const requireAccessToken = async (req, res, next) => {
     if (!accessToken && refreshToken) {
       let token = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
       delete token.exp;
-      if (refreshTokens[String(token.id)] === refreshToken) {
+      if (refreshTokens[`${token.memberType}=${token.id}`] === refreshToken) {
         const makeAccessToken = jwt.sign(token, ACCESS_TOKEN_SECRET, {
           expiresIn: ACCESS_TOKEN_EXPIRES_IN,
         });
@@ -37,10 +37,11 @@ export const requireAccessToken = async (req, res, next) => {
           httpOnly: true,
         });
         accessToken = makeAccessToken;
+      } else {
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+          message: MESSAGES.AUTH.COMMON.JWT.WRONGREFRESHTOKEN,
+        });
       }
-      return res.status(UNAUTHORIZED).json({
-        message: MESSAGES.AUTH.COMMON.JWT.WRONGREFRESHTOKEN,
-      });
     }
 
     // refreshToken과 accessToken 둘 다 없는 경우
