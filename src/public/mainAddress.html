@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>메인 주소 설정</title>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>메인 주소 설정</h1>
+        <a href="getAddress.html" role="button">목록 보기</a>
+      </header>
+      <p>이 주소를 메인 주소로 설정하시겠습니까?</p>
+      <button id="confirmMain">설정</button>
+      <button onclick="window.location.href='getAddress.html'">취소</button>
+    </main>
+    <script src="js/setMainAddress.js" defer></script>
+  </body>
+</html>

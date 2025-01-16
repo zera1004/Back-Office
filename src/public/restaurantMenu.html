@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en" data-theme="white">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Menu Page</title>
+    <!-- JS 파일 연결 -->
+    <script src="js/restaurantMenu.js" defer></script>
+</head>
+
+<style>
+    .container {
+        margin-bottom: 40px;
+    }
+
+    .addToCartBtn {
+        height: 66px;
+        width: 300px;
+    }
+
+    .review {
+        display: flex;
+    }
+
+    #image {
+        width: 600px;
+        height: 495px;
+        margin: 10px 10px 10px auto;
+    }
+
+    #content {
+        align-content: center;
+        width: 800px;
+        height: 1000px;
+        margin: 10px 10px 10px auto;
+        overflow-y: auto;
+        /* 세로 스크롤 추가 */
+    }
+
+    #menu {
+        display: flex;
+        justify-content: space-between;
+        /* 좌, 중, 우 */
+        align-items: center;
+        padding: 10px 0;
+        width: 700px;
+        /* 메뉴 article 폭 */
+        margin: 10px auto;
+        cursor: pointer;
+    }
+
+    #menu span {
+        flex: 1;
+        /* 각 span이 동일 너비 */
+    }
+
+    #menu .left {
+        text-align: left;
+        margin-left: 20px;
+    }
+
+    #menu .center {
+        text-align: center;
+    }
+
+    #menu .right {
+        text-align: right;
+        margin-right: 20px;
+    }
+
+    /* 수량 선택 UI */
+    .quantityUI {
+        width: 700px;
+        /* 메뉴 폭과 동일 */
+        height: 100px;
+        /* 원하는 높이 */
+        margin: 0 auto;
+        /* 가운데 정렬 */
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        display: none;
+        /* 기본 숨김 */
+        padding: 0.5rem;
+    }
+
+    /* 주문하기 버튼과 합계 표시를 보기 좋게 구성 */
+    #orderButton {
+        width: 720px;
+        height: 100px;
+        margin: 0 auto;
+        margin-top: 1rem;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+<body>
+    <header>
+        <h1></h1>
+    </header>
+    <br />
+    <main class="container">
+        <article id="title">Restuarant Name</article>
+        <div class="review">
+            <div class="reviewContainer">
+                <article id="image">음식점 이미지</article>
+                <article id="image">임시</article>
+            </div>
+            <div class="content">
+                <article id="content">
+                    <!-- 실제 메뉴가 동적으로 들어갈 영역 -->
+                    <div id="menusContainer"></div>
+                </article>
+            </div>
+        </div>
+
+        <!-- 주문하기 영역: 버튼 + 합계 금액 표기 -->
+        <article id="orderButton">
+            <!-- 합계 금액 -->
+            <span id="totalPriceLabel" style="font-size:1.2rem;">합계: 0원</span>
+            <!-- 결제 페이지 이동용 버튼 -->
+            <button type="button" id="goPaymentBtn"
+                style="width:200px;height:70px;font-size:1rem;margin: auto 10px auto 0px;">주문하기</button>
+
+        </article>
+    </main>
+</body>
+
+</html>
