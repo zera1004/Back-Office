@@ -26,10 +26,10 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 생성 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.CREATE.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.CREATE.NO_BODY_DATA });
     }
   };
 
@@ -43,10 +43,10 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 조회 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.READ_LIST.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.READ_LIST.NO_BODY_DATA });
     }
   };
 
@@ -67,10 +67,10 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 수정 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.UPDATE.NOT_ERROR, error);
       res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.UPDATE.NO_BODY_DATA });
     }
   };
 
@@ -87,10 +87,54 @@ class AddressController {
         data: _address,
       });
     } catch (error) {
-      console.error('주소 삭제 중 오류 발생:', error);
+      console.error(MESSAGES.ADDRESS.DELETE.NOT_ERROR, error);
       res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });
+    }
+  };
+
+  // 주소 상세 조회
+  findAddressById = async (req, res, next) => {
+    try {
+      const { addressId } = req.params;
+
+      const _address = await this.#service.findAddressById(+addressId);
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.READ_LIST.SUCCEED,
+        data: _address,
+      });
+    } catch (error) {
+      console.error(MESSAGES.ADDRESS.READ_LIST.NOT_ERROR, error);
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: error.message });
+    }
+  };
+
+  // 메인 주소 설정
+  setMainAddress = async (req, res, next) => {
+    try {
+      const { addressId } = req.params;
+      const { userId } = req.user;
+
+      const _address = await this.#service.setMainAddress({
+        addressId: +addressId,
+        userId: +userId,
+      });
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.ADDRESS.UPDATE.SUCCEED,
+        data: _address,
+      });
+    } catch (error) {
+      console.error(MESSAGES.ADDRESS.MAINADDRESS.NOT_ERROR, error);
+      res
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: MESSAGES.ADDRESS.DELETE.NO_BODY_DATA });
     }
   };
 }

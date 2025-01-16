@@ -81,18 +81,27 @@ export const MESSAGES = {
     CREATE: {
       SUCCEED: '주소 생성에 성공했습니다.',
       NO_BODY_DATA: '생성 할 정보를 입력해 주세요.',
+      NOT_ERROR: '주소 생성 중 오류 발생:',
+      EXCEED_LIMIT: '주소는 최대 5개까지 등록 가능합니다.',
     },
     READ_LIST: {
       SUCCEED: '주소 조회에 성공했습니다.',
       NO_BODY_DATA: '조회 할 정보를 입력해 주세요.',
+      NOT_ERROR: '주소 조회 중 오류 발생:',
     },
     UPDATE: {
       SUCCEED: '주소 수정에 성공했습니다.',
       NO_BODY_DATA: '수정 할 주소 ID를 입력해 주세요.',
+      NOT_ERROR: '주소 수정 중 오류 발생:',
     },
     DELETE: {
       SUCCEED: '주소 삭제에 성공했습니다.',
       NO_BODY_DATA: '삭제 할 주소 ID를 입력해 주세요.',
+      NOT_ERROR: '주소 삭제 중 오류 발생:',
+    },
+    MAINADDRESS: {
+      NOT_ERROR: '메인 주소 설정 중 오류 발생:',
+      SAME_ADDRESS: '중복된 메인 주소가 존재합니다. 데이터를 확인하세요.',
     },
   },
   RESTAURANT: {
@@ -122,28 +131,42 @@ export const MESSAGES = {
     },
   },
   MENU: {
-    CREATE: {
-      SUCCEED: '메뉴등록이 완료되었습니다',
-      NOT_FOUND_RESTAURANT: '레스토랑을 찾을 수 없습니다.',
+    COMMON: {
+      MENUNAME: {
+        REQUIRED: '메뉴 이름을 입력해 주세요.',
+        TOO_LONG: '이름을 20자 내로 작성해 주세요.',
+      },
+      PRICE: {
+        REQUIRED: '메뉴 가격을 입력해 주세요.',
+        TOO_LOW: '가격을 0보다 큰 값으로 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '메뉴 설명을 입력해 주세요.',
+        TOO_LONG: '메뉴 설명을 100자 내로 입력해 주세요.',
+      },
     },
-    READ_LIST: {
-      SUCCEED: '메뉴를 조회하였습니다',
-      NOT_FOUND_MENU: '메뉴를 찾을 수 없습니다.',
+    CREATE: {
+      SUCCEED: '메뉴 등록에 성공했습니다.',
+      NOT_FOUND: '레스토랑을 찾을 수 없습니다.',
     },
     UPDATE: {
       SUCCEED: '메뉴가 수정되었습니다.',
-      NOT_FOUND_MENU: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+      NOT_FOUND: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+    },
+    GET: {
+      SUCCEED: '메뉴 조회에 성공했습니다.',
+      NOT_FOUND: '메뉴를 찾을 수 없습니다',
     },
     DELETE: {
       SUCCEED: '메뉴가 삭제되었습니다.',
-      NOT_FOUND_MENU: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
+      NOT_FOUND: '해당 레스토랑의 메뉴를 찾을 수 없습니다.',
     },
   },
   REVIEW: {
     SERVICE: {
       NOT_FOUND_ERROR: '잘못된 요청입니다.',
       ERROR_RESTAURANT: 'Validation Error: restaurantId는 정수여야 합니다.',
-      ERROR_USER: 'Validation Error: userId 정수여야 합니다.',
+      ERROR_USER: 'Validation Error: userId는 정수여야 합니다.',
       ERROR_PAYMENT: 'Validation Error: userId, paymentId는 정수여야 합니다.',
       ERROR_ALL:
         'Validation Error: userId, restaurantId, paymentId는 정수여야 합니다.',

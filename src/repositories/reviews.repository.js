@@ -22,12 +22,13 @@ class ReviewsRepository {
     const myReviews = await this.#orm.review.findMany({
       where: { userId },
     });
-
+    console.log('리포지토리 계층 : 사용자 ID로 db에서 리뷰 조회:', myReviews);
     return myReviews;
   };
 
   // 결제별로 하나만 있는 리뷰 조회 (결제 내역에 보이는 리뷰를 선택하여 상세하게 보려 한다면)
   findReviewByPayId = async (paymentId) => {
+    paymentId = parseInt(paymentId); //임시처리 숫자형
     const reviewByPay = await this.#orm.review.findUnique({
       where: { paymentId },
     });
@@ -48,7 +49,14 @@ class ReviewsRepository {
   // 리뷰 정렬 기능 > 최신순 조회 메서드, 별점순 조회 메서드 등
   // 음식점별 리뷰 통계 조회 메서드
 
-  createReview = async ({ restaurantId, paymentId, userId, content, star }) => {
+  createReview = async ({
+    restaurantId,
+    paymentId,
+    userId,
+    content,
+    star,
+    mediaUrl,
+  }) => {
     const createdReview = await this.#orm.review.create({
       data: {
         restaurantId: restaurantId,
@@ -56,6 +64,7 @@ class ReviewsRepository {
         userId: userId,
         content: content,
         star: star,
+        media: mediaUrl,
       },
     });
 
