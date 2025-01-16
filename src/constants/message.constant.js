@@ -45,6 +45,7 @@ export const MESSAGES = {
         EXPIRED: '인증 정보가 만료되었습니다.',
         NO_USER: '인증 정보와 일치하는 사용자가 없습니다.',
         INVALID: '인증 정보가 유효하지 않습니다.',
+        WRONGREFRESHTOKEN: '잘못된 토큰 정보입니다.',
       },
     },
     SIGN_UP: {
@@ -64,7 +65,7 @@ export const MESSAGES = {
     },
     UPDATE_PHONENUMBER: {
       SUCCEED: '전화번호가 수정되었습니다.',
-      FALSE: '정보를 입력해주세요.'
+      FALSE: '정보를 입력해주세요.',
     },
   },
   ADDRESS: {

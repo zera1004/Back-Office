@@ -6,8 +6,13 @@ import jwt from 'jsonwebtoken';
 import {
   ACCESS_TOKEN_EXPIRES_IN,
   HASH_SALT_ROUNDS,
+  REFRESH_TOKEN_EXPIRES_IN,
+  setRefreshToken,
 } from '../constants/auth.constant.js';
-import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
+import {
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+} from '../constants/env.constant.js';
 import nodemailer from 'nodemailer';
 import {
   NODEMAILER_USER,
@@ -193,7 +198,13 @@ class AuthService {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
 
-    return accessToken;
+    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+      expiresIn: REFRESH_TOKEN_EXPIRES_IN,
+    });
+
+    setRefreshToken(payload.id, refreshToken);
+
+    return { accessToken, refreshToken };
   };
 
   // 회원 탈퇴
