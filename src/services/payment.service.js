@@ -13,7 +13,6 @@ class paymentService {
   }
 
   async getRestaurantPoint(ownerId) {
-    console.log('레스토랑 id 조회S');
     const restaurant = await this.#repository.findRestaurant(ownerId);
     if (!restaurant) return null;
 
@@ -25,88 +24,127 @@ class paymentService {
 
   // 주문 진행 조회
   async orderInfo({ userId, restaurantId }) {
-    try {
-      console.log('주문현황 조회S');
-      if (!userId || !restaurantId) {
-        throw new Error('INVALID_INPUT'); // 유효성 에러 발생
-      }
-      const orderInfo = await this.#repository.getOrderIdByPayment({
-        userId,
-        restaurantId,
+    console.log('주문현황 조회S');
+
+    if (!userId && !restaurantId) {
+      console.error('userId와 restaurantId가 모두 null 또는 undefined입니다.');
+      return null;
+    }
+
+    const whereCondition = userId
+      ? { userId: Number(userId) }
+      : { restaurantId: Number(restaurantId) };
+
+    // 문자열을 숫자로 변환
+    //userId = Number(userId);
+    // restaurantId = Number(restaurantId);
+
+    console.log('주문현황 조회S1');
+    const orderInfo =
+      await this.#repository.getOrderIdByPayment(whereCondition);
+
+    console.log('주문현황 조회S2');
+    if (!orderInfo || orderInfo.length === 0) {
+      throw new Error('Failed to read payment list');
+    }
+    console.log('해당값 있음');
+
+    console.log('orderInfo : ', orderInfo);
+
+    // orderInfo가 배열
+    // 반환할 데이터 구성
+    const data = orderInfo.map((v) => {
+      const orderData = v.order.map((e2) => {
+        // cartDetail이 존재하는지 확인
+        const cartDetails = e2.cart?.cartDetail || [];
+        const cartItems = cartDetails.map(
+          (item) => `${item.menuName} - ${item.count}개`,
+        );
+
+        // 데이터 구조화
+        return {
+          menu: cartItems, // 메뉴 정보
+          status: e2.status, // 주문 상태
+        };
       });
 
-      // 주문 데이터 생성
-      const orderData = orderInfo.order.cartId.cartDetail.map(
-        (item) => `${item.menuName} - ${item.count}개`,
-      );
-
-      // 반환할 데이터 구성
-      const data = {
+      return {
         payment: {
-          paymentId: orderInfo.order.paymentId,
-          total_price: orderInfo.order.total_price,
-          order_time: orderInfo.order.order_time,
-          status: orderInfo.order.status,
+          paymentId: v.paymentId,
+          total_price: v.total_price,
+          order_time: v.order_time,
         },
         order: orderData,
         user: {
-          userName: orderInfo.order.userId.name,
-          address: orderInfo.order.userId.address.fullAddress,
+          userName: v.user.name || '너도이름없냐',
+          userAddress: v.user.address?.[0]?.address || '주소 없음',
         },
         restaurant: {
-          ownerId: orderInfo.order.restaurantId.ownerId,
-          restaurantAddress: orderInfo.order.restaurantId.address,
-          restaurantPhoneNumber: orderInfo.order.restaurantId.phoneNumber,
-          restaurantName: orderInfo.order.restaurantId.restaurantName,
-          averageStar: orderInfo.order.restaurantId.averageStar,
+          restaurantAddress: v.restaurant.address,
+          restaurantPhoneNumber: v.restaurant.phoneNumber,
+          restaurantName: v.restaurant.restaurantName,
+          averageStar: v.restaurant.averageStar || 0,
         },
       };
+    });
 
-      return { data };
-    } catch (error) {
-      throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
-    }
+    console.log('처리후 데이터 : ', data);
+
+    return { data };
   }
 
   // 주문내역 조회
   async paymentInfo({ userId, restaurantId }) {
-    try {
-      if (!userId || !restaurantId) {
-        throw new Error('INVALID_INPUT'); // 유효성 에러 발생
+    if (!userId && !restaurantId) {
+      console.error('userId와 restaurantId가 모두 null 또는 undefined입니다.');
+      return null;
+    }
+
+    const whereCondition = userId
+      ? { userId: Number(userId) }
+      : { restaurantId: Number(restaurantId) };
+
+    const paymentInfo =
+      await this.#repository.getOrderIdByPayment(whereCondition);
+
+    console.log('paymentInfo : ', paymentInfo);
+    // 데이터 변환 및 구조화
+    const data = paymentInfo.map((v) => {
+      const cartDetails = v.order[0]?.cart?.cartDetail || []; // cartDetail이 배열
+      const orderData = {};
+
+      // 주문 데이터 가공
+      if (cartDetails.length > 0) {
+        if (v.order.length > 1) {
+          orderData.menu = `${cartDetails[0].menuName} 외 ${v.order.length - 1}개`;
+        } else {
+          orderData.menu = `${cartDetails[0].menuName}`;
+        }
+        orderData.status = v.order[0].status;
+      } else {
+        orderData.menu = '메뉴 정보 없음';
       }
-      const orderInfo = await this.#repository.getOrderIdByPayment({
-        userId,
-        restaurantId,
-      });
 
-      // 주문 데이터 생성
-      const firstMenu = orderInfo.order.cartId.cartDetail[0].menuName;
-      const additionalCount = orderInfo.order.cartId.cartDetail.length - 1;
-      const menuData =
-        additionalCount > 0
-          ? `${firstMenu} 외 ${additionalCount}개`
-          : `${firstMenu}`;
-
-      const data = {
+      return {
         payment: {
-          paymentId: orderInfo.order.paymentId,
-          total_price: orderInfo.order.total_price,
-          order_time: orderInfo.order.order_time,
-          statuse: orderInfo.order.order.status,
+          paymentId: v.paymentId,
+          total_price: v.total_price,
+          order_time: v.order_time,
         },
-        order: menuData,
+        order: orderData,
         user: {
-          userName: orderInfo.order.userId.name,
+          userName: v.user.name || '이름 없음',
         },
-        restorent: {
-          restaurantName:
-            orderInfo.order.restaurantId.restaurantId.restaurantName,
+        restaurant: {
+          restaurantName: v.restaurant.restaurantName,
+          averageStar: v.restaurant.averageStar || 0,
         },
       };
-      return { data };
-    } catch (error) {
-      throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
-    }
+    });
+
+    console.log('처리 후 데이터: ', data);
+
+    return { data };
   }
 }
 export default new paymentService(paymentRepository);

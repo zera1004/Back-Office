@@ -31,47 +31,43 @@ class paymentRepository {
   }
 
   // 주문 진행 현황 조회
-  async getOrderIdByPayment({ userId, restaurantId }) {
-    console.log('주문현황 조회');
-    const whereCondition = userId ? { userId } : { restaurantId };
+  async getOrderIdByPayment(id) {
+    console.log('주문현황 조회', id);
+    // const whereCondition = userId ? { userId } : { restaurantId };
 
     return await this.#orm.Payment.findMany({
-      where: whereCondition,
-      orderBy: { paymentId },
+      where: id,
+      orderBy: { paymentId: 'desc' },
       select: {
+        paymentId: true,
+        total_price: true,
+        order_time: true,
+
+        restaurant: {
+          select: {
+            address: true,
+            phoneNumber: true, // 식당전화
+            restaurantName: true,
+            averageStar: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            address: {
+              where: { mainAddress: true },
+              select: { address: true },
+            },
+          },
+        },
         order: {
           select: {
-            paymentId: true,
-            restaurantId: {
+            cart: {
               select: {
-                ownerId: true,
-                address: true,
-                phoneNumber: true, // 식당전화
-                restaurantName: true,
-                averageStar: true,
+                cartDetail: { select: { menuId: true, count: true } },
               },
             },
-            userId: {
-              select: {
-                name: true,
-                address: {
-                  where: { mainAddress: true },
-                  select: { address: true },
-                },
-              },
-            },
-            total_price: true,
-            order_time: true,
-            order: {
-              select: {
-                cartId: {
-                  select: {
-                    cartDetail: { select: { menuId: true, count: true } },
-                  },
-                },
-                status: true,
-              },
-            },
+            status: true,
           },
         },
       },

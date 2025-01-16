@@ -16,31 +16,10 @@ router.get(
   paymentController.getRestaurantPoint,
 );
 
-// 주문진행 - 유저
-router.get(
-  '/users/me/getOrders/user/:userId',
-  requireAccessToken,
-  paymentController.getRestaurantPoint,
-);
+// 주문진행
+router.get('/myOrders', requireAccessToken, paymentController.orderInfo);
 
-// 주문진행 - 가게
-router.get(
-  '/owners/me/getOrders/restorunts/:restoruntsId',
-  requireAccessToken,
-  paymentController.getRestaurantPoint,
-);
-
-// 주문내역 - 유저
-router.get(
-  '/users/me/getPayments/user/:userId',
-  requireAccessToken,
-  paymentController.getRestaurantPoint,
-);
-// 주문내역 - 가게
-router.get(
-  '/owners/me/getPayments/restorunts/:restoruntsId',
-  requireAccessToken,
-  paymentController.getRestaurantPoint,
-);
+// 주문내역
+router.get('/myPayments', requireAccessToken, paymentController.paymentInfo);
 
 export default router;
