@@ -57,7 +57,8 @@ class paymentController {
   async orderInfo(req, res, next) {
     try {
       console.log('주문현황 조회C');
-      const { userId, restaurantId } = req.query;
+      const { restaurantId } = req.query;
+      const { userId } = parseInt(req.user.userId);
       console.log(userId);
       const data = await this.#service.orderInfo({ userId, restaurantId });
 

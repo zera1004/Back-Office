@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const userId = 'myUserId'; // 사용자 ID
-  const baseUrl = `/users/me/payment/`; // API 엔드포인트
+  const baseUrl = `/api`; // API 엔드포인트
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -8,30 +8,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // 데이터를 가져와서 렌더링하는 함수
   const fetchAndRenderPayments = async () => {
     try {
-      const response = await fetch(baseUrl, {
+      // 파라미스로 소유한 가게id 가져오기
+      const restaurantResponse = await fetch(`api/owners/me/restaurants`, {
         method: 'GET',
         headers,
       });
+      if (!restaurantResponse.ok)
+        throw new Error('Failed to fetch restaurant data');
+      const restaurantData = await restaurantResponse.json();
+      const restaurantId = restaurantData.restaurantId;
+
+      // 주문정보
+      const response = await fetch(
+        `${baseUrl}/myOrders/?restaurantId=${restaurantId}`,
+        {
+          method: 'GET',
+          headers,
+        },
+      );
 
       if (!response.ok) throw new Error('Failed to fetch payment data');
 
       const payments = await response.json();
 
-      // userId와 일치하는 데이터를 필터링
-      const filteredPayments = payments.filter(
-        (payment) => payment.userId === userId,
-      );
-
       // id="storname"인 요소를 선택
-      const stornameElement = document.getElementById('storname');
-      // 요소의 텍스트를 업데이트
-      stornameElement.textContent = `주문현황 - ${order.storeName}`;
+      const stornameElement = document.getElementById('restaurantName');
+      // 주문현황 - 가게이름
+      stornameElement.textContent = `주문현황 - ${payments.restaurant.restaurantName}`;
 
       // repitByPament 안에 데이터 렌더링
       const container = document.querySelector('.repitByPament');
       container.innerHTML = ''; // 기존 내용을 초기화
 
-      filteredPayments.forEach((payment) => {
+      payments.forEach((p) => {
         const form = document.createElement('form');
         form.method = 'POST';
         form.style =
@@ -55,39 +64,29 @@ document.addEventListener('DOMContentLoaded', () => {
           overflow-y: auto; 
           word-wrap: break-word;
           white-space: pre-wrap;
-        ">${payment.status}</p>
-          <p id="pamentId">${payment.paymentId}</p>
+        ">${p.payment.order.status}</p>
+        <p id="paymentId" style="margin-left: auto;">${p.payment.paymentId}</p>
+
         </div>
         <div class="OrderDetails" style=" display: flex; gap: 10px; align-items: flex-start;">
           <span style="width: 100px;">주문내역 </span>
           <textarea readonly id="OrderDetails" class="info">
-${payment.orderDetails
-  .map(
-    (order) => `
-            - ${order.itemName} ${order.quantity}개 
-          `,
-  )
-  .join('\n')}
+${p.payment.order.menu.join('\n')}
         </textarea>
         </div>
         <div class="CustomerInfo" style=" display: flex; gap: 10px; align-items: flex-start;">
           <span style="width: 100px;">고객 정보 </span>
           <textarea readonly id="CustomerInfo" class="info">
-          ${payment.storeInfo
-            .map(
-              (user) => `
-            ${user.userName} 주소: ${user.address} 
-          `,
-            )
-            .join('\n')}
+고객 이름 : ${p.payment.user.userName}
+배송지 :  ${p.payment.user.userAddress}
         </textarea>
         </div>
 
-
-
         <div style="display: flex; justify-content: flex-end; padding: 10px; height: 70px;">
 
-          <button type="OrderProgress" class="OrderProgress" id="OrderProgress-ready"
+
+        <!--onclick으로 넘어갈 때 p.payment.paymentId-->
+          <button type="OrderProgress" class="OrderProgress" id="OrderProgress-ready" onclick
             style="margin-right: 10px;">음식준비완료</button>
           <!-- 배달중으로 바꾸기,  주문준비중 버튼 보이기 -->
           <button type="OrderProgress" class="OrderProgress" id="OrderProgress-deliveryComplete"
@@ -98,11 +97,14 @@ ${payment.orderDetails
         </div>
         </div>
       </form>`;
-
-        container.appendChild(form);
       });
+    } catch (error) {
+      console.error(error.message);
+    }
+    container.appendChild(form);
+  };
 
-      /**
+  /**
    * // 주문상태 수정 - 가게
    router.patch(
      '/owners/me/orders/state/:paymentid',
@@ -114,7 +116,7 @@ ${payment.orderDetails
      //주문상태 수정
      editStatus = async (req, res) => {
        try {
-         const { id } = req.params;
+         const { 페이먼트id } = req.params;
          const { status } = req.body;
          const result = await this.#services.orderStatusUpdate(id, status);
          return res.status(HTTP_STATUS.OK).json({
@@ -125,9 +127,8 @@ ${payment.orderDetails
        }
      };
 
-
-   */
-      //처음상태
+// OrderProgress-ready / OrderProgress-deliveryComplete / OrderProgress-delete
+ //처음상태
       // PREPARING
       // 준비완료 버튼 id="OrderProgress-ready"
       //  req.body에 DELIVERING
@@ -135,35 +136,45 @@ ${payment.orderDetails
       // req.body에  DELIVERED
       // 취소 버튼 누르면 id = "OrderProgress-delete"
       //  req.body에 CANCELED
+    // 버튼 클릭 이벤트에 fetch API 연결
+    */
 
-      // 버튼 핸들러 추가
-      document.querySelectorAll('.OrderProgress').forEach((button) => {
-        button.addEventListener('click', async (event) => {
-          const paymentId = event.target.getAttribute('data-id');
-          const status = event.target.getAttribute('data-status');
-
-          try {
-            const response = await fetch(`${baseUrl}${paymentId}`, {
-              method: 'PATCH',
-              headers,
-              body: JSON.stringify({ status }),
-            });
-
-            if (!response.ok)
-              throw new Error('Failed to update payment status');
-
-            console.log(`Payment ${paymentId} updated to ${status}`);
-            // 상태 업데이트 후 다시 데이터를 가져와 렌더링
-            fetchAndRenderPayments();
-          } catch (error) {
-            console.error('Error updating payment status:', error.message);
-          }
-        });
+  // 주문 상태 변경 함수
+  const changeStatus = async (status, paymentId) => {
+    try {
+      const response = await fetch(`/api/owners/me/orders/state/${paymentId}`, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({ status }), // JSON 형식으로 body 전달
       });
+      if (!response.ok) throw new Error('Failed to change order status');
+      alert('상태가 성공적으로 변경되었습니다.');
+      fetchAndRenderPayments(); // 변경 후 데이터 다시 로드
     } catch (error) {
-      console.error('Error fetching and rendering payments:', error.message);
+      console.error(error.message);
     }
   };
+
+  document
+    .getElementById('OrderProgress-ready')
+    .addEventListener('click', async () => {
+      await changeStatus(DELIVERING, paymentId);
+      fetchAndRenderPayments();
+    });
+
+  document
+    .getElementById(' OrderProgress-deliveryComplete')
+    .addEventListener('click', async () => {
+      await changeStatus(DELIVERED, paymentId);
+      fetchAndRenderPayments();
+    });
+
+  document
+    .getElementById('OrderProgress-delete')
+    .addEventListener('click', async () => {
+      await changeStatus(CANCELED, paymentId);
+      fetchAndRenderPayments();
+    });
 
   // 초기 데이터 로드
   fetchAndRenderPayments();

@@ -50,9 +50,10 @@
             word-wrap: break-word;
             white-space: pre-wrap;
           ">${payment.status}</p>
+          <p id="pamentId" style="margin-left: auto;">${payment.paymentId}</p>
+
         </div>
 
-        <p id="pamentId">${payment.paymentId}</p>
         <div class="OrderDetails" style="display: flex; gap: 10px; align-items: flex-start;">
           <span style="width: 100px;">주문내역</span>
           <textarea readonly id="OrderDetails" class="info">
