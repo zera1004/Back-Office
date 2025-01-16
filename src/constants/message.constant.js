@@ -214,6 +214,10 @@ export const MESSAGES = {
         NOT_FOUND: '주문을 찾을 수 없습니다.',
         NOT_ERROR: '주문 취소 중 오류가 발생 담당자한테 문의할것.',
       },
+      READ_LIST: {
+        SUCCEED: 'Payment list retrieved successfully',
+        FAILED: 'Failed to retrieve payment list',
+      },
       CHECK: {
         READY: '준비중',
         GO: '배달중',

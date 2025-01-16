@@ -13,6 +13,22 @@ router.post(
 );
 
 /*
+// 사용해야 할까?
+router.get(
+  '/users/me/orders/:id',
+  requireAccessToken,
+  orderController.checkOrder,
+); // 주문확인
+*/
+
+/**
+ * 조회
+ * router.get(
+  '/users/me/orders/:id',
+  requireAccessToken,
+  orderController.orderInfo,
+);
+ */
 // 주문 내역 조회 - 유저
 router.get(
   '/users/me/orders/:id',
@@ -26,7 +42,7 @@ router.get(
   requireAccessToken,
   orderController.orderInfoByRestaurant,
 );
-*/
+
 /***
  * * 상태 수정 *
  * 준비중/준비완료/배달중/배달완료/취소
