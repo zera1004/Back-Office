@@ -202,7 +202,7 @@ class AuthService {
       expiresIn: REFRESH_TOKEN_EXPIRES_IN,
     });
 
-    setRefreshToken(payload.id, refreshToken);
+    setRefreshToken(`${memberType}=${payload.id}`, refreshToken);
 
     return { accessToken, refreshToken };
   };
