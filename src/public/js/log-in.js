@@ -52,7 +52,7 @@ logInSubmit.addEventListener('click', function (e) {
     })
     .then((result) => {
       console.log(result);
-      window.location.href = 'index.html';
+      window.location.href = '../views/home.html';
     })
     .catch((err) => {
       console.log('에러', err.message);
