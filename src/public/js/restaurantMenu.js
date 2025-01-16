@@ -118,7 +118,7 @@ function displayMenus(menus) {
           menuId: menu.menuId,
           restaurantId: menu.restaurantId,
           price: menu.price,
-          quantity: count,
+          count: count,
           subTotal: subTotal,
         });
 
@@ -147,24 +147,35 @@ function updateTotalPriceUI() {
 // “주문하기” 버튼 세팅
 function setupPaymentButton() {
   const goPaymentBtn = document.getElementById('goPaymentBtn');
-  goPaymentBtn.addEventListener('click', () => {
-    console.log(cart);
+
+  goPaymentBtn.addEventListener('click', async () => {
+    console.log('현재 장바구니:', cart);
     if (cart.length === 0) {
       alert('장바구니가 비어있습니다.');
       return;
     }
 
-    // 결제창으로 넘어갈 때 각 메뉴의 menuId, restaurantId, price 등을 넘겨주어야 함
-    // 간단히 cart 배열을 JSON으로 직렬화해서 query string으로 넘기는 예시
-    // (아직 개발 전이므로 주석 처리)
+    try {
+      const response = await fetch('/api/users/me/carts', {
+        method: 'POST',
+        credentials: 'include', // 쿠키 전송(세션/인증) 허용
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cart, // => { cart: [...] } 형태로 전송
+        }),
+      });
 
-    /*
-    const cartJSON = encodeURIComponent(JSON.stringify(cart));
-    window.location.href = `payment.html?cart=${cartJSON}`;
-    */
+      if (!response.ok) {
+        throw new Error('네트워크 응답이 좋지 않습니다.');
+      }
+      alert('서버에 장바구니 저장 완료!\n결제 화면으로 이동합니다.');
 
-    alert(
-      `결제하기 창으로 넘어갑니다.\n(현재는 개발 전, 장바구니 데이터: ${JSON.stringify(cart)})`,
-    );
+      window.location.href = '/cart.html';
+    } catch (err) {
+      console.error('주문 정보 등록 중 오류:', err);
+      alert('주문 정보 등록 실패: ' + err.message);
+    }
   });
 }
