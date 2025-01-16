@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const userId = 'myUserId'; // 사용자 ID
-  const baseUrl = `/users/me/payment/`; // API 엔드포인트
+  const baseUrl = `/api`; // API 엔드포인트
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 데이터를 가져와서 렌더링하는 함수
   const fetchAndRenderPayments = async () => {
     try {
-      const response = await fetch(baseUrl, {
+      const response = await fetch(`${baseUrl}/myOrders/?userId=${userId}`, {
         method: 'GET',
         headers,
       });
@@ -60,9 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 word-wrap: break-word;
                 white-space: pre-wrap;
               ">${payment.status}</p>
+              <p id="paymentId" style="margin-left: auto;">${payment.paymentId}</p>
+
             </div>
-  
-        <p id="pamentId">${payment.paymentId}</p>
             <div class="OrderDetails" style="display: flex; gap: 10px; align-items: flex-start;">
               <span style="width: 100px;">주문내역</span>
               <textarea readonly id="OrderDetails" class="info">
