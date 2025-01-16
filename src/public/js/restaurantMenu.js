@@ -3,7 +3,7 @@ let cart = []; // [{menuId, restaurantId, price, quantity, subTotal}, ...]
 let totalPrice = 0; // 장바구니 총 금액
 
 window.onload = () => {
-  const restaurantId = '1'; // 임시 값
+  const restaurantId = '32'; // 임시 값
   menuByRestaurant(restaurantId);
   setupPaymentButton();
 };

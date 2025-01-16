@@ -52,6 +52,9 @@ class OrderServices {
 
       return order, remainingPoints; // 남은 포인트 반환
     } catch (error) {
+      console.log('-----------------------------------------');
+      console.log(error);
+      console.log('-----------------------------------------');
       if (error.message === MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT) {
         throw error;
       } else {
