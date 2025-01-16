@@ -27,6 +27,7 @@ class GetRestaurantsRepository {
         restaurantName: true,
         restaurantType: true,
         averageStar: true,
+        totalPoint: true,
       },
     });
   };
