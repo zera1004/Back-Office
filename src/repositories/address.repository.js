@@ -9,11 +9,19 @@ class AddressRepository {
 
   // 주소 생성
   createAddress = async ({ address, addressName, userId }) => {
+    // 1. 해당 사용자의 기존 주소 확인
+    const existingAddresses = await this.#orm.address.findMany({
+      where: { userId },
+    });
+
+    const mainAddress = existingAddresses.length === 0;
+
     return await this.#orm.address.create({
       data: {
         userId,
         address,
         addressName,
+        mainAddress,
       },
     });
   };
