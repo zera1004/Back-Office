@@ -4,17 +4,13 @@ import paymentController from '../controllers/payment.controller.js';
 
 const router = express.Router();
 
-router.get(
-  '/users/me/payments',
-  requireAccessToken,
-  paymentController.getPayment,
-);
+router.get('/users/me/payments', requireAccessToken, (res, req, next) => {
+  paymentController.getPayment(res, req, next);
+});
 
-router.get(
-  '/owners/me/payments',
-  requireAccessToken,
-  paymentController.getRestaurantPoint,
-);
+router.get('/owners/me/payments', requireAccessToken, (res, req, next) => {
+  paymentController.getRestaurantPoint(res, req, next);
+});
 
 // 주문진행
 router.get('/myOrders', requireAccessToken, paymentController.orderInfo);

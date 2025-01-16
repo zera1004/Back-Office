@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주소 삭제</title>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>주소 삭제</h1>
+        <a href="getAddress.html" role="button">목록 보기</a>
+      </header>
+      <p>정말 이 주소를 삭제하시겠습니까?</p>
+      <button id="confirmDelete">삭제</button>
+      <button onclick="window.location.href='getAddress.html'">취소</button>
+    </main>
+    <script src="js/deleteAddress.js" defer></script>
+  </body>
+</html>

@@ -84,7 +84,7 @@ class AddressService {
 
     // 데이터 무결성 검증: 중복된 mainAddress가 있을 경우 정리
     if (existingMainAddresses.length > 1) {
-      throw new Error('중복된 메인 주소가 존재합니다. 데이터를 확인하세요.');
+      throw new Error(MESSAGES.ADDRESS.MAINADDRESS.SAME_ADDRESS);
     }
 
     return await this.#repository.setMainAddress({ addressId, userId });

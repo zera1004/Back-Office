@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>메뉴등록</title>
+  </head>
+  <script src="./js/reviewcreate.js" defer></script>
+  <style>
+    article header {
+      text-align: center;
+    }
+    button[type='submit'] {
+      width: 120px;
+      margin-left: auto;
+      display: block;
+      background-color: #374956; /* 다크모드에 어울리는 색상 추가 */
+      border-color: #374956; /* 테두리 색상도 동일하게 설정 */
+    }
+
+    /* 호버 효과 추가 */
+    button[type='submit']:hover {
+      background-color: #2c3b47;
+      border-color: #2c3b47;
+    }
+  </style>
+  <body>
+    <main class="container">
+      <article>
+        <header>
+          <h3>리뷰 작성</h3>
+        </header>
+        <form>
+          <h2>별점을 선택해주세요</h2>
+          <select id="rating" name="rating" required>
+            <option value="">별점 선택</option>
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★☆</option>
+            <option value="3">★★★☆☆</option>
+            <option value="2">★★☆☆☆</option>
+            <option value="1">★☆☆☆☆</option>
+          </select>
+
+          <textarea
+            id="content"
+            name="content"
+            placeholder="리뷰 내용을 입력하세요"
+            rows="15"
+            required
+          ></textarea>
+
+          <input id="media" name="media" type="file" accept="image/*" />
+          <button class="reviewSubmit" type="submit">메뉴 등록</button>
+        </form>
+      </article>
+    </main>
+  </body>
+</html>

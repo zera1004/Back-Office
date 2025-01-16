@@ -102,6 +102,14 @@ class AuthRepository {
       where: { email },
     });
   };
+
+  // 회원 정보 수정
+  updateProfile = async (email, updateData) => {
+    return await this.#orm.user.update({
+      where: { email },
+      data: updateData,
+    })
+  }
 }
 
 export default new AuthRepository(prisma);

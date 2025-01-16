@@ -14,21 +14,25 @@ class menuRepository {
     });
   }
 
-  async createMenu(restaurantId, menuName, content, price) {
-    return await this.#orm.menu.create({
+  async createMenu(restaurantId, menuName, content, price, media) {
+    const menu = await this.#orm.menu.create({
       data: {
         restaurantId,
         menuName,
         content,
-        price,
+        price: parseInt(price),
+        media,
       },
     });
+    return menu;
   }
 
   async findMenusByRestaurantId(restaurantId) {
     return await this.#orm.menu.findMany({
       where: { restaurantId },
       select: {
+        menuId: true,
+        restaurantId: true,
         menuName: true,
         price: true,
         content: true,

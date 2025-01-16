@@ -1,7 +1,7 @@
 import { MESSAGES } from '../constants/message.constant.js';
 import OrderRepository from '../repositories/order.repository.js';
 
-class OrderServices {
+class orderService {
   #repository;
 
   constructor(repository) {
@@ -67,10 +67,10 @@ class OrderServices {
 
       return { remainingPoints, order }; // 남은 포인트, 주문 반환
     } catch (error) {
-      if (error.message === MESSAGES.ORDER.SERVICE.CREATE.NOT_POINT) {
+      if (error.message === '음식을 주문하기 위한 포인트가 부족합니다.') {
         throw error;
       } else {
-        throw new Error(MESSAGES.ORDER.SERVICE.CREATE.NOT_ERROR);
+        throw new Error('주문 생성중 에러가 발생 담당자한테 문의할것');
       }
     }
   };
@@ -82,7 +82,7 @@ class OrderServices {
       // 1. 주문 정보 조회
       const order = await this.#repository.getOrderById(orderId);
       if (!order) {
-        throw new Error(MESSAGES.ORDER.SERVICE.DELETE.NOT_FOUND);
+        throw new Error('주문을 찾을 수 없습니다.');
       }
         */
 
@@ -103,10 +103,10 @@ class OrderServices {
 
       return payment.total_price; // 환불된 금액 반환
     } catch (error) {
-      if (error.message === MESSAGES.ORDER.SERVICE.DELETE.NOT_FOUND) {
+      if (error.message === '주문을 찾을 수 없습니다.') {
         throw error;
       } else {
-        throw new Error(MESSAGES.ORDER.SERVICE.DELETE.NOT_ERROR);
+        throw new Error('주문 취소 중 오류가 발생 담당자한테 문의할것.');
       }
     }
   };
@@ -117,13 +117,15 @@ class OrderServices {
       const status = await this.#repository.getOrderStatus(orderId);
 
       const statusMapping = {
-        PREPARING: MESSAGES.ORDER.SERVICE.CHECK.READY,
-        DELIVERING: MESSAGES.ORDER.SERVICE.CHECK.GO,
-        DELIVERED: MESSAGES.ORDER.SERVICE.CHECK.FINISH,
+        PREPARING: '준비중',
+        DELIVERING: '배달중',
+        DELIVERED: '배달완료',
       };
-      return statusMapping[status] || MESSAGES.ORDER.SERVICE.CHECK.NOT_KNOW; // 상태 반환
+      return statusMapping[status] || '알 수 없음'; // 상태 반환
     } catch (error) {
-      throw new Error(MESSAGES.ORDER.SERVICE.CHECK.NOT_ERROR);
+      throw new Error(
+        '배달 상황을 확인하는 중 오류가 발생 담당자한테 문의할것.',
+      );
     }
   };
 
@@ -169,4 +171,4 @@ class OrderServices {
   };
 }
 
-export default new OrderServices(OrderRepository);
+export default new orderService(OrderRepository);
