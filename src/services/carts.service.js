@@ -53,6 +53,7 @@ class cartService {
 
       return {
         cartDetailId: item.cartDetailId,
+        restaurantId: item.Menu.restaurantId,
         menuName: item.Menu.menuName,
         price: item.Menu.price,
         count: item.count,

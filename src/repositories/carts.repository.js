@@ -42,6 +42,7 @@ class CartRepository {
         menuId: true,
         Menu: {
           select: {
+            restaurantId: true,
             menuName: true,
             price: true,
           },

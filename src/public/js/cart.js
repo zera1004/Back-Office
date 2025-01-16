@@ -27,7 +27,7 @@ async function menuByCart(cartId) {
   }
 }
 
-function displayCartItems(cartItems, totalPrice, cartId) {
+function displayCartItems(cartItems, totalPrice, cartId, cartTotalPrice) {
   const tbody = document.querySelector('tbody');
   tbody.innerHTML = ''; // 기존 내용 초기화
 
@@ -47,6 +47,14 @@ function displayCartItems(cartItems, totalPrice, cartId) {
       // item.cartDetailId를 이용해 삭제 API 호출
       deleteCartItem(cartId, item.cartDetailId);
     });
+
+    // // 주문하기 버튼 이벤트 연동
+    // const orderBtn = tr.querySelector('.orderBtn');
+    // orderBtn.addEventListener('click', () => {
+    //   // item.cartDetailId를 이용해 삭제 API 호출
+    //   createOrder(cartId, cartTotalPrice);
+    // });
+
     tbody.appendChild(tr);
   });
 
@@ -78,6 +86,20 @@ async function deleteCartItem(cartId, cartDetailId) {
   } catch (error) {
     console.error('아이템 삭제 중 오류 발생:', error);
   }
+}
+
+async function createOrder(cartTotalPrice, cartId) {
+  const response = await fetch(`/api/users/me/orders`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      status: PREPARING,
+      cartId: cartId,
+      restaurantId: cartTotalPrice.restaurantId,
+    }),
+  });
 }
 
 window.onload = () => {
