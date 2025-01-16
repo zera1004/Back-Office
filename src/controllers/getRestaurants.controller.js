@@ -113,7 +113,7 @@ class GetRestaurantsController {
 
       if (!search) {
         return res
-          .status(HTTP_STATUS.BAD_REQUES)
+          .status(HTTP_STATUS.NOT_FOUND)
           .json({ message: '검색어를 입력해 주세요.' });
       }
 

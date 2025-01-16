@@ -47,6 +47,7 @@ class CartRepository {
             price: true,
           },
         },
+        cartDetailId:true,
         count: true,
       },
     });
