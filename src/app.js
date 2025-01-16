@@ -12,14 +12,16 @@ import addressRouter from './routers/address.router.js';
 import cartRouter from './routers/carts.router.js';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import getRestaurants from './routers/getRestaurants.routes.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import getRestaurants from './routers/getRestaurants.routes.js';
+
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 // app.use(cors());
 app.use(cookieParser());
@@ -39,6 +41,10 @@ app.use('/api', [
   cartRouter,
 ]);
 app.use('/api/auth', authRouter);
+
+app.get("/hello_world" , (req,res) => {
+  res.send("hello world i am hello")
+})
 
 app.use(errorHandler);
 
