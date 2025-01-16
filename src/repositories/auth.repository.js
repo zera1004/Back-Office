@@ -79,6 +79,13 @@ class AuthRepository {
     });
   };
 
+  // 손님 장바구니 생성
+  makeCustomerCart = async (userId) => {
+    return await this.#orm.cart.create({
+      data: { userId },
+    });
+  };
+
   // 사장님 이메일 인증 성공
   emailVerifyOwner = async (email) => {
     return await this.#orm.owner.update({
@@ -108,8 +115,8 @@ class AuthRepository {
     return await this.#orm.user.update({
       where: { email },
       data: updateData,
-    })
-  }
+    });
+  };
 }
 
 export default new AuthRepository(prisma);

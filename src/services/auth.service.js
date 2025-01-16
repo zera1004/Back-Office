@@ -139,6 +139,7 @@ class AuthService {
 
     if (memberType === 'customer') {
       user = await this.#repository.emailVerifyCustomer(email);
+      await this.#repository.makeCustomerCart(user.userId);
     } else if (memberType === 'owner') {
       user = await this.#repository.emailVerifyOwner(email);
     }
