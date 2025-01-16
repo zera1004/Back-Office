@@ -10,7 +10,7 @@ const cartRouter = express.Router();
 // 장바구니에 메뉴는 같은 레스토랑 메뉴만 담을 수 있습니다.
 // 지금은 카트 아이디를 파람스로 받지만 월요일에 팀원들과 상의 후에 유저 테이블에 카트 id 추가하는게 좋을듯? 그리고 장바구니 테이블은 없애버리는거지 상의를 해보고 정합시다 이건
 cartRouter.post(
-  '/users/me/carts/:cartId',
+  '/users/me/carts',
   requireAccessToken,
   cartsController.postCartDetail,
 );

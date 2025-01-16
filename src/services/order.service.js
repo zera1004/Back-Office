@@ -10,14 +10,26 @@ class orderService {
 
   // 주문 생성
   createOrder = async ({ userId, restaurantId, cartId, status }) => {
+    console.log(
+      `서비스 계층 들어온 파라밑터`,
+      userId,
+      restaurantId,
+      cartId,
+      status,
+    );
+    console.log(`userId 타입`, typeof userId);
+    console.log(`restaurantId 타입`, typeof restaurantId);
+    console.log(`cartId 타입`, typeof cartId);
+    console.log(`status 타입`, typeof status);
     try {
       let total_price = 0;
 
       // 1. 사용자 조회
       const user = await this.#repository.getUserById(userId);
-
+      console.log(`조회한 사용자`, user);
       // 2. 메뉴 및 카운트갯수 조회(menuId , count 얻음)
       const menuList = await this.#repository.getMenuByCartId(cartId);
+      console.log(`메뉴 및 카운트갯수`, menuList);
       if (!menuList || menuList.length === 0) {
         throw new Error('장바구니에 메뉴가 없습니다.');
       }
