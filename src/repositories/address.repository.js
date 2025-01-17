@@ -1,6 +1,6 @@
-import { prisma } from './../utils/prisma/index.js';
+// import { prisma } from './../utils/prisma/index.js';
 
-class AddressRepository {
+export class AddressRepository {
   #orm;
 
   constructor(orm) {
@@ -96,5 +96,3 @@ class AddressRepository {
     });
   };
 }
-
-export default new AddressRepository(prisma);

@@ -1,6 +1,4 @@
-import { prisma } from '../utils/prisma/index.js';
-
-class RestaurantRepository {
+export class RestaurantRepository {
   #orm;
   constructor(orm) {
     this.#orm = orm;
@@ -59,4 +57,3 @@ class RestaurantRepository {
     });
   };
 }
-export default new RestaurantRepository(prisma);

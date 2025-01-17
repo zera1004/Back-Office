@@ -1,6 +1,10 @@
 import addressController from '../controllers/address.controller.js';
 import express from 'express';
 import { requireAccessToken } from '../middlewares/authorization.middleware.js';
+import { prisma } from '../utils/prisma/index.js';
+import { AddressRepository } from '../repositories/address.repository.js';
+
+const addressRepository = new AddressRepository(prisma);
 
 const addressRouter = express.Router();
 
