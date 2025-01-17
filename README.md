@@ -17,11 +17,32 @@
 ## 기술 스택
 🗄️Node.js
 💻Express
-🛕 Prisma
+🛕Prisma
 📁GIT
 📦GITHUB
 🛠️AWS
 🐬MYSQL
+
+## 폴더 구조
+📦 BACK-OFFICE
+├── 📁 node_modules
+├── 📁 order-turn payment
+├── 📁 prisma
+│    ├── 📁 migrations    
+│    ├── 🛕 schema.prisma   
+│   
+├── 📁 src               
+│    ├── 📁 constants   
+│    ├── 📁 controllers  
+│    ├── 📁 middlewares    
+│    ├── 📁 models    
+│    ├── 📁 public 
+│    ├── 📁 repositories  
+│    ├── 📁 routers  
+│    ├── 📁 services 
+│    ├── 📁 utils 
+│         ├── 📁 prisma
+└── 📄 app.js   
 
 ## ERD 다이어그램
 🧩 https://drawsql.app/teams/first-52/diagrams/backoffice
@@ -35,3 +56,21 @@
 ### 🥗 3.식당에 메뉴를 확인하고 장바구니에 담을수 있습니다 원하는 메뉴를 담아보세요!
 
 ### 🌮 4.주소를 등록하시면 배달이 가능합니다 맛있는 음식들을 집에서 편하게 드세요!
+
+## 설치 및 실행 방법
+### 1.레포지토리 클론
+git clone git@github.com:zera1004/Back-Office.git
+
+### 2.패키지 설치
+npm install
+
+### 3.환경 변수 설정
+.env 파일 생성 후, 아래 항목 설정
+DATABASE_URL=mysql://<username>:<password>@<host>:<port>/<database>
+JWT_SECRET=<your_jwt_secret>
+
+### 4.데이터베이스 설정
+npx prisma migrate dev --name <마이그레이션 이름>
+
+### 5.서버 실행
+npm run dev
