@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+      /* 사용자 유형 선택 박스 스타일 */
+      .user-type {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+      }
+
+      .user-option {
+        flex: 1;
+        text-align: center;
+        border: 2px solid #888;
+        padding: 10px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .user-option.selected {
+        background-color: #444; /* 선택된 경우 배경 색상 */
+        color: white; /* 선택된 경우 텍스트 색상 */
+      }
+    </style>
+  </head>
+  <script src="js/log-in.js" defer></script>
+  <body>
+    <br />
+    <main class="container">
+      <header>
+        <h1>Login</h1>
+      </header>
+      <br />
+      <form method="POST">
+        <div class="user-type">
+          <div
+            class="user-option"
+            data-type="customer"
+            onclick="selectUserType(this)"
+          >
+            손님
+          </div>
+          <div
+            class="user-option"
+            data-type="owner"
+            onclick="selectUserType(this)"
+          >
+            사장님
+          </div>
+        </div>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          autocomplete="username"
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password"
+        />
+        <button type="logInSubmit" class="logInSubmit">Login</button>
+      </form>
+      <br />
+      <p>Don't have an account? <a href="sign-up.html">Sign up</a></p>
+    </main>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 {
   "name": "back-office",
   "version": "1.0.0",
+  "type": "module",
   "description": "\"# Back-Office\"",
   "main": "index.js",
   "scripts": {
@@ -9,20 +10,23 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
-    "prisma": "^6.1.0"
+    "prisma": "^6.2.1"
   },
   "dependencies": {
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.2.1",
+    "aws-sdk": "^2.895.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.10.0",
     "nodemailer": "^6.9.16",
     "socket.io": "^4.8.1"
   }

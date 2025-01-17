@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>장바구니</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script src="js/cart.js" defer></script>
+</head>
+<style>
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .total {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .center-title {
+    text-align: center;
+  }
+
+  /* .nav-container {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+  } */
+</style>
+
+<body>
+  <header>
+    <h1 class="center-title">장바구니</h1>
+  </header>
+
+  <main class="container">
+    <!-- <div class="nav-container">
+      <nav>
+        <ul>
+          <li><a href="#" aria-current="page">장바구니</a></li>
+          <li><a href="login.html">로그인/회원가입</a></li>
+          <li><a href="my.html">MY</a></li>
+        </ul>
+      </nav>
+    </div> -->
+
+    <table role="grid">
+      <thead>
+        <tr>
+          <th>번호</th>
+          <th>음식 이름</th>
+          <th>가격</th>
+          <th>개수</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS로 채울 예정 -->
+      </tbody>
+    </table>
+
+    <div class="total">
+      <strong>총액: ₩</strong>
+      <button type="button" class="orderBtn">주문하기</button>
+    </div>
+  </main>
+</body>
+
+</html>
