@@ -5,12 +5,14 @@
   "description": "\"# Back-Office\"",
   "main": "index.js",
   "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "prisma": "^6.2.1"
@@ -29,5 +31,13 @@
     "multer-s3": "^2.10.0",
     "nodemailer": "^6.9.16",
     "socket.io": "^4.8.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zera1004/Back-Office.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zera1004/Back-Office/issues"
+  },
+  "homepage": "https://github.com/zera1004/Back-Office#readme"
 }
