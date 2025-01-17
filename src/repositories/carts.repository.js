@@ -13,6 +13,14 @@ class CartRepository {
     });
   };
 
+  getCartIdbyUserId = async (data) => {
+    console.log(data);
+    return await this.#orm.cart.findFirst({
+      where: { userId: parseInt(data) },
+      select: { cartId: true },
+    });
+  };
+
   //장바구니 메뉴 등록하기
   postCartDetail = async (data) => {
     return await this.#orm.cartDetail.create({
@@ -30,9 +38,11 @@ class CartRepository {
     return await this.#orm.cartDetail.findMany({
       where: { cartId: parseInt(data.cartId) },
       select: {
+        cartDetailId: true,
         menuId: true,
         Menu: {
           select: {
+            restaurantId: true,
             menuName: true,
             price: true,
           },

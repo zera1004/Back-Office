@@ -68,20 +68,15 @@ class ReviewsController {
   // 리뷰 생성 (인증 O)
   createReview = async (req, res) => {
     // Client로 부터 받은 데이터를 가공
-
     const { content, star, paymentId } = req.body;
-    // const paymentId = 3;
-    // 파라미터로 부터 받은 데이터
-    // const { restaurantId, paymentId } = req.params;
-    const { restaurantId } = req.params;
-    // 인증 미들웨어에서 받은 유저 정보
-    // const userId = req.user;
-    const mediaUrl = req.file ? req.file.location : null;
 
-    // 테스트용 //
+    // 파라미터로 부터 받은 데이터
+    const { restaurantId } = req.params;
+
+    const mediaUrl = req.file ? req.file.location : null;
+    // 인증 미들웨어에서 받은 유저 정보
     const userId = req.user.userId;
 
-    // 테스틍용
     try {
       await this.#service.createReview({
         restaurantId: +restaurantId,

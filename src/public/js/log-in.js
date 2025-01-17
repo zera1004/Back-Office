@@ -38,7 +38,7 @@ logInSubmit.addEventListener('click', function (e) {
     body: JSON.stringify({
       email: email.value,
       password: password.value,
-      memberType: selectedUserType,
+      memberType: selectedUserType, // 선택된 사용자 유형
     }),
   })
     .then((response) => {
@@ -52,9 +52,42 @@ logInSubmit.addEventListener('click', function (e) {
     })
     .then((result) => {
       console.log(result);
-      window.location.href = '../views/home.html';
+
+      // 로그인 상태 저장
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userType', selectedUserType); // 사용자 유형 저장
+
+      // 홈 페이지로 이동
+      window.location.href = 'home.html';
     })
     .catch((err) => {
       console.log('에러', err.message);
     });
 });
+
+function handleLogin() {
+  // 로그인 요청을 서버로 보냄
+  fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: document.querySelector('#username').value,
+      password: document.querySelector('#password').value,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // 로그인 성공 시 상태 저장
+        localStorage.setItem('isLoggedIn', 'true');
+        alert('로그인 성공!');
+        window.location.href = 'home.html'; // 홈 화면으로 이동
+      } else {
+        alert('로그인 실패: ' + data.message);
+      }
+    })
+    .catch((err) => {
+      console.error('로그인 요청 실패:', err);
+      alert('로그인 중 문제가 발생했습니다.');
+    });
+}

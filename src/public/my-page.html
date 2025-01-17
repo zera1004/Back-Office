@@ -81,16 +81,26 @@
           <li><strong>마이페이지</strong></li>
         </ul>
         <ul>
-          어서오세요 <li id = "userName"></li>님!
+          어서오세요
+          <li id="userName"></li>
+          님!
         </ul>
         <ul>
           <li><a href="getAddress.html">주소 등록</a></li>
-          <li><a href="#">내 리뷰조회</a></li>
+          <li><a href="reviewsByUser.html">내 리뷰조회</a></li>
           <li><a href="cart.html">장바구니</a></li>
-          <li><a href="#">주문진행</a></li>
-          <li><a href="#">주문내역</a></li>
-          <li><button class="secondary" onclick="Logout()">로그아웃</button></li>
-          <li><button class="secondary" onclick="openDeleteAccount()">회원탈퇴</button></li>
+          <li><a href="orde/order-customers.html">주문진행</a></li>
+          <li>
+            <a href="payment - 주문내역/payment-customers.html">주문내역</a>
+          </li>
+          <li>
+            <button class="secondary" onclick="Logout()">로그아웃</button>
+          </li>
+          <li>
+            <button class="secondary" onclick="openDeleteAccount()">
+              회원탈퇴
+            </button>
+          </li>
         </ul>
       </nav>
       <div class="user-info">
@@ -165,7 +175,11 @@
       <div id="deleteAccountModal" class="modal">
         <div class="modal-content">
           <h3>정말로 회원을 탈퇴하시겠습니까?</h3>
-          <input type="text" id="confirmPassword" placeholder="비밀번호를 입력해주세요." />
+          <input
+            type="text"
+            id="confirmPassword"
+            placeholder="비밀번호를 입력해주세요."
+          />
           <button onclick="saveDeleteAccount()">삭제</button>
           <button onclick="closeDeleteAccount()">취소</button>
         </div>
