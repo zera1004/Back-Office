@@ -3,7 +3,10 @@ import restaurantsController from '../controllers/restaurants.controller.js';
 import { createRestaurantValidator } from '../middlewares/validators/create-restaurant-validator.middleware.js';
 import { updateRestaurantValidator } from '../middlewares/validators/update-restaurant-validator.middleware.js';
 import { requireAccessToken } from '../middlewares/authorization.middleware.js';
+import { RestaurantRepository } from '../repositories/restaurants.repository.js';
+import { prisma } from '../utils/prisma/index.js';
 
+const restaurantRepository = new RestaurantRepository(prisma);
 const restaurantRouter = express.Router();
 
 restaurantRouter.post(
