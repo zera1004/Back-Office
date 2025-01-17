@@ -1,7 +1,12 @@
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import AuthService from '../services/auth.service.js';
-import { ACCESS_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
+import {
+  ACCESS_TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_EXPIRES_IN,
+  clearRefreshToken,
+  refreshTokens,
+} from '../constants/auth.constant.js';
 
 class AuthController {
   #service;
@@ -82,7 +87,7 @@ class AuthController {
   logIn = async (req, res, next) => {
     try {
       const { email, password, memberType } = req.body;
-      const accessToken = await this.#service.logIn({
+      const { accessToken, refreshToken } = await this.#service.logIn({
         email,
         password,
         memberType,
@@ -92,8 +97,20 @@ class AuthController {
         maxAge:
           1000 *
           60 *
-          60 *
           ACCESS_TOKEN_EXPIRES_IN.slice(0, ACCESS_TOKEN_EXPIRES_IN.length - 1),
+        httpOnly: true,
+      });
+
+      res.cookie('refreshToken', refreshToken, {
+        maxAge:
+          1000 *
+          60 *
+          60 *
+          24 *
+          REFRESH_TOKEN_EXPIRES_IN.slice(
+            0,
+            REFRESH_TOKEN_EXPIRES_IN.length - 1,
+          ),
         httpOnly: true,
       });
 
@@ -110,7 +127,11 @@ class AuthController {
   // 로그아웃
   logOut = async (req, res, next) => {
     try {
+      const { userId, ownerId } = req.user;
       res.clearCookie('accessToken');
+      res.clearCookie('refreshToken');
+      if (userId) clearRefreshToken(userId);
+      if (ownerId) clearRefreshToken(ownerId);
 
       res.status(HTTP_STATUS.OK).json({ message: '로그아웃 성공' });
     } catch (error) {
