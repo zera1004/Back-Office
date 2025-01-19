@@ -1,4 +1,4 @@
-import redisClient from '../../redis';
+import redisClient from '../../redis.js';
 
 const USER_KEY_PREFIX = 'redis-';
 
@@ -10,10 +10,14 @@ export const ACCESS_TOKEN_EXPIRES_IN = '10m';
 export const REFRESH_TOKEN_EXPIRES_IN = '1d';
 export const refreshTokens = {};
 
-export const setRefreshToken = (id, data) => {
-  redisClient.set(`${USER_KEY_PREFIX}${id}`, data);
+export const setRefreshToken = async (id, data) => {
+  await redisClient.set(`${USER_KEY_PREFIX}${id}`, data, 'EX', 86400);
 };
 
-export function clearRefreshToken(id) {
-  delete refreshTokens[String(id)];
-}
+export const getRefreshToken = async (id) => {
+  await redisClient.get(`${USER_KEY_PREFIX}${id}`);
+};
+
+export const clearRefreshToken = async (id) => {
+  await redisClient.del(`${USER_KEY_PREFIX}${id}`);
+};

@@ -5,7 +5,6 @@ import {
   ACCESS_TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_EXPIRES_IN,
   clearRefreshToken,
-  refreshTokens,
 } from '../constants/auth.constant.js';
 
 class AuthController {

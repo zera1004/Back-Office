@@ -5,12 +5,14 @@
   "description": "\"# Back-Office\"",
   "main": "index.js",
   "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "prisma": "^6.2.1"

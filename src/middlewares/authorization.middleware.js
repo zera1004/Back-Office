@@ -8,8 +8,9 @@ import {
 import { prisma } from '../utils/prisma/index.js';
 import authRepository from '../repositories/auth.repository.js';
 import {
-  refreshTokens,
+  getRefreshToken,
   ACCESS_TOKEN_EXPIRES_IN,
+  userIdlist,
 } from '../constants/auth.constant.js';
 
 export const requireAccessToken = async (req, res, next) => {
@@ -22,7 +23,8 @@ export const requireAccessToken = async (req, res, next) => {
     if (!accessToken && refreshToken) {
       let token = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
       delete token.exp;
-      if (refreshTokens[`${token.memberType}=${token.id}`] === refreshToken) {
+      if (getRefreshToken(userIdlist) === refreshToken) {
+        // 찾는과정 수정하기
         const makeAccessToken = jwt.sign(token, ACCESS_TOKEN_SECRET, {
           expiresIn: ACCESS_TOKEN_EXPIRES_IN,
         });
@@ -94,7 +96,7 @@ export const requireAccessToken = async (req, res, next) => {
     user.memberType = memberType;
 
     req.user = user;
-    console.log(req.user);
+
     next();
   } catch (error) {
     next(new Error('Authentication middleware error: ' + error.message));
